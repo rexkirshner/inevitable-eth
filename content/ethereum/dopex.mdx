@@ -1,0 +1,141 @@
+---
+title: "Dopex Programmable Options"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-07"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/dopex-1.jpeg)
+
+# Dopex Programmable Options
+
+## Options 101
+
+![](/images/dopex-2.png)
+
+[Deep Dive: Options](/concepts/option)
+
+Options are a contract between two parties to buy/sell an asset (in the future) using a fixed price and date. 
+
+At that future date, the option buyer has the choice whether to continue with the buy/sale; the seller does not. 
+
+Options are (usually) either Call or Put options.
+
+### Call Options
+
+Call Option: the right, but not the obligation, to buy an asset in the future.
+
+*   Eg ETH costs $1500 and you can purchase a call option on ETH at $1750. If the price of ETH is higher than $1750, you can exercise the option and buy ETH below market price.
+
+### Put Options
+
+Put Option: the right, but not the obligation, to sell an asset in the future.
+
+*   Eg $ETH costs 1500 and you can purchase a put option on $ETH at $1250. If the price of ETH is lower than 1250, you can exercise the option and sell ETH above market price.
+
+### Option Premium
+
+The economic pin that this all revolves around is the premium. This is the fee paid by the buyer of the option to the seller of the option. 
+
+The buyer will always pay and the seller will always receive the premium, regardless how the option settles.
+
+### Option Styles
+
+Trad-Fi has two major styles of options: American and European. 
+
+Both styles are similar, the key difference is the window in which the buyer may exercise the option. 
+
+*   American options: exercise AT ANY TIME before expiry.
+*   European options: exercise ONLY AT expiry.
+
+But this is De-Fi; we aren't constrained by the old ways of thinking. 
+
+We have [programmable money](/ethereum/world-computer/de-fi/programmable-money)!
+
+## Dopex Option Styles
+
+![](/images/dopex-3.jpeg)
+
+At first glance, a Dopex option seems very similar to a European option; both can only be exercised at expiry.
+
+Under the hood, Dopex adds state of the art De-Fi paradigms and technology to build a much more compelling product.
+
+Out of the box, Dopex options gain many of the benefits of De-Fi:
+
+*   Composability - options are an ERC-20 token that can be used in other protocols, leveraged, OTC, etc
+*   Incentivized - DPX emissions and veDPX bribes boost investment profile
+*   Transparent - all on-chain
+
+The real innovation, however, is with the collateral.
+
+In an Trad-Fi option, the collateral used to write the options is held in trust at a [centralized location](/concepts/settlement).
+
+In a Dopex option, the collateral can be used for... almost anything!
+
+## Programmable Collateral
+
+![](/images/dopex-4.jpeg)
+
+Dopex's 's first and best known product are Single Staking Option Vault (SSOV). 
+
+They should be understood as the combination of two products: 
+
+*   An option contract with European-style settlement terms. 
+*   A single sided yield farm
+
+The option only requires access to the collateral at settlement and, because it has European-style settlement terms, Dopex knows exactly when that moment is going to be.
+
+Until then, Dopex can deploy the collateral into risk-free farms to boost yield.
+
+It is critically important that Dopex deposits the collateral into risk-free yield farms; the collateral WILL be needed in a relatively short amount of time.
+
+Single asset staking the perfect candidate for SSOVs: boosted yield without an IL risk.
+
+This presents a compelling opportunity for other protocols; Dopex can build a SSOV around a whitelisted single asset farms.
+
+Now, instead of simply diluting token holders, these emissions will directly incentivize options liquidity.
+
+At this point you might be asking yourself "if Dopex can deposit collateral into a single asset farm... can Dopex use the collateral anywhere else?"
+
+The answer: of course, the options are as wide as the Atlantic!
+
+## Atlantic Options
+
+![](/images/dopex-5.jpeg)
+
+[Dopex Atlantic Options](https://blog.dopex.io/articles/dopex-papers/Dopex-Papers:-Atlantic-Options) are smart contracts that pair a Dopex-style option with another (white labeled, custom integrated) De-Fi product.
+
+Each Atlantic product has to be careful constructed to ensure that at settlement the collateral is 100% guaranteed to be there. 
+
+But once that's taken care of, the results are MAGIC: 
+
+*   One-click straddles 
+*   No-liquidation perps 
+*   Unliquidatable loans 
+
+and so much more!
+
+As of today, Dopex has one Atlantic option product: [Atlantic Straddles](https://blog.dopex.io/articles/dopex-papers/atlantic-strategies-atlantic-straddles).
+
+[Straddles are a common option strategy](https://www.investopedia.com/articles/optioninvestor/08/straddle-strategy.asp) which bets on an asset's price moving quickly (either up or down); Dopex has simplified this into a one-click process.
+
+The results: [jaw-dropping](https://twitter.com/tztokchad/status/1561793547078193152).
+
+## A Revolution
+
+To those with a passing interest in finance and crypto, Dopex might just seem like another meme DAO with a (sometimes) hot token.
+
+Those of us deep in the rabbit hole see something else.
+
+We see a revolution.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1563597989188235264)
+
+Source Material - [PDF](/twitter-pdf-2022-08-27_dopex.pdf)

@@ -1,0 +1,137 @@
+---
+title: "Scaling Execution"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-20"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/scaling-execution.jpeg)
+
+# Scaling Execution
+
+## Prerequisites
+
+### Gas
+
+[Gas](/concepts/gas) measures the amount of computational effort required to execute specific operations on Ethereum.
+
+### Settlement
+
+[Settlement](https://inevitableeth.com/home/concepts/settlement) is the "final step in the transfer of ownership, involving the physical exchange of securities or payment". 
+
+After settlement, the obligations of all the parties have been discharged and the transaction is considered complete. 
+
+## The World Computer
+
+Bitcoin is the suggestion that trustless computing was possible; Ethereum, the [World Computer](/ethereum/world-computer), is the delivery.
+
+The World Computer is slow, intentionally. 
+
+That slowness manifests in two ways: sluggish execution and high gas costs.
+
+Which brings us to the framework that defines Ethereum scaling: keep as much execution off-chain as possible while still ultimately settling to Ethereum.
+
+If the transaction settles on Ethereum, then it gains all the properties of Ethereum.
+
+## State Channels
+
+![](/images/state-channels-1.jpeg)
+
+[Deep Dive: State Channels](/ethereum/upgrades/scaling/execution/state-channel)
+
+State channels are the first attempt at moving execution off-chain. 
+
+Channels are one-time relationships between two or more parties. The parties lock up capital on-chain, allowing them to exchange IOUs for no cost.
+
+While this technique is powerful, there are limits to what state channels can do:
+
+*   cannot send funds off-chain to people who are not yet participants
+*   cannot represent objects without an explicit owner (eg Uniswap)
+*   requires large amount of value to be locked
+
+## Plasma
+
+![](/images/plasma-1.jpeg)
+
+[Deep Dive: Plasma](/ethereum/upgrades/scaling/execution/plasma)
+
+Plasma (chains) were developed to address (some of) these issues.
+
+Plasma are independent blockchains that are much higher performance (and much more centralized) than Ethereum. 
+
+However, they are anchored to the World Computer by posting data back to mainnet.
+
+Plasma offers huge improvements over state channels: 
+
+*   can send assets to users who haven't opted-in yet
+*   supports a persistent state (exists even when users exit the system)
+*   data is posted on-chain periodically
+
+But, plasma is only half the solution.
+
+## Rollups
+
+The full solution: rollups!
+
+Where plasma only posted the state root (a single line used to verify if a txn happened), rollups post everything you would need to fully reconstruct the chain.
+
+Imagine an entire blockchain that's squeezed into the main Ethereum blockchain.
+
+### Optimistic Rollups
+
+![](/images/optimistic-rollup-1.jpeg)
+
+[Deep Dive: Optimistic Rollups](/ethereum/upgrades/scaling/execution/optimistic-rollup)
+
+The first category of rollups are optimistic rollups. 
+
+Optimistic rollups make the assumption that all txns that are posted to mainnet are valid and so it records them on-chain.
+
+But, just in case, they also leave open a challenge window.
+
+The rollup creates its own blockchain, which anyone can watch for fraud. 
+
+When detected, they can publish a fraud proof, proving the batch is invalid and should be reverted. 
+
+The result: no txn is finalized until the challenge period (up to 7 days) has passed.
+
+## ZK-Rollups
+
+![](/images/zk-rollup-1.jpeg)
+
+[Deep Dive: ZK-Rollups](/ethereum/upgrades/scaling/execution/zk-rollup)
+
+Which brings us to the real solution to blockchain scaling and the future of EEthereum: ZK-Rollups.
+
+Like their optimistic brothers, ZK-rollups post ALL data to mainnet, but they also provide a a zero-knowledge proof.
+
+The ZK-proof represents mathematically certainty that whatever is posted on-chain was both valid and actually happened on the rollup. If the proof verifies, the transaction is final both on the rollup and onEthereum.
+
+All the benefits of rollups with instant settlement.
+
+ZK-Rollups are still the bleeding edge of blockchain technology; (I believe) there isn't a single general purpose/EVM-compatible ZK-Rollup ready for production... today. 
+
+But we are not far away, if you look carefully you'll find a testnet or two.
+
+## The World Super-Computer
+
+Back in November 2021, [the founders of Starkware were on the Bankless podcast](https://www.youtube.com/watch?v=7Kq3YWsysc0).. Uri mentioned that StarkNet was already fast and cheap enough to protein folding simulations.
+
+We are building a legit supercomputer!
+
+When you look at Ethereum today, it might be hard to see the World Computer. 
+
+Even if you wrap your head around the metaphor, it's hard to see how 12 txns/sec is going to support the whole world.
+
+But I'm not looking at today, I'm looking at a zero-knowledge future.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1569461980821606403)
+
+Source Material - [PDF](/twitter-pdf-2022-09-12_scaling_execution.pdf)

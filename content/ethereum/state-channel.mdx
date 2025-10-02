@@ -1,0 +1,99 @@
+---
+title: "State Channels"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-07"
+readingTime: 3
+toc: true
+related: []
+---
+
+![](/images/state-channels-1.jpeg)
+
+# State Channels
+
+## Decentralized Means Slow
+
+In 2008, Satoshi Nakamoto created blockchain technology, changing the world forever. 
+
+The purpose: to create a shared, untrusted computing platform. A public utility, usable by all... at any time... for any reason.
+
+The foundation of Blockchain computers is decentralization: more centralization requires more trust assumptions. 
+
+In order to maintain decentralization, we must ensure that a wide spectrum of machines are capable of participating.
+
+Therefore a blockchain that cares about decentralization must keep its core protocol requirements relatively light; if it requires a data center the network will centralize VERY quickly. 
+
+To put it simply, (good) blockchain computers are trustless... but they are SLOW.
+
+And so, the obvious question follows: how can we scale a blockchain computer while maintaining low node requirements (and therefore decentralization)? 
+
+Today, we have many solutions. But let's start with the OG: state channels.
+
+## State Channels
+
+State channels allow participants to securely transact off-chain will keeping interaction with the main (slow and expensive) chain to a minimum. 
+
+The system allows peers to conduct an arbitrary number of (off-chain) transactions while only submitting two on-chain transactions.
+
+### Opening a Channel
+
+![](/images/state-channels-2.jpeg)
+
+Users open a state channel by depositing funds into a smart contract on the main blockchain, escrowing the capital. 
+
+This capital cannot be touched until the state channel is closed.
+
+### Transactions In-Channel
+
+![](/images/state-channels-3.jpeg)
+
+Within the state channel, participants can send each other funds for little to no cost. To make a payment, a user signs a ticket (off-chain message) and delivers it to the recipient. This can continue for as many payments as needed.
+
+### Closing and Settling
+
+![](/images/state-channels-4.jpeg)
+
+When the participants are done transacting, they can sign and publish the highest-value ticket back to the main blockchain. 
+
+The smart contract will verify the signatures and settle the state channel (paying the receiver and sending the rest to the original owner)
+
+If one party is unwilling to close the channel (malice, tech failure, etc), the other participant(s) can initiate a withdrawal period. 
+
+If the unwilling party does not provide a ticket within the withdrawal time, the withdrawing participant gets all his/her money back.
+
+## Example
+
+Alice is offering fuel for $1.3/L, Bob needs fuel. 
+
+Bob sends $20 to a smart contract and begins pumping fuel. 
+
+After every liter, Bob signs a new ticket, incrementing by $1.30. When he reaches 10 liters, he's done.
+
+Now, Alice takes the highest value ticket ($13), signs it and posts it to the smart contract in order to close the state channel. 
+
+The smart contract validates the ticket, and then settles the channel. 
+
+$13 are sent to Alice and the remaining $7 are sent to Bob.
+
+## Limitations
+
+While this technique is powerful, there are limits to what state channels can do:
+
+\- cannot send funds off-chain to people who are not yet participants
+
+\- cannot represent objects without an explicit owner (eg Uniswap)
+
+\- requires large amount of value to be locked
+
+Researchers have been working to address these issues, however we have found better solutions... first plasma chains and then rollups. 
+
+Today, state channels are only used for niche apps and chains that cannot support modern scaling solutions.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1568621672152039426)
+
+Source Material -  [PDF](/twitter-pdf-2022-09-10_state_channels.pdf)

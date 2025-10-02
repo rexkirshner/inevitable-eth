@@ -1,0 +1,93 @@
+---
+title: "erc-3475"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-07"
+readingTime: 3
+toc: true
+related: []
+---
+
+![](/images/erc-3475-banner.jpeg)
+
+[*source*](https://igaming.org/crypto/ethereum-overtakes-platinum-and-continues-its-rise-as-the-european-union-sells-ethereum-bonds/)
+
+# EIP-3475: Abstract Storage Bonds
+
+## Prerequisites
+
+### Application Programming Interfaces
+
+[Application Programming Interfaces](/concepts/api) (APIs) are the mechanism by which programs communicate and developers coordinate. 
+
+### Ethereum Token Standards
+
+Think of the different token types as a piece of code that conforms to an API template. 
+
+[If a smart contract adheres to a specific template, it is that kind of token](/ethereum/blockchain/token-standards).
+
+## The World Computer
+
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)). 
+
+The nodes provide the hardware, the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM) provides the [virtual computer](https://inevitableeth.com/home/concepts/virtual-machine) and the [blockchain](https://inevitableeth.com/home/ethereum/blockchain) records Ethereum's history.
+
+The Ethereum Network provides [credible neutrality](/concepts/credible-neutrality) upon which anyone can build... both independently and collaboratively.
+
+## Composable Building
+
+Any developer can deploy (nearly) anything on-chain. Arbitrary applications are very difficult to integrate, and so the community has developed a set of token standards.
+
+Each token standard was created to allow Ethereum applications (and therefore assets) to express more and different properties.
+
+From ERC-20 (basic accounting and transfer) to ERC-4246 (deposit and accrue value), each successive standard builds upon the previous.
+
+And now, we have our newest Ethereum token standard: ERC-3475, the bond token standard.
+
+## ERC-3475
+
+[ERC-3475](https://eips.ethereum.org/EIPS/eip-3475) is a new, multi-layered structure that allows an asset to issue and service debt without fracturing liquidity.
+
+Bond: a borrower receives money and commits to returning it on a certain date. 
+
+ERC-3475 functions the same way, it can issue bonds, each with their own supply, redemption conditions and metadata. 
+
+All enforced by smart contract.
+
+This new debt management layer will directly issue and service bonds, including bonds of different classes (fixed vs floating) and maturities. 
+
+All built on an ERC-20-like foundational layer that holds the underlying value.
+
+It is critically important to understand the two-layer nature of ERC-3475, because while all the intricacies are in the bond layer, the real benefits are in the (foundational) value layer.
+
+## Bonds in De-Fi
+
+Bonds are not a new concept to De-Fi. 
+
+If you have a Trad-Fi background, you probably ran into the concept in the form fixed/variable rate protocols like [Element Finance](https://www.element.fi/), [Notional Finance](https://www.notional.finance/) or [APWine](https://www.apwine.fi/).
+
+And yet, the space is a small shadow of its real world counterpart.
+
+The issue with De-Fi bonds boils down to [liquidity](/concepts/liquidity) and complexity. 
+
+Each time a protocol issues a new bond it must issue an individual ERC-20 token.
+
+It must not only service the bond, any overlapping bonds cannot share liquidity and funds cannot be rolled over after expiry
+
+ERC-3475 is the solution to this on the protocol layer... the actually-touching-the-chain layer. 
+
+It provides the templating to create modern bonding system at the money-lego-level.
+
+This is what programmable money looks like in 2022, just 2 years after the birth of De-Fi.
+
+Just imagine year 10.
+
+Now imagine year 100.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1566519615273836544)
+
+Source Material - [PDF](/twitter-pdf-2022-09-04_erc-3475.pdf)

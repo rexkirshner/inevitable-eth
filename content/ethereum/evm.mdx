@@ -1,0 +1,146 @@
+---
+title: "Ethereum Virtual Machine"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2023-01-09"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/evm-banner2.png)
+
+# Ethereum Virtual Machine (EVM)
+
+## Prerequisites
+
+### Virtual Machine
+
+A [Virtual Machine](/background/mass-comm/computer) (VM) is a computer program that emulates a complete, independent computer system entirely within another computing environment. Instead of developing software for a specific machine or type of machine, a VM allows development into a neutral environment. 
+
+Imagine running a copy of Windows as an application on your Mac.
+
+The computing environment offered by the VM will be exactly the same, regardless of what real-world computer it is running on.
+
+VMs are nearly as old as modern computing; today they have many uses across nearly every use of technology. 
+
+## Shared Platform
+
+Regardless of how varied the application, the through-line is the same: VMs provide a uniform computing platform across an unpredictable range of hardware.
+
+Our discussions thus far have discussed VMs from the perspective of developers, but now let's take a different look. 
+
+Let's think about what a uniform computing platform means for consumers.
+
+A basic VM is a single program that exists on a specific computer. It provides an environment with the exact same rules as any other copy, but it doesn't provide the SAME environment. 
+
+If we are both running the same VM and I save a document on mine, it wont appear in yours.
+
+Now let's imagine world where VMs can actually provide the SAME environment. 
+
+## Credibly Neutral Rules
+
+There's a lot of reasons why we would be interested in this, but I stay focused on the most important: If you exist within the same environment, you know you share the same constraints.
+
+Anyone who choses to enter the VM has implicitly decided to follow the rules set forth by the VM. 
+
+No special hardware (and performance edge), no special access, no administrative privilege. 
+
+A [credibly neutral](/concepts/credible-neutrality) environment for all that enter.
+
+At this point it's time to bring in the hero of our story: the Ethereum Virtual Machine (EVM).
+
+## Ethereum Virtual Machine
+
+[Deep Dive: Ethereum State Machine](/ethereum/evm/state-machine)
+
+The EVM is the computing platform of Ethereum, kept alive by the Ethereum network and enshrined in the Ethereum blockchain.
+
+Together, these 3 parts form the World Computer.
+
+Technically speaking, is a Turing-complete distributed state machine - but don't worry about this specific classification.
+
+The purpose of the greater Ethereum apparatus is to offer a single shared computing platform in a manner that is secure, decentralized and permanently open for ALL. 
+
+Anyone with an internet connection (and gas money) can interact with the World Computer.
+
+## Inside the EVM
+
+### Entities
+
+Within the EVM, there are a few entities: 
+
+*   Accounts - representing real people who are using the World Computer
+    *   [Deep Dive: Ethereum Accounts](/ethereum/evm/account)
+*   Contracts - representing a program that exists inside the EVM.
+    *   Contracts are accounts that are controlled by the code
+*   Objects - representing tokens, NFTs and anything else that can be represented within the EVM
+    *   remember, the EVM is [Turing-complete](/concepts/turing-complete); any object can be represented in the EVM
+*   ETH - the fuel/electricity/energy/currency of the World Computer
+
+### Properties
+
+The EVM has these critical properties: 
+
+*   Everything the EVM does is recorded into blocks and is added to the (public) blockchain
+*   Anything recorded in the blockchain cannot be undone
+*   All objects have owners and cannot be altered without the permission of their owner
+
+Thus, the EVM provides a generalized, credibly neutral computing environment with a native notion of property. 
+
+## A Single EVM
+
+After we understand what the EVM is, the next question is simple... in fact it has been hanging over us for a while now: 
+
+How do you get share one single instance of the EVM across multiple different computers... let alone the globe?
+
+The obvious solution is to just run a single copy of the EVM and let everyone log in. Maybe in an infinitely scalable cloud computing platform, maybe in a wholly-owned server farm maintained by the Ethereum Foundation. 
+
+Problem solved?
+
+Let's remember the EVM's 3 critical properties: 
+
+*   compulsory (public) record keeping
+*   immutable history
+*   equal access
+
+If we run a centralized EVM, we can't guarantee any of these; we are always relying on the good faith of the people running the computers.
+
+Maybe the custodians are acting in good faith today, and maybe they continue in perpetuity, always doing their best effort to enact these properties. 
+
+Alas, regardless of how hard they try, they will always fail in the third. They will always have privileged access.
+
+## Decentralization
+
+Instead of centralizing the EVM, what if we did the opposite? 
+
+What if we let anyone access it by running a copy at home and then syncing it up to the rest of them? 
+
+The blockchain provides a record of everything that happened so far, a fresh EVM can just catch up.
+
+Boot up the EVM, skip through the blockchain and you're good to go! The moment you're in sync, you're tapped into the World Computer! 
+
+### Staying in Sync
+
+...now how do we progress it forward? 
+
+How do thousands of independent EVMs ensure they all make the exact same move at the same time?
+
+In 2008, Satoshi Nakamoto gave us a path forward, but it wasn't until Vitalik Buterin launched Ethereum in 2015 that we had a true solution.
+
+But that's a story for next time; the story of EVM consensus.
+
+That's the magic of blockchain technology!
+
+## Resources
+
+*   Further Reading
+    *   [Ethereum.org EVM](https://ethereum.org/en/developers/docs/evm/)
+    *   [SoFi EVM](https://www.sofi.com/learn/content/what-is-ethereum-virtual-machine/)
+    *   [Luit Hollander's semi-technical EVM breakdown](https://medium.com/mycrypto/the-ethereum-virtual-machine-how-does-it-work-9abac2b7c9e)
+
+Original Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1574618174879735808)
+
+Original Material - [PDF](/twitter-pdf-2022-09-27_evm.pdf)

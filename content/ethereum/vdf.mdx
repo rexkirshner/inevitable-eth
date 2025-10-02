@@ -1,0 +1,151 @@
+---
+title: "Verifiable Delay Function"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-09"
+readingTime: 6
+toc: true
+related: []
+---
+
+![](/images/vdf-1.png)
+
+# Verifiable Delay Function
+
+## The World Computer
+
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)).
+
+These nodes are real computers in the real world, communicating directly from peer to peer.
+
+All nodes must stay [perfectly in sync](https://inevitableeth.com/en/home/ethereum/network), processing the same [transactions](https://inevitableeth.com/home/ethereum/blockchain/transaction) and doing the same actions that every other node is doing.
+
+The way Ethereum coordinates and stays in sync is through a process called [Proof of Stake](https://inevitableeth.com/home/ethereum/network/consensus/pos) (PoS).
+
+## Randomness on Ethereum
+
+An incredibly important aspect of PoS is randomness; without it, the system becomes manipulatable.
+
+Example: if I am proposing and I know my friend is the next proposer, maybe I only process CRV sales to drop the prices (because I know he will process my huge CRV buy).
+
+Here's the dilemma: how can you introduce credible randomness into a system that needs to stay perfectly in sync.
+
+If every node picks a random number, the network will fall out of sync. If a single node picks and distributes the number, we've effectively lost decentralization.
+
+## RANDAO
+
+![](/images/vdf-3.png)
+
+[Deep Dive: RANDAO](https://inevitableeth.com/home/ethereum/network/consensus/randao)
+
+Today, Ethereum uses a solution called RANDAO.
+
+Tl;dr each participant takes a turn added their own contribution of random data, one at a time. As long as at least 1 person is honest (destroys their contribution), the RANDAO creates randomness.
+
+However, RANDAO is not perfect... in fact it has a large vulnerability.
+
+The issue arises because it is perfectly valid to skip a participant during RANDAO (maybe the validator was offline durning its turn to propose).
+
+No new contribution = old RANDAO value.
+
+And so, the final participant in the RANDAO process has a significant advantage over the others.
+
+S/he can generate their contribution, calculate the new RANDAO, and THEN decide which value to submit.
+
+The final participant has a binary choice; RANDAO has a 1-Bit Bias.
+
+## Verifiable Delay Functions
+
+![](/images/vdf-1.png)
+
+Even a 1-bit bias is unacceptable for Ethereum, the World Computer. And so, the Ethereum Foundation are working on a solution: Verifiable Delay Functions (VDFs)!
+
+At a high level, a VDF is a function that processes an input into an output (like all functions), but takes a long amount of time to do it. 
+
+The difficultly input determines the amount of time the VDF takes; the proof output can be used to verify the output quickly.
+
+We wont look too deeply under the hood, but the idea is relatively simple. A VDF simply applies the same mathematical equation (think y = x^2 mod n) over and over again. There's no way to calculate the final answer except for doing each application, one at a time.
+
+For a VDF to work, it requires an underlying formula that can't be solved except by brute force. 
+
+By increasing the number of times we loop through, we increase the time the VDF takes.
+
+But verification is always (effectively) instant via the proof.
+
+## AMAX
+
+![](/images/vdf-2.png)
+
+In order to understand a VDF, you have to take a step back and think about your users...
+
+...or more specifically your attackers.
+
+To be very precise, you need to think about the worst possible, most experienced, best financed attacker possible.
+
+Challenge: start with x = 5, calculate y = x^2 mod 23, repeat 500 times.
+
+You get to use pen and paper. I get to use my Macbook.
+
+...
+
+Answer: 18. Took me 92 seconds.
+
+Enter AMAX, a metric used to describe the difference between the amount of time a generic good-faith participant to solve a VDF vs the amount of time a perfect attacker could solve it.
+
+An attacker can solve a VDF AMAX times faster than a good faith actor.
+
+We'll return to AMAX momentarily, but let's get back to @ethereum - specifically how a VDF is going to improve randomness.
+
+## VDFs and Ethereum
+
+![](/images/vdf-4.png)
+
+Remember, the issue with our current solution is the 1-bit bias granted to the final RANDAO participant.
+
+In the future, Ethereum PoS will still use the RANDAO process, but instead of relying on the RANDAO output, the RANDAO output will be the input to the VDF.
+
+No participant will know the final result until long after their ability to affect it.
+
+When designing our VDF, the most important consideration is to keep AMAX as small as possible... but keeping AMAX small is a challenge.
+
+Fortunately, Ethereum has a plan: We'll just make a generic, good-faith actor very, very good.
+
+## VDF ASICS
+
+The Ethereum foundation is currently developing an [Application Specific Integrated Circuit](https://en.wikipedia.org/wiki/Application-specific_integrated_circuit) (ASIC) for these VDFs. These will be actual pieces of hardware that are dedicated to one thing only: solving this VDF.
+
+Once ready, they will be distributed as widely as possible.
+
+It will always be possible to develop a better ASIC, but it will be very challenging to design on significantly faster than these - current estimates place AMAX at a very conservative 10.
+
+Therefore, an attacker MIGHT be able to solve this VDF AT MOST 10 times faster.
+
+## Implementation
+
+So let's return to the 1-bit bias. The problem is that the last participant can see the results while there is still time to change his contribution.
+
+By adding the VDF after RANDAO, we guarantee that the result will not be ready until after the RANDAO epoch is over.
+
+Here's what the process will look like.
+
+![](/images/vdf-5.png)
+
+First, a RANDAO value will be generated over a RANDAO epoch via the normal process. Then, the value will be fed into these VDF ASICs. Finally, the result will be injected back on-chain, where it will seed the next round.
+
+As this process extends beyond one epoch, Ethereum will required a staggered schedule of RANDAO/VDF processes to ensure that each epoch is getting a fresh input.
+
+Ethereum will experience a constant stream of random input, epoch by epoch.
+
+![](/images/vdf-6.png)
+
+## Further Applications
+
+And that, dear reader, are VDFs and how they will be used to bring credible randomness into Ethereum.
+
+But don't think that VDFs are a one trick pony; the more we learn about VDFs, [the more ways they seem relevant](https://vdfresearch.org/).
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1611774255360008192)

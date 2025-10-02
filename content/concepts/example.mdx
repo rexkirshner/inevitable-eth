@@ -1,0 +1,115 @@
+---
+title: "MEV Example"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-08"
+readingTime: 3
+toc: true
+related: []
+---
+
+![](/images/mev-1.jpeg)
+
+# Maximum Extractable Value (MEV)
+
+## Prerequisites
+
+### Arbitrage
+
+[Arbitrage](/concepts/arbitrage) is the opportunity to secure a guaranteed profit by identifying and exploiting an information discrepancy. 
+
+### Gas
+
+[Gas](/concepts/gas) is the unit of computation on Ethereum, paid for by the person/entity who generated the transaction.
+
+## MEV
+
+Maximum Extractable Value (MEV) is value that can be extracted from a blockchain system by a participant with privileged knowledge or access. 
+
+The classic and most common example of MEV comes from the execution process of blockchain transactions. 
+
+Let’s walk through.
+
+## In an Ideal World
+
+### Generating a Transaction
+
+![](/images/mev-2.jpeg)
+
+First a user generates a transaction. 
+
+A transaction can be anything: a transfer, a trade, a deposit, etc. 
+
+Users typically use a wallet, but transactions can also be generated programmatically or directly on [Etherscan](https://etherscan.io/).
+
+### Pending in the Mempool
+
+![](/images/mev-3.jpeg)
+
+A transaction is bundled up into packets of data and sent to the Mempool. There it wait with all the pending transactions, waiting to selected to be included into the next block. 
+
+Transaction selection is based on how much gas the user bid when s/he created the transaction.
+
+### Building a Block
+
+![](/images/mev-4.jpeg)
+
+As transactions are selected, they are bundled into a block. 
+
+Once the block fills up, it is ready to be sent to the blockchain for approval and inclusion.
+
+### Joining the Chain
+
+![](/images/mev-5.jpeg)
+
+Blocks are sent to validators, who hold a current copy of the blockchain. They evaluate every new block; if it is a valid block (uses the correct start & end state and no invalid transactions). 
+
+If the block is approved by the network, it is added to the blockchain.
+
+### Complete Process
+
+![](/images/mev-6.jpeg)
+
+## Mempool Risk
+
+The issue is the openly accessible mempool. 
+
+The process we described assumed everyone was a good actor and transactions were all mutually independent. 
+
+Poor assumption.
+
+Think about what’s in the mempool. Not only is every specific transaction out there in the open, but a smart watcher can figure out what order they’ll be executed in. 
+
+I mean, all you have to do is rank by gas cost. And suddenly you have a roadmap to extract MEV.
+
+## Extracting Value
+
+### Gathering Information
+
+![](/images/mev-7.jpeg)
+
+MEV is a function of the specific network conditions and the specific transactions that happen. An MEV attacker will watch the mempool, patiently waiting and looking for opportunities.
+
+### Profiting
+
+![](/images/mev-8.jpeg)
+
+When s/he (it’s usually a bot) sees an opportunity, s/he quickly constructs the perfect transaction to extract value without taking any risk. S/he then gets them to the producer ASAP. 
+
+By carefully crafting gas bids, the transaction executes around the extractable value
+
+The txns are valid (although malicious) and so the block passed consensus and is added to the blockchain. MEV was extracted and whoever generated the transaction is none the wiser. 
+
+Their transactions keep executing, the MEV bot keeps extracting, and the world keeps turning.
+
+## Resources
+
+Further Reading/Listening
+
+*   [Hasu](https://twitter.com/hasufl)/[Stephane Gosselin](https://twitter.com/thegostep) on [Uncommon Core](https://twitter.com/hasufl/status/1529401140097466368)
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1540870370437107712)
+
+Source Material - [PDF](/twitter-pdf-2022-06-25_mev_101.pdf)

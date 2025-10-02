@@ -1,0 +1,165 @@
+---
+title: "EVM Object Format (EOF)"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "intro"
+updated: "2023-01-14"
+readingTime: 6
+toc: true
+related: []
+---
+
+![](/images/eof-banner.png)
+
+# EVM Object Format (EOF)
+
+## The World Computer
+
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)). These nodes are real computers in the real world, communicating directly from peer to peer. 
+
+The purpose of the greater Ethereum apparatus is to offer a single shared computing platform - the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM).
+
+The EVM provides the context for transactions (computation); everything you "do" on-chain happens within the EVM.
+
+Borrowing from the [Ethereum Builder's Guide](https://ethereumbuilders.gitbooks.io/guide/content/en/), [simplicity is a core tenet of Ethereum](https://ethereumbuilders.gitbooks.io/guide/content/en/design_philosophy.html) (and therefore the EVM).
+
+> "The Ethereum protocol should be as simple as possible, even at the cost of some data storage inefficiency or time inefficiency. An average programmer should ideally be able to follow and implement the entire specification, so as to eventually help minimize the influence that any specific individual or elite group can have on the protocol and furthering the vision of Ethereum as a protocol that is open to all."
+
+This is a very good goal, but it has its consequences.
+
+[As Patel Bylica puts it (paraphrased)](https://www.youtube.com/watch?v=pyxtgilJgKg):
+
+> "We've overdone it. You can deploy garbage, and the EVM will execute it... byte by byte. We've invented a garbage eating machine!"
+
+![](/images/eof-1.png)
+
+[*source*](https://www.youtube.com/watch?v=pyxtgilJgKg)
+
+## An Unstructured Present
+
+[Deep Dive: Ethereum Transaction](/ethereum/blockchain/transaction)
+
+First, let's get some vocab out of the way.
+
+\- Smart contract = computer program in the EVM (forget about the word "contract")
+
+\- Transaction = ANY action within the EVM
+
+In order to deploy a smart contract, a user submits a transaction that includes the code that makes up that smart contract.
+
+See the "input" field in the transaction diagram? That's where smart contract code goes. Just fill in the blank.
+
+![](/images/transaction-full-txn.jpeg)
+
+### Example: Stakewise
+
+[This is the deploy transaction](https://etherscan.io/tx/0x2ea1150808638522d935c7d66b6d67782389b5123682ca466c9b97ac0eb0c050) for the smart contract for [SWISE](https://www.coingecko.com/en/coins/stakewise), [Stakewise's](https://stakewise.io/) governance token.
+
+![](/images/eof-2.png)
+
+[*source*](https://etherscan.io/tx/0x2ea1150808638522d935c7d66b6d67782389b5123682ca466c9b97ac0eb0c050)
+
+That data is the smart contract code, rewritten in a way that is legible for the EVM. The Stakewise devs didn't write this, it was translated from solidity (probably).
+
+The issue is just how unstructured this "input" field is. Anyone can put in anything and the EVM will do its best to interpret it.
+
+Byte by byte.
+
+## The Effects of Simplicity
+
+Two problems: 1) we are filling up the EVM with junk code and so 2) the EVM must spend a ton of resources looking for junk.
+
+A metaphor: let's say you're a baker who specializes in bread.
+
+Imagine if you were forced to accept every order that came across your desk. Every job, you MUST start and do your best effort until its clear you will fail.
+
+Even if the order says "[Beef Wellington](https://en.wikipedia.org/wiki/Beef_Wellington)."
+
+The solution: scan the order beforehand and reject it if it doesn't comply to our standards.
+
+But what if an "order" was a [flip-book](https://www.youtube.com/watch?v=Un-BdBSOGKY), revealing one instruction at a time? You'd start the oven, prepare the puff pastry, etc, before you realized you couldn't make the dish.
+
+This is roughly what happens inside the EVM. 
+
+The EVM doesn't have a way to understand a smart contract holistically. It simply must read each line of code and (attempt to) execute it.
+
+This is the effect of designing for simplicity; execution is simple, but very costly.
+
+## Endless Checking
+
+Every time the EVM processes a new instruction, it first must run through a series of checks, broken into three buckets:
+
+1.  Does the instruction exist?
+2.  Does the instruction violate the computing environment?
+3.  Is there enough gas to cover the transaction?
+
+### Does the instruction exist?
+
+The smart contract presents an instruction that is not valid (think "realizing we need beef").
+
+To be clear, we are discussing EVM instructions, written in machine code (not the solidity code, the solidity code is translated to this).
+
+### Does the instruction violate the computing environment?
+
+For the techies, here the EVM is looking for [stack underflow/overflow](https://study.com/academy/lesson/what-is-stack-overflow-errors-exceptions-causes.html).
+
+For the plebs, imagine that every computer program gets a limited amount of memory to execute within - this check enforces the boundary.
+
+### Is there enough gas to cover the transaction?
+
+[Deep Dive: Ethereum Gas](/concepts/gas)
+
+It's worth your time to have a nuanced understand of what gas is on Ethereum. 
+
+Tl;dr gas is an accounting unit that describes the underlying computing resources of Ethereum/the EVM.
+
+### Too Much of a Good Thing
+
+Each one of these checks isn't too onerous - in fact all three together can be done relatively quickly.
+
+The problem is that ALL of them need to happen EVERY time a new instruction is executed... multiple (sometimes thousands) of times a transaction.
+
+And so, EOF.
+
+## EVM Object Format
+
+![](/images/eof-3.png)
+
+At a high level EVM Object Format (EOF) brings enough structure to smart contracts that most of these checks are not needed.
+
+With structure, the EVM can analyze a smart contract BEFORE it is deployed on-chain; if it fails any of the tests, it can be rejected outright.
+
+Once EOF has been built into the protocol, the EVM will have a map of what each smart contract will look like.
+
+It will know where the code is and can therefore check all of it beforehand, and then we can stop checking after every single instruction.
+
+### Versioning
+
+The "version" field is particularly useful as it gives the EVM a native sense of version control, relevant to for both the application layer and for Ethereum.
+
+For applications its straightforward: devs have a very powerful tool for introducing or removing features.
+
+For Ethereum, versioning makes deploying large changes that affect the core of the protocol much easier (eg [account abstraction](/ethereum/upgrades/consensus-updates/account-abstraction)).
+
+Rather than worrying about backwards-compatibility, the EVM can apply legacy rules to incompatible versions.
+
+## Implementation
+
+At this point you have a good, high-level understanding of what EOF; we will draw our introduction to a close.
+
+For more information, [start with this video](https://www.youtube.com/watch?v=pyxtgilJgKg). Then, hit up the EIPs:
+
+*   [EIP-3540: EOF - EVM Object Format v1](https://eips.ethereum.org/EIPS/eip-3540)
+*   [EIP-3670: EOF - Code Validation](https://eips.ethereum.org/EIPS/eip-3670)
+*   [EIP-4200: EOF - Static Relative Jumps](https://eips.ethereum.org/EIPS/eip-4200)
+*   [EIP-4750: EOF - Functions](https://eips.ethereum.org/EIPS/eip-4750)
+*   [EIP-5450: EOF - Stack Validation](https://eips.ethereum.org/EIPS/eip-5450)
+
+Big picture: EOF is one of those technical upgrades that are important in transforming the EVM into a mature computing platform and Ethereum into a mature protocol.
+
+A large step forward as the World Computer comes online!
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1614432919430516739)

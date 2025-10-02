@@ -1,0 +1,151 @@
+---
+title: "Maximum Extractable Value (MEV)"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-08"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/mev-banner.jpeg)
+
+[*source*](https://cryptoticker.io/en/4-crypto-companies-entered-crypto-2021-who-2022/)
+
+## Note
+
+This article aims to give you a theoretical understanding of MEV in relation to the real-world activities that look a lot like MEV. If you are looking for a more practical walkthrough of MEV, [check out this example.](/concepts/mev/example)
+
+# Maximum Extractable Value (MEV)
+
+## Prerequisites
+
+### Arbitrage
+
+[Arbitrage](/concepts/arbitrage) is the opportunity to secure a guaranteed profit by identifying and exploiting an information discrepancy. 
+
+### Gas
+
+[Gas](/concepts/gas) is the unit of computation on Ethereum, paid for by the person/entity who generated the transaction.
+
+### Payment for Order Flow (PFOF) 
+
+[Payment for order flow (PFOF)](https://en.wikipedia.org/wiki/Payment_for_order_flow) is a form of compensation that a brokerage firm receives for directing orders for trade execution to a particular market maker or exchange.
+
+PFOF has become heavily politicized in the last 18 months; I will use an alternate phrase. 
+
+Wholesaler Rebate = PFOF
+
+## Trad-Fi vs De-Fi
+
+If you'll indulge me, let's walk through an incredibly over-simplified, barely correct history of MEV. 
+
+### Let There Be Trades
+
+**Trad-Fi**
+
+Ape trades sharp stick for warm cloak
+
+**De-Fi**
+
+In May 2010, [Hanyecz bought 2 pizzas for 10,000 BTC](https://www.coindesk.com/markets/2020/05/22/10-years-after-laszlo-hanyecz-bought-pizza-with-10k-bitcoin-he-has-no-regrets/)
+
+### Build a Marketplace, They Will Come
+
+**Trad-Fi**
+
+Some Dutch guys needed a venue to exchange "shares" of a "company" they had just created
+
+**De-Fi**
+
+In November 2018, Hayden Adams deployed  the first decentralized exchange: Uniswap. 
+
+### The Dark Forest
+
+**Trad-Fi**
+
+As more activities move on centralized locations, insiders realize they have more info than those trading. They start extracting.
+
+**De-Fi**
+
+Those who live on-chain notice they can see transactions before they happen. They start extracting.
+
+### Volume Soars, Technology Crawls
+
+**Trad-Fi**
+
+In NYC & Chicago, the world pivots around trading pits. Frantic men scream & make hand signals, all while extracting.
+
+**De-Fi**
+
+Uniswap exchanges >$1 B per day, the bot swarm becomes so thick that it's rare to see a clean transaction.
+
+### MEV Captured, Empires Grow
+
+**Trad-Fi**
+
+Automated Market Making firms are founded to capture MEV; they grow into behemoths like Citadel and Virtu.
+
+**De-Fi**
+
+November 2020, Stephane Gosselin submits a post to Ethresear.ch and changes the game. Flashbots is born.
+
+The above comparison deserves elaboration.
+
+Both RW Market Making firms and Flashbots capture MEV. However, Flashbots products (generally) pass the captured MEV along to validators. RW firms are profit maximizing corporations.
+
+There is no moral judgment here.
+
+### The Grand Bargain
+
+**Trad-Fi**
+
+Market participants (brokers, banks, etc) begin to demand profit sharing. Automated Market Makers (called Wholesalers) begin offering rebates, paid for out of their profit. 
+
+**De-Fi**
+
+KeeperDAO is born. Today it is called Rook Protocol.
+
+## Price Improvements
+
+US financial asset trading happens between ~200 transaction aggregators (eg Fidelity or TD Ameritrade) on ~15 exchanges (eg NASDAQ) and many dark pools.
+
+Automated Market Makers (no joke, Dougie Large - CEO of Virtu - uses this term) have built technology that scans all the exchanges, develops price and quotes it back to a transaction aggregator.
+
+Transaction aggregators make their decision based on 1 metric: price improvement.
+
+## Wholesaler Rebates
+
+[Citadel](https://en.wikipedia.org/wiki/Citadel_LLC), [Virtu](https://en.wikipedia.org/wiki/Virtu_Financial) and the 4-5 others make A LOT of money. 
+
+So much that eventually their clients started demanding a cut.
+
+[Some brokers (like Robinhood)](https://www.nerdwallet.com/best/investing/free-stock-trading) use they payments to offer free trades. 
+
+Some offer better spreads. 
+
+Others book it as profit.
+
+As the market matured, so did its expectations of where MEV accrues. 
+
+When it was wild and undeveloped, MEV was available to those willing to seize it. Over time, the market institutionalized MEV and began exerting pressure on those institutions to distribute it.
+
+The same paradigm is playing out in crypto. 
+
+We are early in the story, but things move much faster. 
+
+## Flashbots
+
+[Flashbots](https://github.com/flashbots/pm) should be understood one of the first institutionalizations of MEV. But true to the De-Fi and crypto ethos, it's immediately distributing MEV fairly.
+
+Flashbots believes MEV rightfully belongs to the [Network Layer](/ethereum/network), and has built a system that reflects that. 
+
+## Resources
+
+[MEV Example](/concepts/mev/example)
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1537908651112878085)
+
+Source Material - [PDF](/twitter-pdf-2022-06-17_mev_history.pdf)

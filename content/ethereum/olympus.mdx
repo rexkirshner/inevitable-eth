@@ -1,0 +1,169 @@
+---
+title: "Olympus DAO Bonds"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "intro"
+updated: "2022-12-07"
+readingTime: 6
+toc: true
+related: []
+---
+
+![](/images/olympus-banner.png)
+
+*This thread is the result of 2+ hours* [*pottedthings*](https://twitter.com/pottedthings) *spent making this digestible to my incredible smooth brain. Thank you.*
+
+# Olympus DAO Bonds
+
+## Olympus DAO
+
+There was the time before, and then there was Bitcoin…
+
+Then [Ethereum](/ethereum/world-computer), then [De-Fi](/ethereum/world-computer/de-fi), then a whole lot of incredibly exciting developments.
+
+Our story begins when [Zeus](https://twitter.com/ohmzeus) led us to Olympus.
+
+Olympus DAO is a complicated protocol with very complicated history, so we’ll save the story. 
+
+For now… Olympus is built around the concept of Protocol Controlled Value (PCV); assets in the protocol are (permanently) owned by Olympus.
+
+In order to capture PCV, Olympus DAO uses a system called Bonding.
+
+## Bonding
+
+Tl;dr [bonding](https://docs.olympusdao.finance/main/basics/bonding) is an economic primitive that offers a fixed amount of future OHM at a discount in exchange for assets.
+
+Example:
+
+Olympus DAO offers a bond for $1,000 worth ETH. The starting offer is $900 of OHM paid in 5 days. This is a bad offer.
+
+If no one takes the offer, Olympus increases the bid, let’s say to $925… $950… $975. No takers.
+
+Then Olympus offers >$1000.
+
+When the offer is more than $1000 of OHM for $1000 of ETH, people become interested. Each will decide how much extra OHM they need to compensate for the 5 day lock. When the premium is right, they bond.
+
+When the bond is filled, the process starts over.
+
+Bonding key takeaways:
+
+\- Core tool of Olympus DAO, used to permanently acquire assets
+
+\- OHM is “sold” at a discount, but bonders must wait to access proceeds
+
+\- Bonding provides a pricing mechanism independent of 3rd parties like DEXs or Oracles
+
+Alright so you get how bonding works… let’s talk about how it’s used.
+
+## Bonding in Practice
+
+Olympus DAO deploys bonds to grow its treasury, always. 
+
+But by strategically choosing the parameters of the bonds, Olympus controls the flow of assets between LPs and the treasury.
+
+Aside… For this thread, we’re going to hand wave away dilution (which, considering the history of Olympus, might be consider reckless).
+
+*   Dilution = total inflation - staking reward rate
+*   Total Inflation = new bonding supply + new reward supply
+*   Because Olympus DAO controls all variables, the DAO decides dilution (or sets it to 0)
+
+(For examples, I’m using only FRAX and pretending there’s only 1 LP. In the real world it’s much more complex.)
+
+## Reserve Bonds
+
+Consider a simple bond:
+
+Olympus DAO wants sells a FRAX bond, minting new OHM.
+
+We’ll call this a Reserve Bond (RB).
+
+Now Olympus DAO could add to the LP by pairing treasury with newly minted OHM and deposit it into the pool…
+
+## Liquidity Pool Bonds
+
+But we are on Ethereum, where money is programmable! Bonding acquires asset like FRAX, which is just a ERC-20 token…
+
+Well so is a FRAX / OHM LP token!
+
+Let’s try it out:
+
+Olympus DAO sets a bond for the LP token
+
+A bonder takes half his FRAX and swaps it for OHM. Then he deposits the OHM & the rest of the FRAX, creating an LP token. Finally LP is bonded, minting new OHM
+
+We’ll call this a Liquidity Pool Bond (LPB)
+
+1) FRAX deposited, OHM removed
+
+2) OHM and FRAX deposited back into the LP
+
+A LPB bond has the net effect of increasing the FRAX in the pool and keeping the OHM constant.
+
+Other ways of saying this:
+
+\- it is harder to access the pool’s OHM
+
+\- OHM price go up
+
+Think like this:
+
+(an OTC transaction does not effect the DEX price of an asset)
+
+A Reserve Bond is like minting and OTC selling OHM. A Liquidity Pool Bond forces a market buy of OHM before minting and OTC selling OHM.
+
+Olympus DAO directs the flow of assets between the LP and the treasury by allocating between RB and LPB. RB sends assets to treasury; LPB sends assets to the LP, but in doing so applies positive pressure on OHM price.
+
+If RB and LPB both acquire value for the protocol and have roughly the same effects on dilution, but LPB provides price support, why wouldn’t Olympus DAO always deploy LPB?
+
+Well there’s no free lunch. Let’s talk about Recycling.
+
+## Recycling Bonds
+
+So far we’ve only discussed a bonder that is aligned with Olympus DAO. Sometimes a bonder is short term profit seeking;  he still might be interested in bonding for OHM if the discount is high enough, however he intend to sell ASAP.
+
+Maybe over and over.
+
+Effects of a Recycled Reserve Bond (rRB):
+
+*   OHM enters pool, FRAX leaves
+*   new OHM minted, FRAX enters treasury
+
+The recycling drives the price down, but the rRB is a transaction that doesn’t affect price (like an OTC transaction).
+
+Effects of a Recycled Liquidity Pool Bond (rLPB):
+
+1.  OHM enters pool, FRAX removed
+2.  OHM and FRAX deposited back into the LP. There is now more OHM and same FRAX.
+
+The recycling drives the price down AND rLPB makes the FRAX harder to access (OHM price go down).
+
+## The Future of Olympus
+
+As Olympus DAO rises, it is learning how to deploy bonding in all sorts of market conditions.
+
+Over time, frameworks like these (and much more complicated) are developing the financial system of tomorrow.
+
+It’s happening so fast that a lot of this article is outdated. 
+
+For example, [Inverse Bonds](https://olympusdao.medium.com/introducing-inverse-bonds-9199cc7bf089) are a new innovation that reverses the bond, allowing Olympus DAO to consolidate value when the market presents the opportunity.
+
+In fact, [LPB might be so “outdated” they might not be seen again](https://forum.olympusdao.finance/d/1172-oip-93-mint-and-sync). An (previously) obscure DEX function called “sync” allows Olympus DAO to achieve the effects of LPB by directly minting OHM into the pool (no bonding discount needed).  
+
+So that’s your intro to bonding. Olympus DAO deploys this primitive to influence the market in complex and subtle ways.
+
+And we aren’t even at the interesting part yet. 
+
+When Olympus begins issuing bonds on with different durations; we’ll have a OHM interest rate curve!
+
+Some people are in crypto for the profits, some the tech, the community, the promise, the memes… I’m here to watch history be written. 
+
+My Opinion? Olympus is the tip of the spear of economic innovation. 
+
+The future of central banking is being created on The Mount.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1533012221151784960)
+
+Source Material - [PDF](/twitter-pdf-2022-06-04_olympus_dao_bonding.pdf)

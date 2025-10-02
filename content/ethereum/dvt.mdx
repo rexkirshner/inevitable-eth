@@ -1,0 +1,151 @@
+---
+title: "Distributed Validator Technology"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-21"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/dvt-banner.png)
+
+# Distributed Validator Technology (DVT)
+
+## The World Computer
+
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)). 
+
+These nodes are real computers in the real world, communicating directly from peer to peer. 
+
+The purpose of the greater Ethereum apparatus is to offer a single shared computing platform - the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM).
+
+The EVM provides the context for transactions (computation); everything you "do" on-chain happens within the EVM.
+
+Each node runs a local version of the EVM, which is then held perfectly in sync with every other copy of the EVM through a process called [Proof of Stake](/ethereum/network/consensus/pos) (PoS).
+
+Any individual EVM is a window into the shared state of the World Computer.
+
+## Ethereum Node
+
+![](/images/node-banner.jpeg)
+
+[Deep Dive: Node](/ethereum/network/node)
+
+Under the hood, each node is running two pieces of software:
+
+*   an execution client (eg [Geth](https://geth.ethereum.org/), [Nethermind](https://nethermind.io/) ), which holds the EVM
+*   a consensus client (eg [Nimbus](https://nimbus.guide/), [Lighthouse](https://lighthouse-book.sigmaprime.io/)), which monitors PoS and secures Ethereum
+
+A node can exist without staking any ETH (although it wont earn any rewards).
+
+When a node operator stakes (exactly) 32 ETH, their node creates a new validator, which begins participating in PoS.
+
+A single node can support many (100+) validators.
+
+In summary:
+
+*   a node is a real-world computer that operates Ethereum software; the Ethereum network stays in constant contact, keeping the EVM securely in sync
+*   a validator is a virtual entity, operated by a node, that exists within Ethereum and participates in PoS
+
+## Resilient Ethereum
+
+This is the system we have today; it works just fine! The World Computer is resilient because of the network of 1,000s of nodes. There are very few events that would affect every node.
+
+But on an individual basis? Ethereum nodes are not that resistant to failure.
+
+Let's take a simple example: let's imagine you're a home-staker and the power goes out for a few hours.
+
+During the time your node is offline, you are incurring penalties (deducted the equivalent amount you would have earned over that time).
+
+If you're only offline for a few hours, it wont take long for your node to re-sync with the head of the blockchain. But the longer you're offline, the longer it will take.
+
+For the record, a full re-sync takes days.
+
+During all this time you're incurring penalties.
+
+For a home-staker this is bad enough, but imagine you're a huge staking-as-a-service provider like [Lido Finance](https://lido.finance/) or [Coinbase](https://www.coinbase.com/).
+
+Bad luck at a single data center or a poor configuration file could have ramifications that ripple through De-Fi.
+
+Now, you might suggest just running a backup node - if anything happens to the primary then you can just load the private keys into the backup and resume validating.
+
+But with today's technology, [this is a risk unto itself](https://beaconcha.in/validators/slashings).
+
+![](/images/dvt-1.png)
+
+[*source*](https://discord.com/channels/405159462932971535/468923220607762485/937577372830560346)
+
+## Distributed Validator Technology
+
+Enter the technology of the future: Distributed Validator Technology (DVT).
+
+Think of a (regular) node as a computing package consisting of a consensus and execution client. A DVT node will have multiple consensus and execution clients spread across multiple machines.
+
+Each time 32 ETH is deployed to the Ethereum deposit contract, a DVT cluster of n members will come together to generate a m-of-n shared validator key (m < n) .
+
+Every time its time for that validator key to participate in PoS, at least m members must agree.
+
+From the perspective of the protocol, all Ethereum cares is that every validator key participates once (and only once) at their designated turn.
+
+DVT is the cryptography that allows us to safely distribute this responsibility across a broader group of actors.
+
+Let's return to home staking, but now with DVT. Let's say that you, me, and [WenMoon](https://twitter.com/0xWenMoon) spin up a DVT cluster. Let's include Coinbase as a fallback, just in case.
+
+Now even if the power's out in Southern California, we can all rest easy knowing we are still validating.
+
+DVT gives Ethereum tools it needs to continue decentralizing, further cementing its [credibly neutral](/concepts/credible-neutrality) position as the [settlement](/concepts/settlement) [layer of the internet](/ethereum/world-computer/internet-settlement).
+
+But DVT is just a technology; there are lots of different ways we might see it implemented.
+
+Let's look at two projects.
+
+### Obol Network
+
+![](/images/dvt-2.png)
+
+[*source*](https://docs.obol.tech/docs/int/key-concepts#distributed-validator-node)
+
+[Obol Network](https://obol.tech/) is a project implementing DVT, [recently raising a lot of money](https://twitter.com/ObolNetwork/status/1615385163218948096) to put their plan into action (congrats!!!).
+
+The best way to understand Obol is to begin with a node. A vanilla node runs an execution and consensus client; an Obol node will add a 3rd client.
+
+The Charon client acts as coordination layer between each cluster.
+
+Each member-node will independently process each block, acting out the responsibilities granted to the cluster's validator key. The Charon node will reach a consensus and submit a single joint submission.
+
+Obol Network is not yet live, but you can get a great understanding just by seeing the screenshots of their DVT launchpad.
+
+Pick your cluster size, add the operator addresses, pick the number of validators, deploy.
+
+### SSV Network
+
+![](/images/dvt-3.png)
+
+[*source*](https://ssv.network/tech/)
+
+The other project racing to deploy DVT technology is SSV Network.
+
+And I mean racing! [They just announced a $50MM](https://twitter.com/ssv_network/status/1616101088662274051) (!!!) ecosystem fund (also congrats!!! Huge things happening in the DVT space).
+
+SSV Network uses the same tech, but really shines in the operator network it has brought together.
+
+People interested in deploying validators will bring their ETH to SSV, who will create a DVT cluster from 4 of its operators. The magic of DVT happens behind the scenes.
+
+## Looking Forward
+
+But that's just the beginning; DVT is not just about creating more resilient @ethereum nodes, its about creating true conceptual distinction between a node and a validator.
+
+Once decoupled, we can really start to dig into a node.
+
+Or more specifically, build it up.
+
+Need an example? [One of the core technologies](/concepts/kzg-commitment) needed to enable [Danksharding](/ethereum/upgrades/scaling/data) requires advanced [elliptic curve cryptography](/concepts/elliptic-curve-cryptography) run on every block.
+
+Computations that seemed daunting in an Ethereum node are much more manageable in a DVT cluster.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1617020243087613953)

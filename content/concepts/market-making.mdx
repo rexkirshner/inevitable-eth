@@ -1,0 +1,141 @@
+---
+title: "Market Making"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-07"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/market-making-banner.avif)
+
+[*source*](https://www.bitpanda.com/academy/en/lessons/what-is-a-market-maker/)
+
+# Market Making and Impermanent Loss
+
+## Prerequisites
+
+### Liquidity
+
+[Liquidity](https://inevitableeth.com/home/concepts/liquidity) refers to the efficiency or ease with which an asset can be converted into cash without affecting its market price. 
+
+## Krug and Urga
+
+Shortly after our ancestors climbed down from the trees, there was Krug and Urga. Krug is the best hunter, while Urga is the best cloak maker. 
+
+It's late fall, and Krug's cloak is ruined. 
+
+Fortunately, Krug has extra meat and Urga has extra cloaks.
+
+Here's the issue, Urga also knows winter is coming and she gathered a few months worth of meat. Come March or April, she'll be desperate for a steak, but today she'd rather keep the cloak as a backup. 
+
+This pre-historic market has no liquidity.
+
+## Making a Market
+
+Ok let's fast forward to modern times, but pre-crypto. 
+
+Through centuries of human development and progress, we've created the concept of a Market Maker. 
+
+A market maker actively provides liquidity to a market by providing bids and offers, profiting off the spread.
+
+The market maker is a neutral entity (in theory) that ensures the market is always liquid and available to transact. 
+
+He doesn't care about the seasons, the amount of meat or cloaks, who is skilled at what... he just provides a price and will buy or sell from/to anyone.
+
+Example: a market maker in XYZ stock. Let's say they provide a quote of $10.00-$10.05, 100x500. This means that they will buy up to 100 shares for $10.00 and also will sell 500 shares at $10.05. 
+
+A market maker takes on XYZ price risk in order to facilitate liquidity.
+
+Now imagine the price of XYZ moves sharply 
+
+*   up to $11. The market maker sells all 500 shares for a total of $5,025.  Had he held those shares, they would be worth $5500
+*   down to $9: The market maker buys 100 shares for a total of $1,000. However, they are now worth $900
+
+While XYZ trades within the market maker's range ($10-$10.05), he is generating yield. 
+
+When XYZ trades out of the range, not only does the market maker stop providing liquidity (and therefore stop generating yield), but he has also lost relative to his original position.
+
+Thus, market makers play a careful game of risk vs reward.
+
+## Market Making Risk
+
+Exchanges need liquidity to facilitate trading. Liquidity is provided by market makers.
+
+[Uniswap](https://uniswap.org/), [Curve](https://curve.fi/) and [Balancer](https://balancer.fi/) are all exchanges. These protocols source liquidity from De-Fi depositors (via trading fees and token incentives).
+
+We call these smart contracts Automated Market Makers (AMMs) but in truth, the depositor is the market maker.
+
+When you LP, you are providing liquidity to facilitate trades between two pairs, just like our market maker provided liquidity between XYZ and dollars.
+
+Example: you LP ETH / FRAX into an AMM, providing 1 ETH and 1100 FRAX. You are providing liquidity for ETH from the price range of $0 to $∞.
+
+*   ETH up? People will give you FRAX and take your ETH.
+*   ETH down? People will give you ETH and take your FRAX.
+
+## Impermanent Loss
+
+By LPing into an AMM, you are taking on the risk of relative price changes between the two assets. 
+
+If one moves more than the other, you will always take the unfavorable position. 
+
+We call this phenomena impermanent loss (IL).
+
+Every person entering De-Fi will learn about IL two times. 
+
+First when they read about it, and then second when they experience it. 
+
+## De-Fi's Market Making Options
+
+Those who have been through the crucible can attest that IL can be extremely painful. 
+
+Let's talk about some options. 
+
+NOT FINANCIAL ADVICE!!
+
+### Option 1 - Pick Your Battles
+
+LPing is risky because volatility is so high. 
+
+However, not all asset pairs have high volatility... particularly pegged assets (eg stablecoins). 
+
+While you need to worry about de-peg risk (catastrophic), you can farm yield with little IL risk in pegged pools
+
+### Option 2 - Know Your Worth
+
+Liquidity is critical to protocols, so much so that they will often dedicate a considerable portion of their tokens towards liquidity incentives. 
+
+Look for LP incentives that compensate for the IL risk (personal choice, for me usually >100% APR)
+
+### Option 3 - Learn From Veterans
+
+While LPing is a new concept unique to De-Fi, market making is not. 
+
+Trad-Fi market makers hedge out a lot of (their version of) IL risk via options and other derivatives. Sudden price moves up/down can be offset with call/put options.
+
+### Option 4 - Sit This One Out 
+
+For a lot of people, choosing to abstain from LPing is a good move. 
+
+IL can have some devastating consequences if you don't know what you are doing. 
+
+Even if it seems like everyone else is doing it, consider avoiding market making.
+
+The Frontier
+
+If you're on-chain, you're out on the frontier exploring areas no human has ever seen before. 
+
+But it is a mistake to think everything we are encountering is novel; everything that is new is just something familiar that has been repackaged.
+
+As you continue on your De-Fi journey, make sure you keep an eye and an ear back towards Trad-Fi. 
+
+Innovation is funny... sometimes the map to the future is in the old system you just left!
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1546504436490637312)
+
+Source Material - [PDF](/twitter-pdf-2022-07-11_market_making.pdf)

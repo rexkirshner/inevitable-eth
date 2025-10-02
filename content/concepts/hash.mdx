@@ -1,0 +1,43 @@
+---
+title: "Hash Functions"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-07"
+readingTime: 2
+toc: true
+related: []
+---
+
+![](/images/hash-banner.jpeg)
+
+*original*
+
+# Hash Functions
+
+The purpose of a hash function is to transform any amount of data into a compact, uniform value. The input can be of arbitrary length but the output is always the same length. 
+
+The length is decided by the hash function; it can be as small or large as desired. 
+
+Hash functions have many different uses, but all uses rely on the same fundamental properties: 
+
+*   quick and efficient to compute 
+*   outputs should be randomly distributed between all possible outputs 
+*   difficult (if not impossible) to reverse engineer an input from an output. 
+
+If your hashing function has an output with 3 characters and you feed it 1MM pieces of data, much of it will result in the same output. However, if the output is long enough, a good hash function will have no collisions (two inputs resulting in the same output). 
+
+With a strong hashing function, we have the ability to take any data and compress it into a verifiable signature. 
+
+If the data is public, then anyone can recreate the signature and verify that the data matches its label. If the data is private, it can form the basis of identity. 
+
+Any private information fed into a (good) hash function will instantly become lost but form the basis of a unique, un-replicable signature. 
+
+## Resources
+
+[Further Reading](https://www.tutorialspoint.com/cryptography/cryptography_hash_functions.htm)
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1567541750151151616)
+
+Source Material - [PDF](/twitter-pdf-2022-09-07_hash_function.pdf)

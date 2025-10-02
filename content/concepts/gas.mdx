@@ -1,0 +1,122 @@
+---
+title: "Ethereum Gas"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2023-01-14"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/gas-banner.jpg)
+
+[*source*](https://www.hodlnaut.com/academy/ethereum-gas-system)
+
+# Ethereum Gas
+
+## EIP-1559
+
+Note - On August 5, 2021 Ethereum executed the [London Hard Fork](https://blog.ethereum.org/2021/07/15/london-mainnet-announcement) which, among other things, overhauled how gas works on Ethereum. This article only references a post London Hard Fork/[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559) world. 
+
+For more info, [I'll send you to the master](https://notes.ethereum.org/@vbuterin/eip-1559-faq).
+
+## Slow is Fair
+
+Ethereum is the World Computer: a globally shared utility that exists between a network of 1000s of computers, each running a local version of the Ethereum Virtual Machine (EVM). Anyone can access the World Computer at any time, for any reason. 
+
+Forever.
+
+The World Computer was born slow, and although we've reach an era of unbounded scaling, Ethereum mainnet will ALWAYS remain slow. 
+
+Fast systems rewards fast participants, and those with more access to capital and technology will always be the fastest.
+
+![](/images/gas-hasu-quote.png)
+
+[*source*](https://twitter.com/hasufl/status/1565249565435068417)
+
+  
+Ethereum will always remain slow to give fair access to everyone. That being said, the consequence of a slow computer is that computing resources are scare. 
+
+## Managing Scarcity
+
+Gas is the mechanism Ethereum uses to allocate these resources fairly and efficiently.
+
+A (physical) computer works by sending electricity (which has a cost) through millions of transistors, eventually aggregating to human output. 
+
+A [virtual computer](https://en.wikipedia.org/wiki/Virtual_machine) (like the [EVM](https://ethereum.org/en/developers/docs/evm/)) abstracts away all of this, but conceptually the idea holds. Think of gas like the virtual electricity that runs through the virtual computer.
+
+The implicit question: where does this scarcity come from? Technically, each block has a target gas limit which adjusts up or down based on network usage (max 2x). Even more technically, the limit is bounded by the hardware requirements of the nodes in the network.
+
+Ethereum is built on a single core principle: decentralization. 
+
+From decentralization flows [credible neutrality](/concepts/credible-neutrality). 
+
+From credible neutrality flows world domination. 
+
+Decentralization comes from allowing anyone to run a node (even in their fiancée's closet 🙋‍♂️)
+
+## Computational Costs
+
+The EVM has computational costs; every activity that touches the World Computer can be boiled down to the machine code readable by the EVM. That bytecode is made of operations that each have a specific gas cost. 
+
+Therefore, gas measures the amount of computational effort required to execute specific operations.
+
+This gas is consumed by the World Computer in the same way that electricity is consumed by a (physical) computer; it is gone forever. Ethereum does this by "burning" the gas, or sending it to a permanently unrecoverable address.
+
+In order to actually run a transaction, you must supply the World Computer with enough gas to execute it.
+
+## Gas Fees
+
+The World Computer doesn't run on altruism. It is a network of independent nodes that cost real money, use real electricity and need real bandwidth.
+
+Node operators (myself included) aren't in it for the vibes. We are in it for the ETH.
+
+And so, the gas you pay to execute a transaction actually contains two buckets. 
+
+*   Base Fee - computational costs of executing a transaction on the EVM. Analogous to elecriticity
+*   Priority Fee (tip) - an extra fee provided by the transaction generator, to be earned when the transaction is included.
+
+The tip incentivizes nodes to include a transaction in a block; without tips it would be economically viable to leave blocks empty just to collect block rewards. This also allows users to express urgency: transactions that need to be executed quickly can pay a higher tip
+
+Your wallet (like MetaMask) can examine your pending transaction and give you a (usually good) estimate of how much gas it will take to execute it.
+
+## Gas Market
+
+Gas is complicated, there are 2 markets you need to follow when making a transaction: 
+
+*   ETH (priced in $) 
+*   gas (priced in ETH/[GWEI](https://www.investopedia.com/terms/g/gwei-ethereum.asp)). 
+
+Think of it this way: does you computer care about the cost of electricity? 
+
+Why would the World Computer care about the cost of ETH?
+
+Gas is an abstraction that allows us to have a distinct value layer for computational expenses vs the valuation of ETH. 
+
+The World Computer is a globally shared, scare resource. Gas is how we divide up the units of the EVM, and then we let the market distribute it.
+
+## Economic Security
+
+Finally, gas fees keeps Ethereum secure. 
+
+By requiring a fee for every transaction, [spam attacks](https://en.wikipedia.org/wiki/Denial-of-service_attack) quickly become nonviable. Infinite loops or other computational wastage quickly burn themselves out.
+
+And higher gas fees = more $ETH burn = higher % staked = more economic security.
+
+## Ethereum Gas
+
+Look, I'm not here to tell you that you should enjoy paying for gas. 
+
+Especially in 2022.
+
+But when you take a step back, Ethereum gas takes on a whole different life. Just like death and taxes, gas is here to stay.
+
+Gas is just how the whole thing works.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1569397466046537728)
+
+Source Material - [PDF](/twitter-pdf-2022-09-12_gas.pdf)

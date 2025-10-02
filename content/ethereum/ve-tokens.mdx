@@ -1,0 +1,158 @@
+---
+title: "ve-Tokens"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-07"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/ve-tokens-1.jpeg)
+
+# ve-Tokens
+
+## On-Chain Capital
+
+Before we dive into the tokens, let's take a step back and talk about De-Fi holistically.
+
+In the beginning, there was Ethereum, and thus blockchain computing was born.
+
+We are going to skip ahead to the development of AMMs and borrowing/lending platforms.
+
+At a super high level, both AMMs and borrow/lend platforms do the same thing:
+
+*   Accept user deposits
+*   Deploy those asset to generate (real) yield
+*   Return those fees to the depositors
+*   Take a fee for the service
+
+De-Fi refers to both protocols that generate yield and protocols that manipulate other protocols directly/automatically on-chain.
+
+Through this network of protocols and the careful construction of money legos, we are creating [programmable money](/ethereum/world-computer/de-fi/programmable-money)!
+
+Tokens are how these protocols organize, coordinate and execute this system. As the network becomes more sophisticated and complicated, more capability and nuance are being built into tokens.
+
+Therefore, it has become useful to categorize tokens by function.
+
+## Coin
+
+At the foundation of De-Fi are hard assets with real value, deployed into yield generating activities. These derive their value from outside of De-Fi, are liquid and don't provide utility (eg USDC, ETH).
+
+However, they can be programmable assets (eg stETH).
+
+## Governance Token
+
+When protocols grew big enough (both in TVL & contributors), they begin issuing tokens. 
+
+The first tokens were simple. A representation ownership of the protocol... in theory. 
+
+In practice, they may or may not have real impact on a DAO or pay dividends.
+
+On the investor side, the benefits of governance are questionable at best and completely worthless most of the time. 
+
+We can talk about the idea of DAOs, but the reality is that the concentration of most tokens renders a lot of it theater.
+
+Layer on top the fact that while some protocols pass through fees to their governance token (eg SushiSwap), many of them don't (eg Uniswap).
+
+Thus, governance tokens became nebulous bets on if the protocol would grow and if that growth would accrue value to the token.
+
+On the protocol side, governance tokens left protocols to the mercy of the market. Not only was their war chest dictated by the untethered whims of traders, they are vulnerable to voting attacks by whales with deep pockets. This system was ripe for innovation.
+
+## ve-Token
+
+The purpose of ve-tokens is to align investors with the protocol they gain control over for the long term. The system is built on a long term commitment an investor makes in exchange for meaningful governance power and protocol revenue.
+
+Example: Token ABC
+
+*   User buys ABC
+*   User locks ABC for a long period of time
+*   Protocol gives user voting power, particularly influence on the distribution of ABC tokens
+*   Protocol provides yield to user
+*   The benefits decay over time, requiring re-locking
+
+The lock ensures that important decisions will only be made by the people who will be around to deal with the consequences. Their locked tokens act as implicit collateral to keep the decision making focused on the long term health and sustainability of the protocol.
+
+However, crypto is a volatile world. Investors are not always willing to lock a position for up to 4 years... De-Fi isn't even that old!
+
+But who will definitely be in De-Fi for the long haul? Who has a vested interest in a healthy ecosystem?
+
+Other protocols!!!
+
+## Wrapped Token
+
+Instead of building functionality every single time, a protocol might decide to utilize another protocol.
+
+If they become a big enough user, they might want to gather and lock a huge amount of ve-tokens.
+
+Eventually a protocol might decide that they only want the voting power of the locked ve-token but might not care so much about the yield it provides.
+
+In that case, it might want to provide the yield back into the market via a token.
+
+(That protocol is Convex Finance)
+
+Wrapped tokens allow protocols to un-bundle ve-tokens to their constituent parts and deliver them to different users.
+
+Yield requires a long term lock, but through a wrapper it can be freely traded. Investors who want yield and don't want to vote can get a liquid version.
+
+## The De-Fi Onion
+
+![](/images/ve-tokens-2.jpeg)
+
+The De-Fi Onion is a simple metaphor that helps illustrate the different layers created by the ve-token system.
+
+Some of the distinctions between the layers are starting to break down. For example, Plutus DAO is playing a Convex-like role for Dopex, but it is also gathering JONES, SPA and is already talking about expanding.
+
+Separation layer? Aggregation Layer? 🤷‍♂️
+
+![](/images/ve-tokens-3.jpeg)
+
+### Core of Value
+
+At the core of De-Fi are assets with hard financial value. We've seen the consequences of building De-Fi without a basis in hard value; it does not end well 
+
+Examples: ETH, WBTC, (some) stablecoins
+
+### Layer 2 - Production
+
+Protocols put assets to use, producing yield. These can be DEXs, derivatives marketplaces, borrowing apps, etc.
+
+Production protocols emit tokens; tokens can be locked to vote on where emissions go.
+
+Examples: CRV, BAL, DPX
+
+### Layer 3 - Separation 
+
+Protocols capture tokens, separating yield from governance. Yield is returned back to the market via wrapped tokens. 
+
+Governance is concentrated and controlled by separation protocol tokens. 
+
+Examples: CVX, AURA, PLS
+
+## Layer 4 - Aggregation Layer 
+
+Protocols aggregate tokens across different protocols and layers. 
+
+This layer is very much in development and we haven't seen many products built at the aggregation level 
+
+Examples: PRIME, BTRFLY
+
+Note - Aggregation Layer refers to the aggregation of many layers of governance tokens, not a protocol that services many other protocols. 
+
+For example, Redacted Cartel belongs in aggregation for its treasury and future plans for glBTRFLY (and not [Hidden Hand](https://hiddenhand.finance/)).
+
+## Resources
+
+This article combines the work of 3 tweet threads:
+
+*   ve-Tokens
+    *   Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1543330112900239360)
+    *   Source Material - [PDF](/twitter-pdf-2022-07-03_ve-tokens.pdf)
+*   De-Fi Onion
+    *   Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1539779636803997696)
+    *   Source Material - [PDF](/twitter-pdf-2022-06-23_de-fi_onion.pdf)
+*   De-Fi Onion: Under the Microscope
+    *   Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1540424163713642496)
+    *   Source Material - [PDF](/twitter-pdf-2022-06-24_de-fi_onion_microscope.pdf)

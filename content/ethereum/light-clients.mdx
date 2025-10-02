@@ -1,0 +1,153 @@
+---
+title: "Light Clients"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-07"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/light-client-1.jpeg)
+
+# Light Clients and the Portal Network
+
+## The World Computer
+
+Ethereum is the [World Computer](/ethereum/world-computer), a network of 1,000s of computers ([nodes](/ethereum/network/node)) coordinating using [Proof of Stake](/ethereum/network/consensus/pos) (PoS) to keep the [Ethereum Virtual Machine](/ethereum/evm) (EVM) in sync.
+
+The EVM is the shared computing platform, the blockchain its history and ETH its lifeblood.
+
+This "network of nodes" is the foundation upon which Ethereum ultimately derives its value. The more decentralized, the more value.
+
+From decentralization comes [credible neutrality](/concepts/credible-neutrality). 
+
+Without credible neutrality, we might as well be using FB-dollaroos in Farmville-DeFi.
+
+## Accessing Ethereum
+
+[Deep Dive: Accessing Ethereum](/ethereum/network/node/accessing-ethereum)
+
+There are currently ~10k nodes. So you can think of this as ~10k individual computers running Ethereum clients.
+
+If you want to be specific, you need to look at cloud providers. More than 25% of nodes run on [AWS](https://aws.amazon.com/), which makes decentralization more complicated.
+
+![](/images/light-client-2.jpeg)
+
+![](/images/light-client-3.jpeg)
+
+Not all nodes are made the same. 
+
+While there have been valiant efforts to get a node running on some [very humble hardware](https://twitter.com/EthereumOnARM/status/1432251814402002948), in general a node ranges from a $1k+ dedicated computer to a full data center. 
+
+And all nodes require unlimited bandwidth and constant maintenance.
+
+Today, to access Ethereum, the choice is to run a node yourself (less than 10k people globally), or to use a centralized platform like [Alchemy](https://www.alchemy.com/) or [Infura](https://www.infura.io/).
+
+## Emerging Centralization 
+
+Users send requests & [transactions](/ethereum/blockchain/transaction) over an internet [API](/concepts/api); these platforms execute them on their behalf.
+
+These Nodes-as-a-Service platforms are great tools that have (and will continue to) provide incalculable value to the Ethereum ecosystem. Without them, the vibrant ecosystem we have today would not be possible.
+
+But they are inherently centralizing.
+
+What's the point of decentralizing Ethereum if the vast majority of people access it through one or two centralized entities?
+
+It is trivially easy for a government to affect a corporation. 
+
+Ethereum isn't credibly neutral if the only two gateways can be compromised.
+
+Today, you can only access Ethereum via a node, but in the future you will be able to use a light client.
+
+## Light Clients
+
+[Deep Dive: Stateless Ethereum](/ethereum/upgrades/statelessness)
+
+A [light client](https://www.youtube.com/watch?v=ZHNrAXf3RDE) (currently theoretical) can directly and trustlessly interact with Ethereum without having access to a full node. 
+
+[Statelessness](/ethereum/upgrades/statelessness/theory) is an important milestone on the way to light client support. 
+
+Ethereum must be able to support access to the EVM state without actually running the (extremely heavy duty) software before a light client is realistic.
+
+While statelessness is a big, important step towards light clients, it doesn't get us all the way there. 
+
+## Light Ethereum Subprotocol
+
+The problem is actually pretty subtle, and only really came apparent during the previous attempt at light client support: [Light Ethereum Subprotocol](https://github.com/ethereum/devp2p/blob/master/caps/les.md) (LES).
+
+Tl;dr LES allowed light clients to request [Merkle proofs](/concepts/merkle-tree) and other data needed to trustlessly interact with Ethereum from a full node.
+
+A light client could ask "what is Alice's balance" and the node would reply with cryptographic proof.
+
+But operating Ethereum is already a difficult task. LES drastically increases both the computational and bandwidth demands on these nodes.
+
+Light clients are supposed to support decentralization, LES just increases node costs thereby decreasing decentralization.
+
+As [Piper Merriam](https://twitter.com/pipermerriam) said, the LES nodes that are out there are being run "[by the goodness of hobbyists' hearts... or people who misconfigured their client on accident](https://www.youtube.com/watch?v=0stc9jnQLXA)."
+
+## The Portal Network
+
+![](/images/light-client-4.jpeg)
+
+But don't worry, the LES lesson was learned, and Piper and his team have got the solution.
+
+In the future, your in-browser wallet, cell phone, ANYTHING will be able to trustlessly interact with Ethereum.
+
+In order to access Ethereum they will turn to the [Portal Network](https://www.ethportal.net/).
+
+The Portal Network is a group of networks that are dedicated servicing Ethereum light clients.
+
+Nodes in the Portal Network opt in to the specific networks they want to support with whatever resources they have available.
+
+The ethos of the Portal Network is "contribute what you can." No participant is too modest, no computer to slow. 
+
+Each operator can subscribe to the networks they want to support and, once subscribed, can tune the amount they are willing to store/process.
+
+The idea is very similar to [BitTorrent](https://en.wikipedia.org/wiki/BitTorrent).
+
+The key takeaway: the more network participants, the stronger the network becomes, both in terms of available storage capacity and ability to process requests.
+
+## A Light Client Future
+
+Let's say you want to make a swap on Uniswap.
+
+Today, your wallet will connect with Infura, gather the information it needs to craft a transaction and then send back a signed transaction.
+
+In the future, your wallet will query ~4 Portal Network networks.
+
+*   First, your wallet will send a request to the Header Network to get the latest header and get the current state of the EVM.
+*   Next, it will access the State Network to build a transaction.
+*   Once built and signed, it will broadcast it to the Transaction Network.
+
+Think of the Transaction Network like the mempool, the place where pending transactions wait to be executed.
+
+In order to process the mempool, a node must be able to handle the entire (HUGE) mempool. 
+
+The Transaction Network allows much more broad participation.
+
+Once broadcast to the Transaction Network, the light client will subscribe to the History Network and look for the transaction it submitted.
+
+All of these steps come with cryptographic proof, so the light client can verify each step without trusting anyone.
+
+## Looking Forward
+
+Today, the Portal Network is a research project. 
+
+In a nod to the principles of Ethereum, 3 independent teams are building clients to support it.
+
+Together with statelessness, the Portal Network makes Ethereum light clients entirely possible.
+
+And while this is incredibly cool for decentralization and trustless access, light clients are so much bigger. 
+
+Light clients are THE step-change. 
+
+Light clients + [middleware](/ethereum/upgrades/middleware) = the [World Computer](/ethereum/world-computer)
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1590511339658571776)
+
+Source Material - [PDF](/twitter-pdf-2022-11-09_light_clients.pdf)

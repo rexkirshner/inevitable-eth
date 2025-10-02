@@ -1,0 +1,135 @@
+---
+title: "Block Proposal"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-07"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/block-proposal-1.jpeg)
+
+# Ethereum Block Proposals
+
+## Prerequisites
+
+### Time on Ethereum (Slots & Epochs)
+
+[Deep Dive: ETH Time](https://inevitableeth.com/home/ethereum/network/consensus/time)
+
+Epochs are made of 32 slots
+
+1 slot = 12 secs
+
+1 epoch = 6 mins 24 secs
+
+### RANDAO
+
+Credible randomness is critical to PoS's security design, particularly in regards to validator assignments (including block proposer). 
+
+Ethereum uses a process called [RANDAO](/ethereum/network/consensus/randao) to generate "good-enough" randomness.
+
+## The World Computer
+
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+
+Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
+
+This distributed network of EVMs is held in sync via a [consensus mechanism](https://inevitableeth.com/home/ethereum/network/consensus). A consensus mechanism is a system by which a leader (block proposer) updates the state of their EVM and the rest of the network trustlessly follows.
+
+Ethereum uses [Proof of Stake](https://inevitableeth.com/home/ethereum/network/consensus/pos) (PoS) as its consensus system.
+
+## Proof of Stake
+
+The EVM is an isolated unit; it cannot reach out to other nodes and interact directly with another EVM.
+
+Instead, the EVM is attached to a consensus mechanism, which is responsible for communicating between nodes, securing Ethereum and updating the EVM.
+
+A consensus mechanism will do things: 
+
+*   select a leader (block proposer) 
+*   allow a proposer to submit a change to the EVM (block) to the network 
+*   allow the network to confirm the block was valid 
+*   provide credibly security guarantees
+
+Originally, the World Computer used Proof of Work (PoW) as its consensus mechanism.
+
+Today, Ethereum has replaced PoW with Proof of Stake (PoS).
+
+## Selecting a Proposer
+
+Just due to how PoW operates, block proposer selection is very straightforward; all nodes are potential block proposers but only the first person to solve the puzzle wins the privilege. Perhaps the biggest change from PoW to PoS is that PoS removes these puzzles entirely. 
+
+In PoS, the block proposer is randomly selected. 
+
+At the beginning of every epoch, Ethereum executes a beacon chain shuffle, providing validator assignments (including block proposals) for the next epoch. 
+
+Beacon chain shuffling is a lookahead function; it provides assignments 1 epoch ahead to allow preparation. Though the block producer was actually set at the beginning of the last epoch, it's useful to think of assignment of happening at the beginning of each slot. 
+
+And so, at the beginning of each slot, a validator is randomly chosen.
+
+## Building a Block
+
+A [block](/ethereum/blockchain/block) is the atomic unit of time within the EVM. It is a bundle of transactions that happened during a slot.
+
+### Header
+
+The proposer begins building the block by filling out all of the block headers. 
+
+The block header contains all the information related to the beacon chain and PoS consensus. It does not contain any data about the EVM; in fact, the EVM cannot query this data (directly).
+
+Proposer and attester slashings are interesting; the validator receives a small "whistleblower" reward for including valid incidents.
+
+### Execution
+
+Next, the validator will turn to the execution engine, which is the process that holds the EVM.
+
+In fact, the execution engine/layer is (nearly) identical to what was happening when Ethereum was using PoW.
+
+The easiest way to understand block construction is to just look at a block. The consensus layer contains the entire execution layer (which previously was the entire PoW block).
+
+## Adding to the Blockchain
+
+Finally, the proposer finishes preparing the block and broadcasts it to the network. 
+
+The vast majority of the time, the block will be perfectly valid and be readily accepted the rest of the Ethereum network.
+
+[Deep Dive: Attestation](/ethereum/network/consensus/attestation)
+
+The network validates potential blocks and confirms them into the blockchain with a process called attestation. Tl;dr attestation is a formalized process of voting for blocks. Valid attestations are rewarded, invalid attestations are punished (via slashing).
+
+One of the key steps of attestation is aggregation, a process that combines thousands of digital signatures into a single, condensed piece of data. 
+
+## Accounting for the Network
+
+Attestation is tricky; it involves socializing and processing thousands of packets across a busy network.
+
+Ethereum alleviates this pressure in two ways: 
+
+*   attestation is run redundantly; many different parties will be working on gathering as many signatures as possible. 
+*   the network will accept aggregation up to a single epoch late (at reduced rewards)
+
+Ethereum is more secure with more signatures and it therefore incentivizes gathering as many signatures as possible. The protocol will pay out more ETH for more signatures. 
+
+And so, the block proposer gathers as many signatures as possible and adds them to the block.
+
+Now you might be asking "if the block has been proposed, how does the producer add the attestations?" 
+
+Actually, they are included one block later. 
+
+So if a block is proposed in slot N, the attestation for that block will be attached to the block in slot N+1.
+
+In reality the attestation process happens when the proposer is creating the block header - it's just happening for the block that came before.
+
+Regardless, if we zoom out just a little bit, we can consider the point moot. 
+
+An attested block is part of the blockchain.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1578842388964859904)
+
+Source Material - [PDF](/twitter-pdf-2022-10-26_block_proposal.pdf)

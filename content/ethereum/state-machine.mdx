@@ -1,0 +1,125 @@
+---
+title: "Ethereum State Machine"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-07"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/state-machine-banner.jpeg)
+
+# Ethereum State Machine
+
+## Background
+
+Ethereum calls us all in different ways. 
+
+Some are called by the decentralization, others to become unrealistically wealthy; everyone has their reasons. Personally, I've heard the sweet song of The World Computer and am drawn the future we will build on top of it.
+
+But not all understand The World Computer metaphor. 
+
+Crypto is so incredibly fast paced (and is inherently muddied with delusional visions of generational wealth) that it is easy to miss what makes Ethereum so special. 
+
+Let's go back to computer science basics.
+
+## State Transition Machine
+
+![](/images/state-machine-1.jpeg)
+
+A state machine is a mathematical model of computation with two major components: 
+
+*   the state, the configuration of the system at a moment in time 
+*   a transaction, the set of instructions to change the state
+
+The machine operates by applying a state transition function: 
+
+*   INPUTS: current state and the pending transaction 
+*   OUTPUT: the new machine state. 
+
+In the example above, the transactions describes which colors to change while the state transition function does the actual changing.
+
+The state transition machine model provides a simple framework for breaking down computation into a step-by-step process.
+
+Now let us apply the concept to Bitcoin.
+
+## Bitcoin State Transition System
+
+### Computational Model
+
+![](/images/state-machine-2.jpeg)
+
+At its core, Bitcoin can be described as a state transition system that functions similarly to a simple banking system.
+
+*   State - balance sheet
+*   Transaction - request to move $X from A to $B
+*   State Transition Function - reduce $X from A's account, add $X to B's account
+
+While Bitcoin can natively facilitate simple scripts, the language has some critical limitations. In practice, the vast majority of activity is the addition, subtraction and management of account balances.
+
+Put simply, Bitcoin can be thought of as a specialized computer only capable of balance management. 
+
+When described as a state transition system, this specialization (limitation) can be seen in the basic and inflexible capabilities of the state transition function.
+
+### Trustless Computing
+
+In 2009, Satoshi Nakamoto combined research in public key cryptography with innovations in consensus algorithms to produce Bitcoin.
+
+We've discussed the computational capabilities of Bitcoin - meh.
+
+The impressive part is that it happens on a trustless network.
+
+We'll avoid the temptation to veer deeply into trustlessness in this article. For now, consensus systems substitute a formal barrier of participation with an economic one. The result: a decentralized, transparent & fair platform.
+
+Think about it this way: blockchain computers are a state machine operated by a decentralized network of un-trusted computers.
+
+Bitcoin's state transition function is very basic: balance sheet management. The obvious question...
+
+Can a state transition function do more?
+
+## The Universal State Machine
+
+![](/images/state-machine-3.jpeg)
+
+The answer is an emphatic YES! In fact, the right state transition function is capable of generalized computing! The [Turing Machine](/concepts/turing-complete), named from mathematician Alan Turing, is a state machine capable (mathematically proven) of simulating any computer algorithm.
+
+Any computational system can be described via a state machine. A careful analysis of that state machine will check to see if the system can be used to simulate a Turing Machine. 
+
+If so, we call the system Turing-complete; it is capable of generalized computation.
+
+Bitcoin is the state machine for a decentralized banking system. Its scope and capabilities are limited by the language of the state transition function.
+
+If Bitcoin is specialized, then Ethereum is generalized.
+
+Solidity, the language of Ethereum, is Turing-complete.
+
+## Ethereum State Transition System
+
+![](/images/state-machine-4.jpeg)
+
+*   State - status of all Ethereum accounts
+*   Transaction - typical cryptocurrency transaction with an optional data field, accessed programmatically by smart contracts
+*   State Transition Function - the code executed by the EVM
+
+Ethereum is much more complex than Bitcoin, you can see it even in these simplified diagrams.
+
+But take a step back and the picture is more clear: both Ethereum and Bitcoin are blockchain computers; Bitcoin is like a calculator, Ethereum like a Macbook.
+
+In summary, Bitcoin and Ethereum should be understood as the next iteration in computing technology.
+
+## The World Computer
+
+First we had personal computing. Then we had cloud computing.
+
+Bitcoin is the first, specialized example of shared computing.
+
+Ethereum is The World Computer.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1555684780921892864)
+
+Source Material - [PDF](/twitter-pdf-2022-08-05_state_systems.pdf)

@@ -1,0 +1,159 @@
+---
+title: "EigenLayer"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-08"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/eigenlayer-1.jpeg)
+
+# EigenLayer
+
+## The Dawn of Decentralized Computing
+
+![](/images/eigenlayer-2.jpeg)
+
+Bitcoin invented decentralized computation: the coordination of untrusted computers to achieve a unified computing environment. 
+
+However, Bitcoin was implemented as an application-specific blockchain computer. It’s only functionality is to transfer BTC.
+
+In order to create any other application/functionality, you would have to deploy a new network with a new basis of decentralized trust. 
+
+Each application would fracture the available trust further and further.
+
+![](/images/eigenlayer-3.jpeg)
+
+## Generalized Decentralized Computing
+
+![](/images/eigenlayer-8.jpeg)
+
+In 2015, Vitalik Buterin delivered on Satoshi's 2008 vision: generalized trustless computing.
+
+Ethereum replaces Bitcoin's application-specific computing environment with a generalized one. 
+
+Bitcoin can only add or subtract. 
+
+Ethereum is [Turing-complete](/concepts/turing-complete).
+
+Turing-completeness is a concept that boils down to "if a system is Turing-complete it can do anything that any other Turing-complete system can do."
+
+We can mathematically prove that Ethereum is Turing-complete and therefore we know it is mathematically capable of everything your Macbook is capable of.
+
+Ethereum allows a developer to deploy a decentralized application without having to build out decentralized trust network. 
+
+Decentralized trust becomes a resource supplied by Ethereum. All the technology, infrastructure and participants get abstracted away.
+
+From the perspective of an application, Ethereum provides a decentralized trust module. Developers are freed up for innovation.
+
+Before they had to rebuild the wheel and nurture a network before they even got started. 
+
+Today all that comes in the base package.
+
+## Fractured Trustlessness
+
+![](/images/eigenlayer-4.jpeg)
+
+However, Ethereum didn't solve the trust problem. The trust module is built on the first three layers of the system (trust, consensus, context).
+
+This created a great platform for application innovation, but requires a complete rebuild for changes to those 3 layers.
+
+Turns out Ethereum only provides trust around block production, but there are lots of other applications that need trust.
+
+## Middleware
+
+Any other trust we must supply directly through middleware.
+
+Middleware is any software that provides a service, information or method of communication between chains. Middleware exists between chains and therefore must secure its own trust.
+
+A good example of middleware is [oracles](/concepts/oracle), software that transfers data in and out of [Ethereum’s computing environment](/ethereum/evm).
+
+These protocols must boostrap their own trust network… which is very hard and expensive. There’s a reason why Chainlink is the only game in town.
+
+## EigenLayer
+
+Fortunately we have [EigenLayer](https://www.eigenlayer.com/)!
+
+So new I can only find a few videos.[But just one is all it takes](https://www.youtube.com/watch?v=-V-fG4J1N_M). 
+
+Once you hear Sreeram Kannan walk you through you’ll see that this technology will eventually be part of the core Ethereum protocol.
+
+### Vanilla Ethereum Staking
+
+![](/images/eigenlayer-5.jpeg)
+
+[Deep Dive: Ethereum Proof of Stake](/ethereum/network/consensus/pos)
+
+EigenLayer integrates at the [node](/ethereum/network/node) level of Ethereum. 
+
+Nodes are where ETH staking takes place.
+
+Node operators lock ETH in exchange for the right to operate a node. If the operator behaves and fulfills his duties, he earns ETH. If he fails in his duty (or worse, takes malicious action), a portion of the $ETH that he locked up is slashed (permanently taken) and they are ejected from the network.
+
+This is the mechanism by which Ethereum secures and delivers trust.
+
+And so, a node operator puts capital at stake and operates a node. 
+
+### Not All Nodes are Equal
+
+![](/images/eigenlayer-6.png)
+
+Nodes are real computers scattered across the globe. The requirements for running an Ethereum node are EXTREMELY low, especially considering the capital at stake.
+
+Requirements are kept low deliberately; every person, whether MEGACORP CEO or Aunt Phillis, can become a node operator and keep the network honest. 
+
+From decentralization flows [credible neutrality](/concepts/credible-neutrality). 
+
+From credibly neutrality comes global dominance.
+
+Many node operators have extra computational power, some MUCH more. EigenLayer allows node operators to deploy their excess computing power for middleware layers while tapping into the trust base of Ethereum.
+
+The process is called restaking.
+
+### EigenLayer Restaking
+
+![](/images/eigenlayer-7.jpeg)
+
+Node operators begin the process like normal, locking ETH in exchange for the right to operate a node.
+
+Then node operators opt-in to being a service provider for EigenLayer.
+
+Restaking means your ETH is put at risk for additional slashing if the node operate misbehaves in providing these additional services  
+
+This isn’t a liquid staking product, this is managed through the delegated withdrawal address.
+
+ETH stakers can set the withdrawal address of their node to a 3rd party address. When they opt-in to EigenLayer, they set their withdrawal address to an EigenLayer smart contract. 
+
+This contract can then deduct any ETH before returning it to you (effectively slashing).
+
+In exchange for committing to operate the middleware and taking this extra risk, the node operator is compensated by the service provider. 
+
+Thus, the middleware can tap directly into $ETH’s trust base.
+
+## A Generalized Slashing Layer
+
+Merge mining refers to the act of mining two or more cryptocurrencies at the same time, without sacrificing overall mining performance. 
+
+Restaking is Proof of Stake's version: merge staking.
+
+Holistically, EigenLayer is a generalized slashing layer for Ethereum. 
+
+The purpose: to transform ETH into its final form, its true purpose:
+
+ETH is the pristine collateral for trustless trust.
+
+The Ethereum Endgame is the [World Computer](/ethereum/world-computer), and EigenLayer is a critically important part of that story.
+
+The more I ask about Ethereum's roadmap, the more I realize I still have to learn. 
+
+And the more I realize that Ethereum is inevitable.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1572094840619532288)
+
+Source Material - [PDF](/twitter-pdf-2022-09-19_eigenlayer.pdf)

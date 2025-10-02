@@ -1,0 +1,115 @@
+---
+title: "Ethereum Node"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-21"
+readingTime: 3
+toc: true
+related: []
+---
+
+![](/images/node-banner.jpeg)
+
+# Ethereum Node
+
+## The World Computer
+
+Ethereum is [the World Computer](/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers (nodes).
+
+Think of a node as a physical computer in the real world. 
+
+Many people, myself included, use a machine like this one. (you can also run a node on a cloud provider, like AWS or Google Cloud, but they are indistinguishable for our purposes).
+
+![](/images/node-node.png)
+
+[*source*](https://www.intel.com/content/www/us/en/products/details/nuc.html)
+
+## Validators
+
+![](/images/node-body-1.jpeg)
+
+A node is both computer and the atomic unit of the Ethereum network.
+
+Once running, a node operator can stake ETH, become a validator and participating in Proof of Stake (PoS).
+
+Staking is done in 32 $ETH increments, but a single node can support many validators.
+
+## Inside a Node
+
+![](/images/node-body-2.jpeg)
+
+Zooming into the computer, the node is actually two independent pieces of software: a consensus client and an execution client. 
+
+There are 5 consensus clients and 5 execution clients, any combination will make a node.
+
+**Consensus Clients**
+
+*   [Lighthouse](https://lighthouse.sigmaprime.io/)
+*   [Lodestar](https://lodestar.chainsafe.io/)
+*   [Nimbus](https://nimbus.team/)
+*   [Prysm](https://docs.prylabs.network/docs/getting-started/)
+*   [Teku](https://consensys.net/knowledge-base/ethereum-2/teku/)
+
+**Execution Clients**
+
+*   [Geth](https://geth.ethereum.org/)
+*   [Nethermind](http://nethermind.io/)
+*   [Besu](https://besu.hyperledger.org/en/stable/)
+*   [Erigon](https://github.com/ledgerwatch/erigon)
+*   [Akula](https://akula.app/)
+
+## The Merge
+
+Before the Merge, you could think of Ethereum as two independent (closely tracking) blockchains: mainnet and the beacon chain.
+
+Mainnet tracked all the changes within the [Ethereum Virtual Machine (EVM)](/ethereum/evm), and was previously secured by Proof of Work (PoW). This chain was run by execution clients.
+
+The beacon chain was launched in 2020, 5 years after the launch of Ethereum. Its purpose it to contain all the logic needed operate Proof of Stake (PoS). This chain was run by consensus clients.
+
+In mid-September 2022, the two chains of Ethereum went from "closely tracking" to one single chain. 
+
+Mainnet (now called the execution chain) replaced the security guarantees offered by PoW for the security of the beacon chain.
+
+And the beacon chain is secured by $ETH.
+
+## Speaking to the Network
+
+![](/images/node-body-3.jpeg)
+
+The Merge is very much reflected in the Ethereum we have today. 
+
+*   Each node runs two, independent, pieces of software. 
+*   These clients communicate directly with other like-clients in a peer-to-peer (P2P) network. 
+*   They communicate to each other within each node.
+
+Under the hood Ethereum actually two networks... it just so happens that both networks exist between the same nodes.
+
+## JSON-RPC
+
+Within a node, the consensus and execution client communicate via a remote procedure call (RPC) protocol (specifically using the JSON data format, so JSON-RPC). JSON-RPC is an [API](/concepts/api) that defines both the data structures and the rules for processing them.
+
+You may have seen the term JSON-RPC before, maybe while clicking through your crypto wallet. 
+
+The interface by which consensus clients communicate with execution clients is the same interface by which your wallet interacts with the EVM in order to create a transactions.
+
+In fact that's exactly how you should understand your wallet. 
+
+Today, it is (probably) communicating with a centralized service like Alchemy or Infura. These companies run nodes locally and then allow people to interact with them over the web.
+
+In the future, your wallet will have an embedded light client, and will be able to connect to Ethereum directly.
+
+## Summary
+
+In summary, an Ethereum node is a real computer that runs two pieces of software: an execution client and a consensus client. 
+
+The former is responsible for the EVM, the later for PoS. 
+
+They communicate internally via an API, but work in their own P2P networks.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1589807499804176384)
+
+Source Material - [PDF](/twitter-pdf-2022-11-08_node.pdf)

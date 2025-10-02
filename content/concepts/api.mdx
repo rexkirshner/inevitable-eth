@@ -1,0 +1,77 @@
+---
+title: "Application Programming Interface (API)"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "intro"
+updated: "2023-01-09"
+readingTime: 3
+toc: true
+related: []
+---
+
+![](/images/api-banner.png)
+
+[source](https://www.riainabox.com/compliance-api)
+
+# Application Programming Interface (API)
+
+## Definition
+
+We've discussed the concept of [abstraction](/concepts/abstraction) and how developers use it to manage complexity and collaborate effectively. 
+
+Tl;dr abstraction works by separating interaction with functionality. Interaction can be simplified and streamlined for usability and composability.
+
+One of the more common ways abstraction manifests in the real world is in [Application Programming Interfaces](https://en.wikipedia.org/wiki/API) (APIs). An API is set of defined rules that explain how programs/applications communicate with each other.
+
+## Example
+
+Let's go back to our example from our discussion on abstraction. We imagined an e-commerce website that has a price bot; the user gives the price bot fruit characteristics and the bot returns a price.
+
+![](/images/api-abstraction-example.png)
+
+In order to integrate with price bot, you need to give it object (fruit) information and receive a price. So first, let's package all our object information: 
+
+`fruit_a = [apple, red, 200g, harvested 3 days ago]`
+
+Now, we need to feed it to price bot. First, we will call it by name (price\_bot). Then we will tell price\_bot to give us a price by asking it to use the calculate\_price function for fruit\_a. 
+
+`price_bot.cacluate_price(fruit_a)`
+
+price\_bot will do whatever it does to calculate the price. As the user, we are both unaware and unconcerned with what is happening behind the scenes. All we know is that in the end, price\_bot will give us a single price and so let's store it in the variable price\_fruit\_a.
+
+`price_bot.calculate_price(fruit_a) = price_fruit_a`
+
+This is the API for price bot - a list of the functions price bot supports and instructions on how to use them. It is the schematic by which developers can integrate the application without mastering it. 
+
+If this example were real, the API docs would look like this:
+
+![](/images/api-price-bot.jpeg)
+
+## Composability 
+
+On its face, API development may not seem like programming; developing and documenting APIs looks a lot more like writing essays than it looks like writing code. But don't be fooled, API development is crucial as coding... 
+
+…honestly it's probably way more important.
+
+In the words of Marc Andreessen "[software is eating the world](https://a16z.com/2011/08/20/why-software-is-eating-the-world/)." 
+
+But the world is a huge place, and at the end of the day software is just code written by one human at a time. How is one human at a time going to build something to eat the whole huge world?
+
+Composability.
+
+Composability is the design principal that every component of a system should be able to be combined with other components to build something new. That the output of one can be the input of another. 
+
+Think like a Lego: every piece can be connected to every other piece.
+
+Composability is the goal; it's the sorcery that allows 1+1 = 3. The magic that allows developers to deploy and watch as the world grows atop their work. 
+
+But how does composability actually manifest? 
+
+Very simply: Application Programming Interfaces (APIs)
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1553804814508642304)
+
+Source Material - [PDF](/twitter-pdf-2022-07-31_apis.pdf)

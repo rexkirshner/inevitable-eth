@@ -1,0 +1,142 @@
+---
+title: "Diffie-Hellman Key Exchange"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-07"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/diffie-hellman-1.jpeg)
+
+# Diffie-Hellman Key Exchange
+
+## Prerequisites
+
+### Modular Arithmetic
+
+When you divide two integers, sometimes the result is not an integer (eg has a reminder). [Modular arithmetic](https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/what-is-modular-arithmetic) is a branch of math that is focused on the reminder.
+
+The modulo operator (written as "mod") is the operation that finds the remainder. 
+
+*   10 / 3 = 3 with a remainder of 1 = 10 mod 3 = 1 
+*   14 / 6 = 2 with a remainder of 2 = 14 mod 6 = 2 
+*   3 / 10 = 0 with a remainder of 3 = 3 mod 10 = 3 
+
+Imagine a clock being mod 12.
+
+## Communicating in Public 
+
+Let's say you need to communicate sensitive data across a public channel. If you know other people can read your data, you might decide to cryptographically encode it. 
+
+Encoding is the process of transforming the original data into an undecipherable (but reversible) form.
+
+Encoding is only useful in one condition: if (ONLY) the intended recipient can decode the message, transforming it back into its original form. 
+
+If we can pull this off, we can securely share sensitive data even while broadcasting it to the entire world.
+
+In order to do this, we use a cryptographic algorithm. 
+
+A cryptographic algorithm receives a message and an encryption key. If the message is not encrypted, the algorithm will encode it. If the message is encrypted, the algorithm will decode it.
+
+We will just take the cryptographic algorithm for granted; you can just treat it like a black box. We are interested in the encryption key. 
+
+More specifically, we are interested in understanding how to create a key.
+
+## Generating a Key
+
+Due to the nature of a cryptographic algorithm, anyone with the encryption key is able to decode the message. If you don't have a private channel to create/agree upon the key, how can do it in the open? 
+
+How do you establish a shared secret in public?
+
+Our answer comes from over 40 years ago by Whitfield Diffie and Martin Hellman: [Diffie-Hellman Key Exchange](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange). 
+
+This scheme was the first method of creating a shared secret that didn't require the literal physical exchange of encryption keys (via paper, disk, etc).
+
+## Mixing Paint
+
+![](/images/diffie-hellman-2.jpeg)
+
+Diffie-Hellman has a classic metaphor that is very helpful: mixing paint. In the metaphor, the goal is to create a secret color that only the participants know.
+
+### Phase 1
+
+![](/images/diffie-hellman-3.jpeg)
+
+Diffie-Hellman begins with two parties (Satoshi, Vitalik), a public data channel and two publicly available numbers: g and n (yellow). 
+
+g and n are either agreed upon before hand, using some industry standard, or are agreed upon in public before the process starts.
+
+Both parties have a secret number (Satoshi - a, red) (Vitalik - b, blue). 
+
+These numbers are the keys to every message sent by their owner; their privacy is paramount.
+
+To begin the process, both parties import the publicly available data (g and n - yellow) and apply their secret number. 
+
+The formula below is a little scary; let me break it down. All we are doing is multiplying g by itself a/b times and then applying mod n.
+
+#### Example
+
+![](/images/diffie-hellman-4.png)
+
+![](/images/diffie-hellman-5.png)
+
+### Phase 2
+
+![](/images/diffie-hellman-6.jpeg)
+
+Next, both parties will send this new value back across the public channel. 
+
+At this point both values become public, however no observer can recover the original data. The critical piece is the modulo function.
+
+#### Example
+
+*(these need to be fixed)*
+
+![](/images/diffie-hellman-7.png)
+
+![](/images/diffie-hellman-8.png)
+
+### Phase 3
+
+Once both parties have this intermediate value, they can repeat the process they used to make it: multiply the new value a/b times and take the remainder when you divide by n. 
+
+Here's where the magic happens: Now you both have the same number; a number no one else knows.
+
+## One Way Functions
+
+### Clock
+
+Let's think about a clock as a system with mod 12. 
+
+Just because you know we start at 4 (g) and where we end at 6 (g^a mod n) doesn't give you enough information to know how long we lasted: 2 hours? 14 hours? 26 hours? 
+
+g^a mod n is the same problem!
+
+### Discrete Logarithm Problem
+
+It turns out there isn't a great way to do this other to just start guessing. 
+
+Our examples are using tiny numbers, but in practice these values would be hundreds of digits long. 
+
+Guessing is not just difficult, its [nearly impossible](https://en.wikipedia.org/wiki/Discrete_logarithm) (although that's [becoming less true](https://en.wikipedia.org/wiki/Shor%27s_algorithm)).
+
+## A Public Secret
+
+And so, after you complete the Diffie-Hellman key exchange process, both parties have a shared secret. They both can be confident that they (and only they) will the only ones able to read messages that use that value as an encryption key. 
+
+A public secret!
+
+## Resources
+
+Further Reading/Watching
+
+*   [Diffie-Hellman Key Exchange](https://www.youtube.com/watch?v=Yjrfm_oRO0w)
+*   [Classic Paint Metaphor](https://www.youtube.com/watch?v=NmM9HA2MQGI)
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1580388773937881093)
+
+Source Material - [PDF](/twitter-pdf-2022-10-13_diffie_hellman.pdf)

@@ -1,0 +1,115 @@
+---
+title: "Arbitrage"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-07"
+readingTime: 3
+toc: true
+related: []
+---
+
+![](/images/arbitrage-banner.jpeg)
+
+[*source*](https://pixelplex.io/blog/crypto-arbitrage-trading/)
+
+# Arbitrage
+
+## Definition
+
+Arbitrage - an opportunity to secure a guaranteed profit by identifying and exploiting an information discrepancy. 
+
+The casual usage (usually) refers to executing trades to lock in profits when assets have different prices in different venues.
+
+## Example - Decentralized Exchange
+
+Eg: 2 DEXes with USDC:ETH pools, both have an exchange rate of 2000:1. 
+
+A whale buys A TON of ETH from pool A. The exchange rate (set by [x\*y=k](https://medium.com/phoenix-finance/understanding-the-xyk-model-of-pooled-liquidity-7340fdc20d9c)) moves to 2100:1 on that pool (and only that pool).
+
+There now exists an arbitrage opportunity. Sell ETH in pool A, buy in pool B.
+
+Every time you do this, your net ETH amount stays the same. For every ETH you buy, you sell one right back. But because of the price difference, you’re able to lock in profit without affecting your portfolio. 
+
+It’s risk free money!
+
+## Efficient Markets
+
+Not only is it profitable, crypto needs it! 
+
+### Stabilizing Prices
+
+Pool A has a higher price than B so we sell into it. A price goes down. Pool B has a lower price than A so we buy from it. B price goes up. 
+
+Thus, by participating in arbitrage you’re stabilizing price across the market.
+
+That’s not the only kind of arbitrage we should celebrate, another example is liquidations. 
+
+## Liquidations
+
+Nobody like being liquidated, but we all should hope for a efficient and predictable process. Let’s (briefly) walk through a liquidation so you can see the role arbitrage plays.
+
+Eg: ETH is $4k, I bring 10 ETH to a debt protocol and take 15k USDC. My liquidation threshold is 50%. 
+
+I do not service this debt. 
+
+When the price of ETH falls below $3k, my loan fell outside of the protocols risk tolerance. 
+
+My collateral is now up for auction. The protocol needs to recover 15k USDC. It does not need the best price, just a fast liquidation and to secure the 15k USDC. And so, my 10 ETH collateral goes to auction for 28k or more USDC. 
+
+There now exists an arbitrage opportunity. Buy from protocol, sell into market.
+
+By doing this you lock in 2k USDC with no change to your ETH holdings 
+
+You’ve also provided [liquidity](/concepts/liquidity) to the debt protocol. Without deep liquidity for collateral liquidations, the protocol can’t function.
+
+I ended up paying for all this, but it’s my debt and my risk
+
+## Predatory Arbitrage
+
+Not all arbitrage is good though. 
+
+### Sandwich Attack
+
+Have you ever heard of a sandwich attack? Well you’ve definitely been the victim of one.
+
+![](/images/arbitrage-sandwich.png)
+
+[*source*](https://twitter.com/Evan_ss6/status/1363930050912006147)
+
+Eg: I want to trade ETH for CVX. You see me coming
+
+You buy CVX and drive up the price. I make my trade (and get less CVX). You immediately sell your extra CVX.
+
+You are $CVX neutral, but I raised the price of CVX between your transactions. 
+
+You have (my) extra $ETH.
+
+## The Value of Information
+
+This isn’t just crypto stuff. The same idea manifests in the real world.
+
+Market making, high frequency traders, M&A arbitrage, regulatory arbitrage…
+
+All of it is just about looking for situations where you have an informational advantage and can can lock in a profit.
+
+Ever heard “if you aren’t paying for something you are the product?”
+
+Well… [if you’re not paying for trades](https://money.usnews.com/investing/portfolio-management/articles/brokers-that-offer-commission-free-trading)…
+
+[I wonder who is](https://en.wikipedia.org/wiki/Citadel_LLC)…
+
+[I wonder why…](https://www.investopedia.com/terms/p/paymentoforderflow.asp)
+
+At the end of the day, arbitrage is the value you can extract from a system by having extra information and/or privileged access to it. 
+
+In crypto, we have another word for this. 
+
+We call it MEV.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1527676772149362688)
+
+Source Material - [PDF](/twitter-pdf-2022-05-20_arbitrage.pdf)

@@ -1,0 +1,288 @@
+---
+title: "KZG Ceremony"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-11"
+readingTime: 11
+toc: true
+related: []
+---
+
+![](/images/kzg-ceremony-banner.jpeg)
+
+[*source*](https://a16zcrypto.com/on-chain-trusted-setup-ceremony/)
+
+# (Proto-) Danksharding KZG Trusted Setup
+
+## The World Computer
+
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)) coordinating using [Proof of Stake](https://inevitableeth.com/home/ethereum/network/consensus/pos) (PoS) to keep the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM) in sync.
+
+The EVM is the shared computing platform, the blockchain its history and ETH its lifeblood.
+
+This "network of nodes" is the foundation upon which Ethereum ultimately derives its value. The more decentralized, the more value.
+
+From decentralization comes [credible neutrality](https://inevitableeth.com/home/concepts/credible-neutrality). 
+
+Without credible neutrality, we might as well be using FB-dollaroos in Farmville-DeFi.
+
+## The Scaling Problem
+
+Today, Ethereum is SLOW, processing ~20-30 transactions per second. 
+
+Let's be frank, that is too slow for anything with the name “The World Computer,” [we have >8,000,000,000 people on this planet](https://www.un.org/en/desa/world-population-reach-8-billion-15-november-2022). 
+
+We can easily increase the performance of Ethereum by simply increasing the minimum requirements of the nodes. The more powerful these computers are, the faster Ethereum can process transactions.
+
+But here's the problem: the higher the minimum requirements of a node, the less people can participate in the network. Maybe the costs are too high, maybe the hardware is unavailable, maybe they don't have access to a reliable internet connection.
+
+Any increases to minimum requirements for nodes inherently decreases the decentralization of the network.
+
+And so, the naive approach to scaling is a dead end.
+
+In fact, this concept is so well understood that we've created a cute little phrase: [the scalability trilemma](https://medium.com/logos-network/everything-you-know-about-the-scalability-trilemma-is-probably-wrong-bc4f4b7a7ef).
+
+## The Settlement Layer of the Internet
+
+![](/images/scaling-1.jpeg)
+
+[Deep Dive: Scaling Ethereum Execution](/ethereum/upgrades/scaling)
+
+Fortunately, the gigabrains of Ethereum have come up with a solution, one that rejects the very framing of the scalability trilemma. 
+
+It starts with taking a huge step back: what is the purpose of Ethereum?
+
+Yes, the EVM is [Turing-complete](/concepts/turing-complete) [virtual machine](/concepts/virtual-machine) and therefore capable of generalized [computation](/background/mass-comm/computer). We can think about turbo-charging the EVM until it can perform at the same level as a centralized platform (think [AWS](https://aws.amazon.com/)), but we already have high performance computing.
+
+And centralized computing will always be faster and easier than decentralized computing.
+
+So, to think of Ethereum scaling as “how can we increase the World Computer's transaction throughput to be closer to someone like [Visa](https://www.visa.co.uk/dam/VCOM/download/corporate/media/visanet-technology/aboutvisafactsheet.pdf)," is like designing a fighter jet and thinking "how can we increase its ground speed to be close to something like a [Bugatti Chiron](https://www.youtube.com/watch?v=FuS_bXJNync).
+
+What's special about Ethereum is not that offers a generalized computing platform, it's that it offers a trustless, immutable platform.
+
+The purpose of Ethereum is trustless [settlement](/concepts/settlement), not trustless computation.
+
+### Rollups
+
+![](/images/scaling-execution.jpeg)
+
+[Deep Dive: Rollups](/ethereum/upgrades/scaling)
+
+Here's the idea: instead of asking Ethereum to do all the computation, we ask a much more specialized (much more centralized) entity to actually run the computation and simply post a record back to Etheruem.
+
+Let's say I have 100 numbers I want to add up. Instead of asking Ethereum to actually do the addition, I can run the addition elsewhere and simply post the numbers and the result on-chain. Everyone can verify that the answer is correct, but the EVM itself doesn't have to run the computation.
+
+This is the idea behind rollups, which are independent, high-performance blockchains that settle to Ethereum.
+
+Rollups can support MANY more transactions MUCH faster, but because they post back to Ethereum, they inherent all of the decentralized properties of Etheruem.
+
+The rollup paradigm scales the execution throughput of Ethereum by orders of magnitude, but we still have a problem. Rollups still need to post copies of the data and results to Ethereum.
+
+If we don't scale the [data availability](/ethereum/upgrades/scaling/data/data-availability-bottleneck) of Ethereum mainnet, then execution scaling becomes a solution to the problem we don't have.
+
+### Danksharding
+
+[Deep Dive: Danksharding](/ethereum/upgrades/scaling/data)
+
+Fortunately, we have a solution: Danksharding (named after [Dankrad Feist](https://twitter.com/dankrad)).
+
+Danksharding creates a new Ethereum data structure tailor-made for rollups: a blob. 
+
+A blob is simply a huge, cheap storage container that cannot be accessed by the EVM.
+
+Here's an analogy: imagine Ethereum is a train company and rollup data is cargo.
+
+*   Before Danksharding, the cargo needed to go in the passenger cabin, paying passenger pricing.
+*   After, the cargo can go in its own separate car, but the train company can't monitor it.
+
+#### Proto-Danksharding
+
+[Deep Dive: Proto-Danksharding](https://inevitableeth.com/home/ethereum/upgrades/scaling/data/proto-danksharding)
+
+Danksharding is a huge upgrade and needs to be approached in phases.
+
+Phases 1 is Proto-Danksharding (named for [protolambda](https://twitter.com/protolambda) and Danksharding), which will make the changes needed to support a single blob (per block) and create an independent [gas](https://inevitableeth.com/home/concepts/gas) market just for blobs.
+
+## The Roadmap to Scaled Ethereum
+
+Looking forward, the way to understand Ethereum scaling is to understand that Ethereum needs to settle more transactions (and not execute more computation). Rollups will offload computation, while Danksharding increases settlement bandwidth.
+
+On the execution side, the vast majority of development happens outside of the Ethereum community, in the teams working on building high-performance, secure blockchains. As the paradigm evolves, [the Ethereum devs modify their roadmap to super-charge these efforts](https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698), but its best to think of the energy of rollup development happening in the community.
+
+On the other hand, Danksharding (and Proto-Danksharding) are core upgrades to the protocol itself. Not only is the research and development championed by the Ethereum Foundation, but the implementation will require deep changes to the core of Ethereum.
+
+One of the more important reasons: Danksharding is built on KZG commitment scheme…
+
+And a KZG commitment scheme requires a trusted setup.
+
+## KZG Commitments
+
+![](/images/kzg-commitment-summary-1.jpeg)
+
+[Deep Dive: KZG Commitments](/concepts/kzg-commitment)
+
+KZG Commitments are a type of [cryptographic commitment scheme](/concepts/commitment). A commitment scheme is used to bind one party to a specific set of data. A commitment is a piece of data that doesn't reveal any information about the underlying data set, but can be used to prove specific things about it.
+
+A KZG commitment has the special property that it can be “opened” (used to prove) an specific point of data in a dataset without revealing the whole thing.
+
+Let's say I have 100 pieces of data, and you only know the 42nd. I could create a KZG commitment to my data and share it publicly. You could use the commitment to verify piece 42, but the scheme would not leak any additional information.
+
+KZG commitments are critical to the Danksharding scheme, as they are the mechanism by which the [network will sample the data](/ethereum/upgrades/scaling/data/p2p-network/data-availability-sampling). For more information, see the [Danksharding deep dive](/ethereum/upgrades/scaling/data).
+
+Although KZG commitments are some of the most advanced math out there, they are totally digestible to anyone with high school algebra. For our purposes, we don't even need to go that far. Here's all you need to know:
+
+*   KZG commitments are an application of [elliptic curve cryptography](/concepts/elliptic-curve-cryptography)
+*   KZG commitments are a form of [polynomial commitment](/concepts/polynomial-commitment), meaning they [transform an underlying dataset](/concepts/polynomial-encoding) into an equivalent mathematical formula
+*   Once the data has been transformed into a polynomial, we will evaluate it at a secret number. The polynomial will output a number that is indistinguishable from random data, but is unique to that dataset (commitment)
+*   Using more [elliptic curve cryptography](/concepts/elliptic-curve-pairings), any person can use the commitment to trustlessly open and verify the commitment (and therefore the underlying data)
+
+So here's the question:
+
+How do we get a secret number?
+
+## Elliptic Curve PCS Trusted Setup
+
+![](/images/pcs-trusted-setup-1.jpeg)
+
+[Deep Dive: PCS Trusted Setup](/concepts/pcs-trusted-setup)
+
+The answer: we generate a random number and hide it within an elliptic curve.
+
+Understanding the trusted setup requires deeper dives on many of the topics we've already covered, but here's what you need to know:
+
+*   we want to hide a secret number S
+*   we generate points by repeatedly multiplying S with itself and applying our elliptic curve function
+*   the specific points - related by S - are indistinguishable from random data
+*   the true value of S is destroyed and lost, forever
+
+The output of a trusted setup is a structured reference string (SRS), which contains the generated Si terms. These Si terms can be used to evaluate the polynomial of the data at point S without revealing anything about S itself.
+
+This is called a trusted setup because it requires the system to trust that the actual value of S is lost forever. If an attacker has the true value of S, breaking the system becomes trivial.
+
+## The Weakest Link
+
+At this point it is (hopefully) incredibly clear: Ethereum's value is in its decentralization and the trustless nature of the EVM.
+
+The reality is that the entire system is only as strong as its weakest link. 
+
+This is the problem space we are entering: we need to implement KZG commitments (specifically create the SRS) without introducing a trust assumption into Ethereum.
+
+Failure to implement KZG commitments means we need an entirely new scaling strategy.
+
+Failure to implement them in a decentralized, untrusted way means we need an entirely new blockchain.
+
+Fortunately, we already have a solution!
+
+## Powers-of-Tau
+
+![](/images/kzg-ceremony-1.png)
+
+[*source*](https://vitalik.ca/general/2022/03/14/trustedsetup.html)
+
+*Note: Vitalik did a great writeup on trusted setups. If you want to* [*go straight to the source*](https://vitalik.ca/general/2022/03/14/trustedsetup.html)*, I understand.*
+
+The trusted setup is an example of [multiparty computation](https://en.wikipedia.org/wiki/Secure_multi-party_computation), which is a branch of computer science that looks into systems where multiple parties jointly compute a function over their inputs while keeping those inputs private.
+
+This system is called a powers-of-tau setup (or ceremony).
+
+We begin with a single participant, who generates an SRS. This participant is expected to throw away the secret number they used to generate it.
+
+Then, the SRS is passed along to the next participant, who will generate their own secret number. The next participant will take the SRS and multiply each term by their new secret number. When finished, this participant is also expected to throw away their secret number.
+
+The new SRS is based on two secret numbers, one from each participant. If either one destroys the secret number, the SRS will remain secure.
+
+We've transformed our centralized trust assumption into a decentralized trust assumption.
+
+The same process repeats over and over again. Each cycle will produce another SRS, indistinguishable from random data, but secretly tied together by each participant's secret number.
+
+![](/images/kzg-ceremony-2.png)
+
+[*source*](https://vitalik.ca/general/2022/03/14/trustedsetup.html)
+
+Anyone can use the intermediate outputs of the ceremony to recalculate the each SRS, but none of the outputs leak any information about any of the secret numbers. 
+
+A powers-of-tau setup is a 1 of N trust assumption, where N is the number of participants. The system is secure as long as one participant in the system does what they are supposed to do. 
+
+That’s where you come in!
+
+## The Ethereum KZG Ceremony
+
+We are currently in the middle of the public contribution phase of the trusted setup needed for Ethereum Danksharding.
+
+The Ethereum foundation has created [a very easy-to-use tool for anyone to participate in the powers-of-tau ceremony](https://ceremony.ethereum.org/) and contribute random, secret data. 
+
+Then, you can delete your secret data forever. 
+
+From that moment on, you can sleep easy for the rest of your life knowing that the “trusted” setup is actually secure. 
+
+The only person you need to trust is yourself!
+
+What’s more, you‘ll make Ethereum more secure for everyone. Remember, it’s a 1 of N trust assumption; everyone is more comfortable the bigger N is.
+
+### Walkthrough
+
+Fortunately, contributing is super easy! All you need to do is [click this link](https://ceremony.ethereum.org/) and follow the instructions. 
+
+Here are screenshots of the process so you can see what it looks like. 
+
+![](/images/kzg-ceremony-3.png)
+
+*Landing page*
+
+![](/images/kzg-ceremony-4.png)
+
+*The actual contribution*
+
+![](/images/kzg-ceremony-5.png)
+
+*1 of 2 signatures*
+
+![](/images/kzg-ceremony-6.png)
+
+*2 of 2 signatures*
+
+![](/images/kzg-ceremony-7.png)
+
+*Waiting in queue to add secret to SRS*
+
+![](/images/kzg-ceremony-8.png)
+
+*Celebration screen*
+
+[Here is the full timeline for the ceremony](https://notes.ethereum.org/@CarlBeek/kzg_ceremony_timelines). Below is the the phase we are currently in. 
+
+![](/images/kzg-ceremony-9.png)
+
+[*source*](https://notes.ethereum.org/@CarlBeek/kzg_ceremony_timelines)
+
+## Other Uses 
+
+Here’s the cool thing about generating an SRS: once created, it can be used for any application that needs an SRS. It is not specific to Danksharding. 
+
+In fact, this SRS will be particularly useful. It will be long enough to support Danksharding blobs and will have a historic number of contributions. 
+
+And so, contributing to the Ethereum KZG ceremony will not have important implications for securing the World Computer, it will also secure an infinite number of future elliptic-curve-based applications.
+
+But, unfortunately this SRS is only going to be useful for so long. 
+
+In fact, all SRSs are on a ticking clock. 
+
+## The End of the SRS
+
+Quantum computing has enormous implications for cryptography. We wont get into the details here, but the same calculations that are incredibly difficult to undo (critical to the security of KZG commitments) with standards computers is trivial on quatum computers. 
+
+In particular, a quantum computer will be able to derive our underlying secret number without breaking a sweat.
+
+And with the secret number, an attacker can break any system based on the SRS.
+
+We are 10-20 years from having quantum computers capable enough of breaking an SRS like this. At that point, the entire KZG commitment scheme itself will become hopelessly broken.
+
+As will most of the cryptographic primitives that make up Ethereum.
+
+Fortunately, there are many people already working on quantum-secure replacements for all of these schemes. They will all be ready and swapped into production long before quantum computers are scaled up.
+
+And until then, we can confidently rely on our SRS…
+
+…as long as you contribute!

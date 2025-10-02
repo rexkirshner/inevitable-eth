@@ -1,0 +1,154 @@
+---
+title: "Regulation"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-24"
+readingTime: 6
+toc: true
+related: []
+---
+
+![](/images/regulation-1.jpeg)
+
+# OFAC Censorship
+
+## The World Computer
+
+Ethereum is a distributed computing platform. A network of 1,000s of computers ([nodes](/ethereum/network/node)) coordinating using [Proof of Stake](/ethereum/network/consensus/pos) (PoS) to keep the [Ethereum Virtual Machine](/ethereum/evm) (EVM) in sync.
+
+The EVM is the shared computing platform, the [blockchain](/ethereum/blockchain) its history and ETH its lifeblood. 
+
+Ethereum is still very young. It is slow, expensive and still evolving. 
+
+But even though we are early, the Ethereum endgame has already come into focus:
+
+[ETH will be the pristine currency of trustless trust](/ethereum/world-computer/endgame/trustless-trust).
+
+Trustless trust is predicated on a decentralized Ethereum. The more nodes that are controlled by a single entity, the easier it becomes to attack the network.
+
+Trustless trust comes from credible neutrality. 
+
+## Credible Neutrality
+
+[Deep Dive: Credible Neutrality](/concepts/credible-neutrality)
+
+Credible neutrality comes from decentralization.
+
+Every Ethereum user is willing to use the system because they know they will get the same treatment as any other user, whether that user is [Vitalik Buterin](https://twitter.com/VitalikButerin) or Uncle Andrey.
+
+No government, company or foe can bend the rules to cause you trouble.
+
+On the first order, the EVM provides credible neutrality simply by being a perfectly neutral system. 
+
+Just like the laws of physics are built into our world, unbreakable [property rights are built into Ethereum](/ethereum/world-computer/internet-settlement).
+
+Put simply, it's impossible to execute an unfair transaction.
+
+Let's say a bank (XTF), run by a drugged up criminal (FBS) is in severe distress and needs a bailout.
+
+IRL, FBS can just call the Federal Reserve and have them turn on the cash printers.
+
+On-chain, there's no one to call. FBS has to take his Ls just like the rest of us.
+
+This is not a new idea, this is the foundation of Ethereum, Bitcoin and cryptocurrency in general.
+
+All users are treated equal. Anyone can interact with the blockchain for any time, for any reason.
+
+...Enter the United States Government.
+
+## Tornado Cash Sanctions
+
+In August 2022, the US Treasury [hurled a Molotov Cocktail into the crypto community](https://home.treasury.gov/news/press-releases/jy0916) and declared that a piece of code (and all that wrote, used and support it) was a terrorist.
+
+And, as all non-Westerners are very aware, [America does everything she can to destroy "terrorists."](/background/sanctions)
+
+<NOTE>
+
+Two things.
+
+1) As a result of the sanctions, [Alex Pertsev was arrested and has been in custody since August 2022](https://www.coindesk.com/consensus-magazine/2022/12/05/alexey-pertsev-most-influential-2022/). Meanwhile, SBF ruined crypto and [he's playing video games in his penthouse](https://news.bitcoin.com/sbf-is-sleeping-better-playing-video-games-new-york-times-sam-bankman-fried-interview-dunked-on-for-going-soft-on-ftx-co-founder/).
+
+2) [Best related content from this episode is by @songadaymann](https://twitter.com/songadaymann/status/1559983727488409601)
+
+</ NOTE>
+
+These sanctions are ridiculous for a ton of reasons, you can find a better explanation from back in August.
+
+Let's just focus on the results: anyone who has ever touched (or been touched by) TornadoCash is now on the USA [Office of Foreign Assets Control](https://home.treasury.gov/policy-issues/office-of-foreign-assets-control-sanctions-programs-and-information) (OFAC) shitlist.
+
+There are a ton of specifics around the OFAC shitlist, but the summary is that no one can do any financial transactions with anyone on that list. 
+
+Those that break this rule are also added to the list.
+
+As the USA controls the global financial system, this is a HUGE deal.
+
+## Implications of Sanctioning a Protocol
+
+Tornado Cash is not a small protocol. 1000s of people of use it for all sorts of reasons. 
+
+Yes, many reasons were/are shady, but many others were perfectly legit ([and not all were consensual](https://cryptobriefing.com/buterin-armstrong-aoki-targeted-in-tornado-cash-eth-dusting-spree/)).
+
+The first question on everyone's mind: were the users on the shitlist too?
+
+Let's say Alice heard about Tornado Cash back in August 2021 and wanted to try out the tech with .1 ETH. She never used it again.
+
+Now, in August 2022, Tornado Cash is a terrorist. 
+
+So does that make Alice a terrorist to?
+
+These kinds of questions always have two answers: the "correct" answer, as it exists in the minds of US officials, and the market's answer.
+
+The market doesn't reallllllyyyyy think things through, it just acts. 
+
+And so it decided that Alice is, in fact, a terrorist.
+
+Remember, the way the OFAC shitlist works is that anyone who transacts with someone on the list also gets on the list.
+
+So, when the market decides that Alice is a terrorist, it is also deciding that people who want to stay off the shitlist cannot transact with Alice.
+
+## Realities of Sanctioning a Protocol
+
+So what does this mean for Ethereum, a platform that is predicated on equal access for all... even if a person shows up on the OFAC shitlist?
+
+The EVM is a credibly neutral space, maintained by 1,000s nodes.
+
+The EVM wont care about OFAC, but the node operators sure do.
+
+This is the context for the [screenshots](https://mevwatch.info) you've been seeing. Those incredibly scary graphics that make it look Ethereum has been forever compromised by the US Government.
+
+![](/images/regulation-2.jpeg)
+
+[*source*](https://mevwatch.info)
+
+No one wants to accept a transaction from a wallet that touched Tornado Cash.
+
+Look - I get it. If >75% of transactions are being censored off of one stupid sanction, is Ethereum doomed?
+
+I don't know the objective truth, I can only give you my personal perspective...
+
+...but I emphatically believe that this just isn't that big of a deal.
+
+## Reasons to Believe
+
+At this point it's time to draw this thread to a conclusion; we'll need to talk through what all of this really means in future threads.
+
+But let's walk very quickly through some of the reasons to think this will all work out.
+
+*   First, it's important to think about what that red-square-chart-of-death is actually showing. It's saying "x% of blocks came from block builders/relays that say they will comply with the OFAC shitlist," not "of all the transactions that are pending, x% were censored."
+*   Second, think about how transactions work; [specifically the market dynamics behind the priority fee/tip](/ethereum/network/consensus/eip-1559). Let's say Alice REALLY needs to push a transaction through ASAP. All she needs to do is increase the fee until a it creates a block more lucrative than one that's "censored."
+*   Third, let's say Alice wont increase her fee, but she can wait. If 75% of blocks are censored, she can only get her txn in in one in every 4 blocks. So, instead of waiting for 12 secs, she must wait 48. Censorship increases to 99%? She just needs to wait ~20 mins.
+*   Finally, there are mitigations that can be built directly into the protocol. The most promising solution (IMO) is implementing the [Forward Inclusion List (aka crList)](https://notes.ethereum.org/@fradamt/H1ZqdtrBF). Tl;dr the proposer can tack on txns after the selecting a prebuilt block.
+
+In conclusion, while US Treasury did its best to ruin Ethereum with the Tornado Cash sanctions, it will be unsuccessful.
+
+First, because of the market dynamics of a decentralized network.
+
+Second, because the community will outbuild them.
+
+Ethereum is inevitable.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1593341632308314112)

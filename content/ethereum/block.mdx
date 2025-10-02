@@ -1,0 +1,183 @@
+---
+title: "Ethereum Block"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-12"
+readingTime: 7
+toc: true
+related: []
+---
+
+![](/images/block-banner.jpeg)
+
+# Ethereum Block
+
+## Prerequisites
+
+### Merkle Tree
+
+A [Merkle Tree](/concepts/merkle-tree) is a data structure used to organize and encrypt huge data sets. 
+
+Merkle Proofs can be used to efficiently verify that data exists in a dataset (confirmation a piece of data exists without transferring the whole dataset).
+
+### Hashing
+
+Applying a [hash function](https://inevitableeth.com/home/concepts/hash) takes data (of arbitrary contents and size) and reduces it to a unique, compact string. 
+
+Every input produces a unique output, even if two inputs are nearly identical.
+
+## The Merge
+
+Ethereum is the World Computer: a globally shared utility that exists between a network of 1000s of computers, each running a local version of the Ethereum Virtual Machine (EVM). 
+
+From genesis in 2015 until September 2022, Ethereum has coordinated with a system called Proof of Work.
+
+In a few days, the Ethereum blockchain will Merge with the Beacon Chain, creating the new canonical PoS ETH.
+
+As the name "The Merge" suggests, Ethereum blocks will be a combination of the old blocks (execution layer) and the new Beacon Chain blocks (consensus layer).
+
+![](/images/block-merge.png)
+
+Under PoS, an Ethereum block is made up of 3 parts:
+
+\- Administration, the metadata of the block
+
+\- Consensus, the layer coordinating the Beacon Chain providing the cryptographic security of PoS
+
+\- Execution, the data of the block, (almost) exactly mirroring PoW blocks
+
+## Administration 
+
+![](/images/block-administration.jpeg)
+
+*   **slot** \- the position of the block in the beacon chain blockchain (eg the 100,000 block is in slot 100000)
+*   **proposer\_index** \- the proposer who created this block
+*   **parent\_root** \- the root hash of a Merkle tree of the previous block
+*   **state\_root** \- the root hash of a Merkle tree which stores the state of the Beacon Chain (BeaconState)
+*   **randao\_reveal** - protocol-verified randomness, generated between all block proposers during an epoch.
+    *   Randomness is critical to the Beacon Chain; security depends on being able to unpredictably and uniformly select block proposers and committee members.
+*   **graffiti** - an (optional) 32-byte field in which block proposers can put anything they want. Often used by mining pools to log their blocks.
+*   **signature** - the signature the block proposer creates to take responsibility (add to blockchain and collect reward if good, get slashed if bad).
+    *   Created by combining the BeaconState, BeaconBlock and the proposer's private key.
+
+## Consensus
+
+![](/images/block-consensus.jpeg)
+
+*   **deposit\_root** - the root hash of a Merkle tree which stores the ETH deposits into the staking contract (required to become a validator)
+*   **deposit\_count** - amount of ETH in the staking contract
+*   **block\_hash** - hash of the block
+*   **deposits** - [beaconcha.in](https://beaconcha.in/) defines this field as "amount of validator deposits which have been included in this block by the block proposer."
+    *   Interestingly, the only non-0 value I could find was in the genesis block
+*   **voluntary\_exits** - withdrawals from the staking contract
+
+### Attestations
+
+Ethereum PoS elects a proposer who is charged with building (or selecting) a block and proposing it to the network. Attesters review the block and, if it's valid, sign it with their keys.
+
+*   **attestations** - a list of all the signatures that attested to this block
+
+#### Attestation Data Structure
+
+![](/images/block-attestation.jpeg)
+
+### Slashings
+
+*   **proposer\_slashings** and **attester\_slashings** - validators that have performed a hostile action against the network (for example, proposing or attesting to an invalid block). The network confiscates a portion of their staked ETH and ejects them from the validator set.
+
+#### Slashing Data Structure
+
+![](/images/block-slashing.jpeg)
+
+### Sync Committees
+
+A sync committee is a group of 512 validators, randomly assigned once every 256 epochs (~27 hours). This committee creates the signatures needed for an efficient light client.
+
+*   **sync\_aggregate** \- contains the aggregate BLS signature for the active sync committee
+    *   **sync\_committee\_bits** - efficient representation of committee participation
+    *   **sync\_committee\_signature** - the signature the sync committee creates to take responsibility for the block/epoch
+
+## Execution
+
+![](/images/block-execution-layer-full.jpeg)
+
+*   **baseFeePerGas** - [EIP-1559](https://notes.ethereum.org/@vbuterin/eip-1559-faq) created a minimum cost (base fee) for each unit of gas. When a block is created, the entire base fee is burned. The value changes based on how full the previous block was (max change of 12.5% per block).
+*   **difficulty** - a value that approximates the time a miner should calculate a hash function before finding a block. Network hash rate / difficulty = average block time
+    *   No longer applicable under Proof of Stake
+*   **extraData** - an (optional) 32-byte field in which block proposers can put anything they want. Often used by mining pools to log their blocks.
+    *   Similar to the **graffiti** in the consensus layer
+*   **gasLimit** - total gas available to the block
+*   **gasUsed** - gas used by the block
+*   **hash** - hash of the block
+*   **logsBloom** - a [Bloom filter](https://llimllib.github.io/bloomfilter-tutorial/) is a probabilistic structure that allows a user to filter through each element in the block.
+    *   minimizes the number of queries a client needs to make.
+*   **Miner** - the Ethereum address of the miner who successfully created this block
+*   **mixHash** - intermediate value calculated from nonce, used for validation
+*   **nonce** - extra data miners add to a block before hashing.
+    *   A block is created when this hash matches a specific value; mining is the process of attempting to find this value by altering the nonce.
+*   **number** \- Ethereum block number
+    *   Similar to **slot** in the consensus layer
+*   **parentHash** \- the root hash of a Merkle tree of the previous block
+*   **receiptsRoot** - the root hash of a Merkle tree which stores the receipts created by the transactions in a block.
+    *   A receipt includes: block number, block hash, associated contracts, gas used, the **stateRoot** at the time (before) transaction, etc.
+*   **size** \- size of the block in bytes
+*   **stateRoot** \- the root hash of a Merkle tree which stores the entire state of the EVM (account balances, contract storage, contract code, etc)
+*   **timestamp** - the date/time when the block was created, as reported by the block proposer
+*   **totalDifficulty** - the cumulative value of the difficult required to build the chain up until this block
+    *   No longer applicable under Proof of Stake
+
+### Transactions
+
+*   **transactionsRoot** - the root hash of a Merkle tree which stores the transactions contained within the block.
+*   **transactions** - an ordered list of all the transactions executed within the block.
+    *   [Deep Dive: Ethereum Transactions](/ethereum/blockchain/transaction)
+
+### Uncles
+
+Uncle blocks are no longer relevant; they are not possible under Proof of Stake. 
+
+They are created when 2 blocks are mined and sent to the network simultaneously. The block that gets validated by more nodes gets added to the blockchain. The other block becomes an uncle block. Uncle blocks are recorded, but do not affect the EVM state.
+
+![](/images/block-uncle.jpeg)
+
+*   **sha3Uncles** - the root hash of a Merkle tree which stores all uncles for a given parent
+*   **uncles** - a list of the blocks uncled by this block
+
+### Changes with the Merge
+
+*   **difficulty** - set to 0 (PoS does not have difficulty)
+*   **nonce** - set to 0x0000000000000000 (PoS does not use a nonce)
+*   **mixHash** - has been renamed to prev\_randao now stores the randao value from the previous block
+*   **sha3Uncles and uncles** - because proof of stake does not naturally produce uncle blocks, these fields will be set to 0 (or the hash of an empty list in the case of sha3Uncles).
+    *   These fields have become irrelevant.
+
+![](/images/block-merge-changes.png)
+
+## Full Block
+
+### Consensus Layer
+
+![](/images/block-consensus-layer-full.jpeg)
+
+### Execution Layer
+
+![](/images/block-execution-layer-full.jpeg)
+
+### Transaction
+
+[Deep Dive: Ethereum Transactions](/ethereum/blockchain/transaction)
+
+![](/images/transaction-full-txn-2.jpeg)
+
+## Resources
+
+This article combines the work of 5 tweet threads:
+
+*   Ethereum Blocks (PoS)
+    *   Source Material - [Twitter Thread](https://twitter.com/SalomonCrypto/status/1568365818509139968)
+    *   Source Material - [PDF](/twitter-pdf-2022-09-09_blocks_pos.pdf)
+*   Ethereum Blocks (PoW)
+    *   Source Material - [Twitter Thread](https://twitter.com/SalomonCrypto/status/1568233231748841474)
+    *   Source Material - [PDF](/twitter-pdf-2022-09-09_blocks_pow.pdf)

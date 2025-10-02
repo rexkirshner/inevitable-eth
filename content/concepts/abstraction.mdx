@@ -1,0 +1,131 @@
+---
+title: "Abstraction"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2023-01-09"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/abstraction-banner.png)
+
+[source](https://algodaily.com/lessons/object-oriented-programming-class-principles/abstraction)
+
+# Abstraction
+
+## Software Complexity 
+
+Let's say you're a developer working for an e-commerce retailer who sells fruit. 
+
+Your company receives many different fruits from farmers every day; your website needs to inventory, price, list/sell, process payment and route shipping. 
+
+**Option 1**
+
+*   Scan fruit.
+    *   If fruit is an apple:
+        *   For apples, check its quality and weight, calculate a price.
+        *   If it's red, increase price 5%.
+        *   Add to the apple warehouse, list on website.
+        *   When sold, process payment for apple.
+        *   Ship apple
+    *   If fruit is not an apple:
+        *   Check instructions for other fruits
+
+**Option 2**
+
+*   Scan fruit, note type.
+*   Check quality and weight.
+*   Check for individual characteristics.
+*   Feed this data into a price bot to receive price.
+*   Inventory all fruits together, and list on website.
+*   When sold, process one payment for all fruits and ship together.
+
+Option 2 is much more compelling for a lot of reasons: 
+
+*   process is streamlined across all fruits 
+*   adding new fruits is easier, complexity grows much slower 
+*   pricing is separated from fruit handling; price bot can optimize on pricing, handlers can focus on logistics. 
+
+## Definition
+
+The idea is to separate a specific object with the generalized concept. In computer science, we call this principle abstraction. 
+
+An object might be this specific apple: 🍎, but the abstraction might be all apples or even all fruits. 
+
+Another way to look at abstraction is from the perspective of the user. 
+
+Let's think about price bot from above. Price bot will take in the basic information about the fruit (type, quality, weight, etc) and return a price. 
+
+From the user's perspective its simple: give inputs, get output. 
+
+Take a look behind the scenes and you'll realize price bot is incredibly sophisticated. Regression models, price scraping, Monte Carlo forecasting, etc. 
+
+Yet the user never has to worry about any of it. 
+
+Abstraction is the concept that developers should simplify how they interface with their users as much as possible. Developers building on top of your work can access your functionality without becoming a master in your code. 
+
+## A Solution to Complexity
+
+At the end of the day, abstraction is the yin to complexity's yang. 
+
+Complexity is dangerous for many reasons: 
+
+*   development becomes more difficult 
+*   mistakes are harder to catch 
+*   unintended phenomena begin occurring 
+*   applications becomes less secure. 
+
+## A Solution for Collaboration
+
+Another benefit? You can update your code without disrupting the application/other developer's work. 
+
+Imagine adding weather data to price bot. The code will get more complex but no one using price bot will even notice; they'll just continue to send inputs and get outputs. 
+
+Computer science gets incredibly complex very quickly; as you begin coding, you'll find abstraction useful immediately. 
+
+But its real power is that it enables teams of developers to collaborate. Abstraction allows deep specialization while preserving easy coordination. 
+
+This coordination can be within a team: 
+
+*   I'll work on price bot, Alice will work on inventory and you can work on shipping 
+
+across organizations: 
+
+*   instead of processing payments ourselves, let's use Stripe. 
+
+or, to cut to the chase, across protocols.
+
+## Abstraction and Ethereum
+
+Ethereum is The World Computer; it is a single platform shared across all mankind.
+
+A platform where everyone, whether Vitalik Buterin, Chevron or grandma, have the same opportunities and play by the same rules.
+
+A platform with one message: "build on me."
+
+Abstraction is the concept that allows us to understand Ethereum as The World Computer.
+
+It allows us to build applications of infinite complexity that also simply and quickly integrate with each other.
+
+It allows us to build across borders, timezones and geopolitics.
+
+Abstraction is the concept that underlies the most important capability of The World Computer. The reason that De-Fi is simply a better way... Composability; the ability to take two independent things and make something more than the sum of its parts.
+
+The killer feature of Ethereum: composability.
+
+The reason why we have composability: abstraction.
+
+The purpose of abstraction: to manage complexity.
+
+The point of managing complexity?
+
+To change the world.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1553756628234579968)
+
+Source Material - [PDF](/twitter-pdf-2022-07-31_abstraction.pdf)

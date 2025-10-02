@@ -1,0 +1,171 @@
+---
+title: "Trustless Bridges"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-12"
+readingTime: 7
+toc: true
+related: []
+---
+
+![](/images/trustless-bridge-banner.png)
+
+# Trustless Bridges
+
+## The World Computer
+
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)). These nodes are real computers in the real world, communicating directly from peer to peer. 
+
+The purpose of the greater Ethereum apparatus is to offer a single shared computing platform - the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM).
+
+The EVM provides the context for [transactions](https://inevitableeth.com/home/ethereum/blockchain/transaction) (computation); everything you "do" on-chain happens within the EVM.
+
+By design, the EVM is completely isolated from the outside world. A smart contract has no way to access the internet to either read or send data.
+
+As far as a smart contract is concerned, NOTHING exists outside of user accounts, other contracts, etc.
+
+## Blockchain Bridges
+
+![](/images/bridge-banner.png)
+
+[Deep Dive: Blockchain Bridges](/concepts/bridge)
+
+And yet, a TRULY isolated EVM would render Ethereum quite... dull. Humans exist in the real world; we REALLY care about what happens IRL.
+
+And so, this concept of "bridging" ([information](/concepts/oracle) or value) has exists just about as long as Ethereum itself.
+
+The problem with the bridges we have today is that they inherently require their users to explicit trust them.
+
+Tl;dr a "bridge" is really just a collection of smart contracts on different blockchains, with some sort of off-chain entity coordinating the accounting.
+
+Each bridge is built differently, but at the end of the day to use a bridge is to trust the entity doing this off-chain work.
+
+Considering Ethereum is about building a trustless computing platform, it's ironic how much trust is required for these kinds of system to work.
+
+This is the reality of the Ethereum ecosystem we have today. Bridges require trust. For now.
+
+But don't worry, dear reader, this is not the Ethereum endgame. One day, we will have completely trustless bridges.
+
+## Accessing Ethereum
+
+![](/images/access-ethereum-1.jpeg)
+
+[Deep Dive: Accessing Ethereum](/ethereum/network/node/accessing-ethereum)
+
+Today, directly accessing Ethereum is not an easy task. It entails running two pieces of software (one for the EVM, one for PoS) and an interrupted, high-bandwidth internet connection.
+
+The only way to interact with the EVM is through these nodes.
+
+In fact, it is precisely because nodes are such a high burden that bridges require so much trust. In order to bridge capital between two chains, the bridge operator must be running nodes on both chains.
+
+But what if it wasn't that difficult to directly access Ethereum?
+
+What if it was so easy to access Ethereum that you could do it from within the computing environment of another blockchain.
+
+Today, bridges require a trusted party to pass information about the state of the EVM to the target chain; what if they could do it themselves?
+
+Today:
+
+*   send to contract on Ethereum, bridge service notices and sends update on target chain, contract on target chain updated, withdraw on target chain
+
+Future:
+
+*   send to contract on Ethereum, contract on target chain notices and updates, withdraw on target chain.
+
+Let's talk through how you would actually implement this kind of bridge.
+
+## A Trustless Bridge
+
+It starts with a [block](/ethereum/blockchain/block) - specifically a block header. Inside of the block header is the state root; using the state root, you can trustlessly verify Ethereum's state.
+
+This is very important: access to the state root = access to the EVM. We wont get into details here, we'll take this for granted (more info look into [Merkle trees & proofs](/concepts/merkle-tree)).
+
+The question is how to get access to the state root.
+
+The basic solution is just to post the state root directly to the smart contract on the target chain.
+
+The target chain would then have access to the state root, but unfortunately we are right back where we started - this is the same trust assumption as today's bridges.
+
+But this is PRECISELY the problem that consensus mechanisms were created to solve.
+
+And so, let's look to how an Ethereum node trustlessly verifies every proposed block header each time a new block is circulated through the network.
+
+### Sync Committees
+
+![](/images/sync-committee-banner.jpeg)
+
+[Deep Dive: Sync Committtees](/ethereum/network/consensus/sync-committee)
+
+To verify a block, an Ethereum node checks all the attached signatures. (One of) the reason(s) a node is such a heavy-weight piece of software is because it must track the entire validator set (past and present) in order to verify these signatures.
+
+A set of ~500k.
+
+Fortunately, this problem was identified long ago; we already have upgraded Ethereum with the solution.
+
+In Oct 2021, the Altair hard fork activated sync committees, which provide the scaffolding required for lightweight, trustless verification.
+
+Once every 256 [epochs](/ethereum/network/consensus/time) (~27 hours), 512 validators are randomly selected to be on the sync committee, who sign every single Ethereum block.
+
+Instead of tracking the entire validator set, a light client (or our trustless bridge) can track just these 512 validators.
+
+512 is MUCH more manageable than the entire set; manageable enough for a smart contract.
+
+And so, using the sync committee, the contract on the other chain can trustlessly verify that a given state root is valid (and therefore can be used to read the state of the EVM).
+
+### BLS Signatures
+
+![](/images/bls-signatures-1.jpeg)
+
+[Deep Dive: BLS Signatures](/concepts/bls-signatures)
+
+It turns out that this actually isn't enough - 512 validators is still to many to actually work in practice.
+
+The problem is in the underlying cryptography, the BLS signatures. Tl;dr BLS signatures can be aggregated and verified all at once.
+
+In order to verify a BLS signature, you must know which validators were aggregated into that specific signature.
+
+Then, you need to create an aggregate public key from each participants' individual public key, but ONLY those who participated in that specific signature.
+
+Verification process:
+
+1.  Receive signature and list of participants
+2.  Calculate the aggregate public key
+3.  Verify the signature
+
+It turns out that step 2 is VERY gas intensive, even with only 512 validators (for those curious - the elliptic curve isn't precompiled).
+
+Here is where we need to borrow from another part of crypto: ZK-SNARKs.
+
+### ZK-SNARKS
+
+Don't worry, we wont go into details. All you need to know is that a SNARK is succinct - regardless of how complex the inputs or functions are, we can quickly and easily verify a result.
+
+SNARKs are easy enough to verify that it can actually be done by a smart contract, on-chain.
+
+So here's the idea: we'll compute the aggregate public key off-chain and post it with proof. When the smart contract receives the key, it can first verify it via the SNARK.
+
+Once the smart contract (alt chain) verifies the SNARK, it knows it has a valid public key. Then it uses this key to verify the signature.
+
+Now it knows that the state root is valid, and can make changes to reflect whatever it finds within (eg releasing bridged assets).
+
+And so that is how you build a trustless bridge! 
+
+For those of you that are still curious on the topic, I recommend [this talk from DevCon Bogatá](https://www.youtube.com/watch?v=0MJpkFncsSQ). The team at Succinct Labs is currently building the bridge we just talked about!
+
+## Trustless Trust
+
+[Deep Dive: Trustless Trust](/ethereum/world-computer/endgame/trustless-trust)
+
+But before we go, it's worth lingering on what's actually going on here - specifically all this handwaving around trust.
+
+Because at the end of the day, even this kind of bridge requires some sort of centralized actor to generate proofs and transfer information.
+
+Trust, or more specifically, trustlessness, means is a little more nuanced than first impression.
+
+Trustlessness means that you never have to trust in another person's motives, you just need to trust in math, computer science and economics.
+
+## Resources
+
+[Source Material - Twitter Link](https://twitter.com/SalomonCrypto/status/1613723126101348354)

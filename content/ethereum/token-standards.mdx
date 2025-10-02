@@ -1,0 +1,124 @@
+---
+title: "Ethereum Token Standards"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-07"
+readingTime: 3
+toc: true
+related: []
+---
+
+![](/images/token-standards-1.jpeg)
+
+# Title
+
+## Prerequisites
+
+### Prereq 1
+
+Lorem ipsum
+
+## The World Computer
+
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+
+Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
+
+## APIs
+
+[Application Programming Interfaces](/concepts/api) (APIs) are the mechanism by which programs communicate and developers coordinate.
+
+A developer will camouflage as much of the inner workings of their program as much as possible. Communication is maximally simplified and streamlined.
+
+On the World Computer, we use APIs all over the place:
+
+*   to integrate protocols
+*   to transfer assets
+*   to build composable investments
+*   to borrow, lend and collateralize assets
+
+Basically anything that happens on chain is either an API or is directly summarized by an API
+
+## Token Standards
+
+In fact, you can think of the different [token types](https://ethereum.org/en/developers/docs/standards/tokens/) as a piece of code that conforms to an API template. 
+
+If a smart contract adheres to a specific template, it is that kind of token.
+
+This is the template for an ERC-20 token. 
+
+![](/images/token-standards-2.jpeg)
+
+In order to create an ERC-20, a developer has to create code to be executed for all of these methods and events 
+
+All ERC-20s support these functions; a (different) developer can count on having these when using any ERC-20.
+
+### ERC-20
+
+[ERC-20](https://eips.ethereum.org/EIPS/eip-20) tokens are the most basic token standard, representing the vast majority of tokens available today. 
+
+This includes everything from governance tokens, ve-tokens, stablecoins, etc. 
+
+ETH is not an ERC-20 token, or a token at all. ETH is something special. [In order to use ETH in De-Fi, we generally need to use WETH](https://academy.binance.com/en/articles/what-is-wrapped-ether-weth-and-how-to-wrap-it).
+
+### ERC-721
+
+[ERC-721](https://eips.ethereum.org/EIPS/eip-3386) tokens are most commonly referred to as NFTs (Non-Fungible Tokens). 
+
+These tokens represent unique or identifiable items (usually) within a collection. This includes PFPs, collectable art, property, etc.
+
+### ERC-1155
+
+[ERC-1155](https://eips.ethereum.org/EIPS/eip-3386) tokens combine properties of both ERC-20 and ERC-721 tokens, providing a single interface that manages any combination of these token types. 
+
+This can be used as a more modern alternative for ERC-20 or ERC-721, and has unique properties optimized for gaming.
+
+### ERC-4626
+
+[ERC-4626](https://eips.ethereum.org/EIPS/eip-4626) is a newer token standard, describing yield-bearing vaults. 
+
+The standard provides a common interface for ERC-20 tokens deposited in (or redeemed from) a vault to earn yield. This can include yield farming and aggregation, but can be generalized to much more.
+
+### ERC-777
+
+[ERC-777](https://eips.ethereum.org/EIPS/eip-777) is a very configurable but rarely used token standard.
+
+ It provides updates to ERC-20, allowing devs to attach code that runs when the token is sent and/or received.
+
+Although it is included on the [Ethereum Foundation official list](https://ethereum.org/en/developers/docs/standards/tokens/), we rarely see ERC - 777 tokens in practice.
+
+### ERC-3475
+
+[Deep Dive: ERC-3475](/ethereum/blockchain/token-standards/erc-3475)
+
+[ERC-3475](https://eips.ethereum.org/EIPS/eip-3475) is the latest ERC token standard, becoming official August 24th, 2022.
+
+ERC-3475 is the bond token standard, a new, multi-layered structure that allows an asset to issue and service debt without fracturing liquidity.
+
+## Composability
+
+Quick history lesson:
+
+First, The Before Time. 
+
+Then... Alan Turing → mechanical computing → [computers](/background/mass-comm/computer) → networked computers → ARPANET→ World Wide Web → Internet → Bitcoin 
+
+That brings us to roughly 2014, when VitalikButerin introduced us to ETH.
+
+This is the beginning of the story. 
+
+Ethereum is just the infrastructure, now we must build on it. 
+
+The more we set standards at the foundation, the higher we can go
+
+Computer science is the magic, the developers are the wizards, abstraction is the spell. 
+
+Composability is the goal.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1553982842232717313)
+
+Source Material - [PDF](/twitter-pdf-2022-07-31_token_standards.pdf)

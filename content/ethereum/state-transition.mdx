@@ -1,0 +1,108 @@
+---
+title: "State Transition Function"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-07"
+readingTime: 2
+toc: true
+related: []
+---
+
+![](/images/state-transition-1.jpeg)
+
+# Ethereum State Transition Function
+
+## Prerequisites
+
+### Ethereum State Machine
+
+Ethereum is a distributed [state machine](/ethereum/evm/state-machine). A state machine is a mathematical model of computation with two major components: 
+
+*   the state, the configuration of the system at a moment in time
+*   a transaction, the set of instructions to change the state
+
+## State Transition Function
+
+A state is a static snapshot in time, the transactions are the instructions to change the state and the state transition function is the mechanism that applies the transactions to the state. 
+
+*   Inputs: current state, new block 
+*   Output: new state
+
+### Ethereum Specification
+
+![](/images/state-transition-3.jpeg)
+
+First, process all the empty slots that do not have a block (process\_slots). 
+
+Check the signature of the block (verify\_block\_signature) and if it's valid, process the block by executing the underlying transactions (process\_block).
+
+## Process Slots
+
+![](/images/state-transition-4.jpeg)
+
+Sometimes a slot passes without a block being proposed; maybe the proposer was offline or the network dropped the block. The state transition function moves through empty slots and triggers a change of epoch, if needed. 
+
+*   Inputs: current state, slot 
+*   No output
+
+### Ethereum Specification
+
+![](/images/state-transition-5.jpeg)
+
+While the current slot is less than the intended slot, progress forward (process\_slot). 
+
+If the next slot is going to be a new epoch, execute the processes associated with consensus and prepare for the next epoch (process\_epoch).
+
+## Process Epochs
+
+![](/images/state-transition-6.jpeg)
+
+An epoch is 32 slots/blocks. When process\_slots moves through this boundary, the validator must attend to many consensus-based and housekeeping duties. 
+
+*   Input: current state 
+*   No output
+
+### Ethereum Specification
+
+![](/images/state-transition-7.jpeg)
+
+This is the consensus spec, as you can see it's very dense. Here's a summary of each step.
+
+![](/images/state-transition-8.png)
+
+## Process Block
+
+![](/images/state-transition-9.jpeg)
+
+Finally, we get to the good part; it's time to process the block! 
+
+Checking the header one more time, the validator will feed the block (and the transactions it carries) into the EVM. It ends with some consensus housekeeping. 
+
+*   Inputs: current state, block 
+*   No output
+
+### Ethereum Specification
+
+![](/images/state-transition-10.jpeg)
+
+At the core, the validator performs final checks (process\_block\_header) and feeds the block into the EVM (process\_execution\_payload).
+
+![](/images/state-transition-11.jpeg)
+
+The first chunk of this function is just more checks. The moment the validator passes the transactions to the EVM is execution\_engine.notify\_new\_payload(payload).
+
+Finally, the validator returns to its consensus duties (found in process\_block). Here is a summary
+
+![](/images/state-transition-12.png)
+
+## Resources
+
+[Ethereum Specifications](https://github.com/ethereum/consensus-specs)
+
+[The Best Semi-Technical Manual on Ethereum](https://eth2book.info/bellatrix/part3/transition/)
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1577751304696274944)
+
+Source Material - [PDF](/twitter-pdf-2022-10-05_state_transition.pdf)

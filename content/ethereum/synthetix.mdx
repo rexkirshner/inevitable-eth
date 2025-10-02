@@ -1,0 +1,124 @@
+---
+title: "Synthetix Composable Assets"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-07"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/synthetix-banner.jpeg)
+
+# Synthetix Composable Assets
+
+## A Lego Metaphor
+
+First, a metaphor: Let's say you have a really cool Lego boat... but you're kinda into that other girl's Lego Star Wars set. 
+
+Feel free to ask her, but I don't think she'll do a straight swap. She'll probably want to keep an Ewok or a speeder or something.
+
+But you have another option! 
+
+You know the world's BEST Lego builder; he can reach into a box of legos and build the most intricate, beautiful object you can imagine without effort. You can also hand him a finished Lego and he'll neatly disassemble it nearly instantly.
+
+Instead of swapping, you should take your boat to the builder. 
+
+He'll disassemble it into individual bricks and then rebuild it into that same Star Wars set. 
+
+The builder takes a fee, but he's playing a different game than the first girl. 
+
+Let's just say bricks, not Ewoks.
+
+## Synthetix
+
+Let me introduce you to [Synthetix](https://synthetix.io/), the synthetic asset protocol.
+
+Users stake sSNX tokens in order to mint synths, an ERC-20 token which tracks the price of an external asset.
+
+sUSD, sETH, sBTC, sEUR, sAAVE, sLINK...
+
+User flow:
+
+*   User stakes $SNX
+*   User mints Synths against staked SNX with a collateralization ratio (CR) of 400%
+*   If the CR drops below 200%, user is flagged for liquidation. S/he has 72 hours to fix CR to 400%
+*   SNX stakers receive protocol fees and SNX rewards
+
+At this point, the user is free to use the Synth however s/he sees fit.
+
+*   Stake your sUSD on [Curve Finance](https://curve.fi/) for SNX rewards
+*   Sell your sBTC because you want to short BTC
+*   Grow your ETH exposure by depositing sETH into [Yearn Finance](https://yearn.finance/vaults)
+
+## Trading with Synthetic Assets
+
+Synthetic assets provide exposure to an asset without holding the underlying resource. 
+
+This has a range of advantages, including reducing the friction when switching between different assets, expanding the accessibility of certain assets, and censorship resistance.
+
+Trading through Synthetix provides many advantages over traditional venues. 
+
+All trades are executed against a smart contract and all settled through SNX.
+
+This provides liquidity up to the total amount of collateral in the system with zero slippage.
+
+Until recently there was an (killer) trade off in using Synthetix trading: each trade had a 10 minute delay. We aren't going to get into it, it's a system of the past, but essentially the delay provided a buffer to settle in the case of front-running or oracle manipulation.
+
+Today Synthetix has built a system based on "a combination of oracles from Chainlink and Uniswap V3."
+
+I don't really know what that means, but their docs assure us that it is "without significant frontrunnable risk."
+
+Point is, trades are as quick as any DEX.
+
+Example:
+
+Synthetix  will route a ETHUSDC trade through the following path:
+
+*   Take USDC
+*   Swap for sUSDC at Curve Finance
+*   Convert sUSDC to $sETH on Synthetix
+*   Swap for ETH on Curve
+*   Return ETH
+
+Very low slippage from Curve, no slippage from Synthetix
+
+Sound complicated? Well the good news is that all of this happens behind the scenes. Atomic swaps are implemented via other protocols.
+
+1inch recently integrated atomic swaps and driven a huge amount of volume through Synthetix.
+
+## Universal Liquidity
+
+Trading isn't the only application Synthetix is good for; using the same concept we'll soonTM see cross-chain bridging.
+
+Instead of a bonding-based system, Synthetix can move Synths cross bridge without worrying about liquidity or batching.
+
+Even on its own, Synthetix is a really cool protocol. The idea of synthetic tokens for anything with a price feed, combined with SNX as universal [liquidity](/concepts/liquidity), has already proven its power.
+
+But for us De-Fi zealots, there is even more to love.
+
+If you're a believer in Curve Finance and The Flywheel, you have to see just how much Synthetix is bringing to the table.
+
+The offer? Near unlimited liquidity for even the largest of trades.
+
+The ask? A LOT of very efficient stable swaps in and out of Synths
+
+If The Flywheel is the combination of [Frax Finance](https://frax.finance/), Curve Finance and [Convex Finance](https://www.convexfinance.com/), then is Synthetix a wizard who figured out how to harness its energy.
+
+My only question: why isn't Synthetix building up a CVX stack?
+
+Or at least sCVX?
+
+Regardless, Synthetix is a powerhouse...
+
+I can't wait to see what's synthesized up next!
+
+## Resources
+
+[Further Reading](https://blog.switcheo.com/synthetix-atomic-swaps/)
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1543807572112809984)
+
+Source Material - [PDF](/twitter-pdf-2022-07-03_synthetix.pdf)

@@ -1,0 +1,137 @@
+---
+title: "Attestation"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-07"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/attestation-1.jpeg)
+
+# Attestations
+
+## Prerequisites
+
+### Time on Ethereum (Slots & Epochs)
+
+[Deep Dive: ETH Time](/ethereum/network/consensus/time)
+
+Epochs are made of 32 slots
+
+1 slot = 12 secs
+
+1 epoch = 6 mins 24 secs
+
+## The World Computer
+
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+
+Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
+
+This distributed network of EVMs is held in sync via a [consensus mechanism](/ethereum/network/consensus). A consensus mechanism is a system by which a leader (block proposer) updates the state of their EVM and the rest of the network trustlessly follows.
+
+Ethereum uses [Proof of Stake](/ethereum/network/consensus/pos) (PoS) as its consensus system.
+
+## Economic Security
+
+### Something at Stake
+
+PoS randomly selects a block proposer, who gets to construct the next block. 
+
+The rest of the network validates these blocks, voting them into the blockchain. 
+
+In order to participate, you must put ETH at stake.
+
+By putting $ETH at stake, network participants (validators) are placing their capital at risk for slashing. Slashing is the punishment the network applies to malfunctioning (intentional or not) validators.
+
+This is the mechanism by which the ETH stake projects economic security.
+
+### Voting Methods
+
+Deep Dive: Voting Rules ([LMD-GHOST](/ethereum/network/consensus/lmd-ghost) and [Casper FFG](/ethereum/network/consensus/casper-ffg))
+
+Most obviously, this dynamic applies to the block proposer; if they submit an invalid block, the network will consider them a malicious actor and remove them from the network.
+
+But this also applies to the next step - the validation of the block by the rest of the network.
+
+The block producer sends out a block; validators evaluate it and if it is valid, they broadcast an attestation.
+
+If a validator attests to an invalid block, the network considers them just as hostile as an invalid block proposer… and treats them just as severely.
+
+Attestations are core to ETH security.
+
+## Attestation Process
+
+### Distributing a Block Proposal
+
+It starts with a proposer who builds (or somehow gets) a block, and is ready to broadcast it to the network.
+
+Sending the block to a few (or even 1,000) validators is no problem, but once you start getting passed 10K, the chatter requirements become so huge that no credibly decentralized network could handle it.
+
+Currently there are about 440k Ethereum validators.
+
+![](/images/attestation-3.jpeg)
+
+An Ethereum where every validator validates every block is not realistic. Instead, we have a different goal: every validator will validate every epoch. 
+
+Once every 6.4 minutes every validator will vote on the canonical blockchain.
+
+### Divide and Conquer
+
+At the beginning of every epoch (once every 32 blocks), the entire validator set is randomly shuffled into 64 groups called committees. The block proposer sends every validator a copy of the block, but only its committee members need to attest.
+
+Zooming in, an attestation is really a BLS signature wrapped in some identifying metadata. 
+
+[Deep Dive: BLS Signatures](/concepts/bls-signatures)
+
+A BLS signature is a type of digital signature that maintains all the properties of a normal digital signature but with a special property: multiple keys/messages can be aggregated.
+
+The magic of BLS signatures is that at the data level, an aggregate signature is the exact same thing as a single signature. 
+
+Thus, a BLS signature can store (and verify) a HUGE amount of signatures in a very efficient manner.
+
+If there are 440k validators and 64 committees, there must be ~27k validators/committee. 
+
+27k validators still poses a problem; it's both too much network chatter and too many signatures to aggregate all at once. 
+
+And so, we split one more time. 1 committee = 64 subnets.
+
+### Aggregators
+
+Validators broadcast their attestations to their assigned subnet, which consist of ~250 validators. 16 validators on each committee are designated as aggregators. 
+
+They listen for attestations and begin bundling them into a BLS signature.
+
+All 16 are attempting to build the same aggregate signature containing all the subnet's validators, but network conditions can cause some aggregators to miss a few attestations. Each validator does their best and publishes the result.
+
+### Selection
+
+At this point, the ball moves back to the block producer's court. 
+
+The validator who proposed the node begins to go subnet by subnet and selects the best aggregate signature. Once the 64 best signatures are gathered, the block proposer aggregates them one last time.
+
+This final aggregation is then added on to the block, signifying that all 27k validators in that committee saw that block and agreed with it - on threat of slashing. 
+
+Incidentally this process limits the number of validators the Ethereum network can support.
+
+## Joining the Blockchain
+
+At this point we have a valid block, attested to by its entire committee and carefully prepared to allow quick verification. And so, it's time to add it to the blockchain... 
+
+In fact, by virtue of this process, it WAS added to the blockchain!
+
+Every time a block is proposed, 1/32 of the network places their stake on the line and votes. 
+
+Every 32 blocks, the entire network participates. 
+
+And so, once every epoch, Ethereum becomes secured by the entire value of all staked ETH.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1578540111930699778)
+
+Source Material - [PDF](/twitter-pdf-2022-10-08_attestation.pdf)

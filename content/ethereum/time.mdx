@@ -1,0 +1,146 @@
+---
+title: "Time"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-09"
+readingTime: 6
+toc: true
+related: []
+---
+
+![](/images/time-banner.jpeg)
+
+[*source*](https://www.vecteezy.com/vector-art/7212589-eye-cyber-circuit-future-technology-concept-background)
+
+# Time, Slots and Epochs 
+
+## The World Computer
+
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+
+Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
+
+For its first 7 years, Ethereum used Proof of Work (PoW) to reach consensus and stay in sync; today it uses Proof of Stake (PoS).
+
+## Worker's Time
+
+Both methods must identify a node who gets the privilege of adding a new block to the blockchain. Under PoW, nodes (miners) compete to earn the right to be the next block proposer. 
+
+The proposer is a powerful position; not only can they pick, choose and order the transactions as they desire, they also earn: 
+
+*   Block rewards, paid by the network 
+*   Tips, paid by the transaction generator
+
+The competition: an incredibly difficult puzzle which can only be solved by trail and error. 
+
+Miners guess and guess until they solve the puzzle, proving they've done work in the real world (using electricity to power the machines solving these puzzles).
+
+Under PoW, the block proposer was the miner who was able to solve a cryptographic puzzle the fastest. When finished, it broadcasts its block to every other node in the network. 
+
+Each node then checks to make sure the transaction are valid and the puzzle is complete.
+
+## Taking Turns 
+
+PoS is fundamentally different - there is no competition at all.
+
+Instead of choosing the next block proposer by wasting as much electricity as possible, what if we just... took turns?
+
+This is the core of PoS; the 32 ETH stake is just a bond to guarantee good behavior.
+
+One effect of changing from PoW to PoS is that we've switched the fundamental cadence of Ethereum to be based on a unit of time derived from a an unpredictable race to turn-based system.
+
+By its very nature, we can't control the timing of PoW, but we can with PoS.
+
+## Slots
+
+Today, time on the World Computer is divided into 12 second units called "slots." 
+
+Every slot, a different validator is assigned to propose a new block. If it does its duties, it will propose a valid block (within 4 seconds), otherwise the slot will pass along empty.
+
+The block proposer will send the block to every node in the network who is then responsible for processing it and updating the state of their EVM. 
+
+This keeps all nodes in sync with the proposer, and turns the environment of the EVM into the collective World Computer.
+
+Each slot also has a committee assigned to it. A committee is a group of validators who are assigned to verify and attest to the validity of the block broadcasted by the block proposer. After verification, committee members broadcast a cryptographic attestation.
+
+## Epochs
+
+At this moment, there are 440k validators. If every validator was on every committee, the network would freeze under a deluge of attestations. 
+
+So we make a decentralization trade-off. Every validator will not attest to every slot, but they will attest to every epoch.
+
+Epochs are made of 32 slots. 1 slot = 12 secs, so 1 epoch = 6 mins 24 secs.
+
+At the beginning of each slot, the entire validator group is randomly split into 32 committees corresponding to the 32 slots of the upcoming epoch.
+
+This randomness is non-trivial; we need [RANDAO](/ethereum/network/consensus/randao).
+
+Each slot brings a new committee forward. The first member is the block proposer; the rest are attesters. The block proposer has 4 seconds to send a block to the committee. 
+
+Each member verifies the block and creates a BLS signature (if there is no block, they attest to last block).
+
+## Signatures
+
+A [BLS signature](/concepts/bls-signatures) is a [digital signature](/concepts/digital-signatures) that provides all the normal guarantees (proof a specific message was signed by a specific person) but has a useful bonus property: it can be aggregated. 
+
+Once aggregated, thousands of signatures can be verified in one operation.
+
+## Aggregation
+
+For those of you not following along at home, 440k validators / 64 committees = 27k validators / committees. 
+
+This is too big a number to aggregate all at once. 
+
+And so, committees are broken up into 128 subnets. ~200 validators / subnet
+
+In each subnet, 16 validators are designated as aggregators. All subnet-members publish their BLS signatures, but only aggregators listen and do the aggregation. All 16 are trying to build the same ideal aggregate signature, but conditions are often not ideal.
+
+Next, the block proposer will pick the best BLS aggregate signature, one from each of the 128 subnets The BLS aggregation algorithm is applied one final time, and the 128 subnet signatures are merged into one final committee BLS signature, representing ~27k validators
+
+As an aside, this whole process is the reason 32 ETH is the minimum amount of ETH required to become a validator. This aggregation process is slow and complex; reducing the minimum stake increases the number of validators, exponentially increasing the problem.
+
+## Transitioning Between Epochs
+
+[Deep Dive: Ethereum State Transition Function](/ethereum/network/consensus/state-transition)
+
+[Deep Dive: Casper FFG](/ethereum/network/consensus/casper-ffg)
+
+After 32 slots, an epoch ends. 
+
+At the end of every epoch, every validator runs process\_epoch, a subroutine of the Ethereum State Transition Function. We'll summarize it in 2 sections: 
+
+*   Finalization 
+*   Consensus Housekeeping
+
+### Finalization
+
+Finalization is the application of the Casper FFG protocol. Tl;dr Finalization is a promise by the protocol that an epoch (and therefore the blocks and the transactions within) are irreversible.
+
+Finalization is the mathematical and economic guarantee that a specific action on the World Computer is part of the canonical blockchain. Undoing a single finalized transaction would necessitate destroying 1/3 of staked ETH - more than $20B, today.
+
+Epochs mark the boundaries for finalization.
+
+*   If more than 2/3s of the network attest during an epoch, it becomes justified. 
+*   If a second epoch with a 2/3 majority follows the first, it will finalize that epoch, granting it the security guarantees of Ethereum
+
+### Consensus Housekeeping
+
+The other section of process\_epoch is consensus and housekeeping. Basically this is everything needed to uphold the rules of consensus (processing slashing, rewards, etc) and reseting the stage for the next epoch. 
+
+Read up on Casper FFG for more info.
+
+## Summary
+
+*   Slot: every 12 secs, the World Computer expects a new block (EVM changes) 
+*   Epoch: every 32 slots, the entire network votes 
+*   Finalization: following justification, a second supermajority of validators vote to confirm an epoch 
+
+Finalization = ETH security
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1577863907976220672)
+
+Source Material - [PDF](/twitter-pdf-2022-10-06_time.pdf)

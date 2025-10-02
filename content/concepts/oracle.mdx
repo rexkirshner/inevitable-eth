@@ -1,0 +1,110 @@
+---
+title: "Oracle"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "intro"
+updated: "2023-01-11"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/oracle-banner.jpeg)
+
+## Connecting the World Computer
+
+[The problem](https://blog.chain.link/what-is-the-blockchain-oracle-problem/): blockchains cannot pull in or push out data to any external system (by design). They are isolated networks - a computer without Internet. Without internet? In 2022?!??!!
+
+The Solution: Blockchain Oracles
+
+![](/images/oracle-2.jpeg)
+
+A blockchain oracle is an entity that sits between Ethereum and the outside world, moving information between the two.
+
+An oracle is made up of two parts:
+
+*   Oracle Smart Contracts - the code that exist within Ethereum, processing requests and coordinating between internal and external clients.
+*   Oracle External Interface (Node) - the computers and servers that are in communication with Ethereum. Nodes are centralized entities capable of incredibly quick and cheap computation. They are also connected to external data feeds and can publish that data on-chain.
+
+Oracle nodes and smart contracts achieve this two way communication by staying closely in sync and actively watching each-other across the on/off-chain barrier. 
+
+Entities on both sides have someone they can use to pass information back and forth via a robust set of APIs.
+
+## Chainlink
+
+[Chainlink](https://chain.link/) is the leading oracle network for Ethereum (and all blockchains). If you need to import high quality, reliable data into Ethereum, the only real choice (right now) is via Chainlink.
+
+![](/images/oracle-1.jpeg)
+
+Chainlink offers 3 products.
+
+### Basic Request
+
+The Basic Request Model is a generalized structure for passing data on/off-chain. 
+
+A client smart contract will send the oracle smart contract the API request and a LINK payment. The oracle network bridges the message, making changes and providing data where it's needed.
+
+Let's say a protocol is providing synthetic exposure to the price of gold and needs a feed of the price of gold from the real world. It could use a basic request to retrieve the data. 
+
+Unfortunately, the reality is that oracle work is very expensive.
+
+Furthermore, while basic requests uses Chainlink's technology to send messages in and out of Ethereum, they are still only as safe and secure as the nodes they connect to.
+
+What happens if a malicious oracle node changes the price of gold before it publishes it?
+
+It's not just bad guys. What about a disaster scenario: server gets hacked, data center gets flooded, some weird configuration bricks the node forever.
+
+There's a reason the Ethereum community is so nuts about decentralization.
+
+### Decentralized Data
+
+Fortunately, Chainlink has an answer: Decentralized Oracle Network (DON)
+
+A DON combines multiple independent oracle node operators and multiple reliable data sources to establish end-to-end decentralization.
+
+The Decentralized Data Model combines three layers of decentralization: 
+
+*   data source, gathering data from multiple well-vetted feeds
+*   node, relying on a network of operators
+*   chain, publishing data across blockchain ecosystems
+
+Each feed is built and funded by the community of users who rely on accurate, up-to-date data in their smart contracts. As more users rely on and contribute to a data feed, the quality of the data feed improves.
+
+[Here is the list of data feeds available currently](https://data.chain.link/). If you click through you can see performance metrics (eg how often it is updated), users, networks, etc.
+
+While the decentralized data model has boosted the reliability and security of the oracle network, it has come at a high cost. The most expensive part of oracle-work is paying for gas; in the vanilla decentralized data model, every node pays every time they publish.
+
+### Off-Chain Reporting
+
+Fear not, the decentralized data model is just the beginning! On to the next evolution in oracle technology: Off-Chain Reporting (OCR).
+
+OCR leverages the same decentralized principals, but moves the computational and gas-expensive work of aggregating data off-chain.
+
+In OCR, all nodes communicate using a peer to peer network. During the communication process, a lightweight consensus algorithm runs: each node reports its data observation and signs it. 
+
+A single aggregate txn is then transmitted to the oracle smart contract.
+
+OCR is a huge improvement on the decentralized data model. The oracle node network can scale exponentially bigger, increasing decentralization, security and reliability. 
+
+With OCR, there will always be only 1 txn per update, regardless of network size.
+
+![](/images/oracle-3.jpeg)
+
+[*source*](https://docs.chain.link/architecture-overview/off-chain-reporting/)
+
+## From Dial-Up to Broadband
+
+7 years ago Vitalik Buterin launched Ethereum, giving us The World Computer.
+
+5 years ago Sergey Nazarov, Steve Ellis and Ari Jules gave us Chainlink and begin connecting The World Computer to the Internet.
+
+Today, we have the equivalent of dial-up...
+
+Can you even imagine the broadband-era?
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1557211373288898560)
+
+Source Material - [PDF](/twitter-pdf-2022-08-10_oracles.pdf)

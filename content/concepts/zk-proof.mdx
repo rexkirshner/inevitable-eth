@@ -1,0 +1,90 @@
+---
+title: "Zero-Knowledge Proof"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-03-31"
+readingTime: 3
+toc: true
+related: []
+---
+
+![](/images/zk-proof-banner.jpeg)
+
+[*source*](https://www.mangrovia.solutions/en/zero-knowledge-proof-how-it-works-and-why-its-important/)
+
+# Zero-Knowledge Proofs
+
+## Social Security Numbers
+
+In America, citizens don't have ID numbers... and yet we live in a society that necessitates them. 
+
+If you've ever applied for a loan, tried to rent a house or opened a bank account you already know: we've just decided to use our social security numbers instead.
+
+Originally intended to be specific to a single government benefits program, the [social security number](https://en.wikipedia.org/wiki/Social_Security_number) (SSN) have become an American's unique identifier. 
+
+Almost like private keys for meat-space. 
+
+And yet, we're required to give it to basically anyone who asks.
+
+Imagine a world where you could prove, with 100% certainty, that you were who you said you were (corresponding to your SSN) without revealing ANY information about your SSN. 
+
+The world would look entirely the same, expect with >90% less identity theft.
+
+## Zero-Knowledge
+
+A Zero-Knowledge Proof (ZK-proof) is a way of proving a statement is valid without revealing it. 
+
+A ZK-proof relies on verifiable algorithms that take input data and return "true" or "false" without sharing the statement's contents or how you discovered the truth.
+
+A ZK-proof must be: 
+
+*   complete (all valid inputs return true) 
+*   sound (all invalid inputs return false) 
+*   zero-knowledge (the party requesting verification learns nothing about the statement that they didn't already know)
+
+ZK-proofs are a category of mathematical tools with applications far beyond cryptography and cryptocurrency, but the technology has important implications on-chain, particularly for privacy and scalability.
+
+## Implications on Blockchain
+
+### Privacy
+
+Privacy (Most) blockchain computers are built on top of public, decentralized ledgers. By their very design, every txn is visible for all to see... forever.
+
+ZK-proofs allow users to securely interact on-chain while obfuscate txn details and guaranteeing financial privacy
+
+### Scalability
+
+Scalability ZK-proofs introduce a new paradigm: [verifiable computation](https://en.wikipedia.org/wiki/Verifiable_computing). 
+
+Verifiable computing allows us to send computation to another entity while maintaining verifiable results.
+
+Verifiable computation is critical to improving processing speeds on blockchains without reducing security. 
+
+Instead of processing every transaction on-chain, Ethereum can offload execution. After processing, that chain can return the results to mainnet with a ZK-proof.
+
+## Current Technology
+
+ZK-technology is still very young. 
+
+Generating proofs is extremely challenging and computationally expensive. Verifying proofs is also costly (although significantly computationally cheaper) and must be done on-chain, where costs are high.
+
+Current implementations have a few important weakness:
+
+*   Some ZK-proofs require a [reference string](/concepts/pcs-trusted-setup) that must be generated from trusted parties
+*   Some ZK-proofs are vulnerable to quantum computers
+
+Fortunately, development is moving quickly and accelerating.
+
+## Summary
+
+In summary, ZK-proofs allows one party (prover) to prove to another party (verifier) that a statement is true while also ensuring that the prover does not give the verifier any info that the verifier didn't already have. 
+
+All with cryptographic, mathematical certainty.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1569119846952235008)
+
+Source Material - [PDF](/twitter-pdf-2022-09-12_zk_proofs.pdf)

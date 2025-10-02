@@ -1,0 +1,136 @@
+---
+title: "Ethereum Accounts"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-08"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/account-banner.png)
+
+# Ethereum Accounts
+
+## The World Computer
+
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)).
+
+These nodes are real computers in the real world, communicating directly from peer to peer.
+
+The purpose of the greater Ethereum apparatus is to offer a single shared computing platform - the [Ethereum Virtual Machine](/ethereum/evm) (EVM).
+
+The EVM provides the context for [transactions](/ethereum/blockchain/transaction) (computation); everything you "do" on-chain happens within the EVM.
+
+## Native Property
+
+[Deep Dive: Internet-Native Property Rights](/ethereum/evm/property-rights)
+
+The EVM has a specific property, upon which all of Ethereum rests: native property rights.
+
+Ethereum consensus is inherently built around the ability to distribute & confiscate (slash) ETH.
+
+Discrete ownership is built in at the protocol level.
+
+Within the EVM, native property rights manifest via Ethereum accounts. Accounts are the individual actors that exist within the context of the EVM.
+
+There are two kinds of accounts: Contract Accounts (CA) and Externally Owned Accounts (EOAs).
+
+## Relationship to the EVM
+
+CAs exist entirely within Ethereum. Rather than being controlled by cryptographic keys, they are controlled by the logic contained within the smart contract's code.
+
+EOAs, on the other hand, are controlled by someone (or thing) external to the EVM (eg a user).
+
+All actions with the EVM require [gas](/concepts/gas), and therefore initializing a CA (within the EVM) has a cost.
+
+In contrast, initializing an EOA is free - all you need to do is generate the signing keys (external from the EVM), and you've gained control.
+
+## EOAs and Keypairs
+
+This last point is worth expanding on, but first... [Digital signatures](/concepts/digital-signatures).
+
+Tl;dr a digital signature is used to publicly confirm two things:
+
+\- the message was really sent by the person claiming to send it
+
+\- the message has not been tampered with
+
+Digital signatures are based on keypairs, which are made up of a private and public key.
+
+*   private key + message = signature
+*   public key + signature + message = verification
+
+The keypair is the core unit of cryptography; it provides verifiable identity.
+
+Ethereum uses [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) ([secp256k1](https://en.bitcoin.it/wiki/Secp256k1)) to generate EOA account keypairs. Those keypairs control the Ethereum account.
+
+The concept of Account (the object holding your tokens) and the concept of Signer (the object authorized to move these tokens) are basically the same thing.
+
+This is all in contrast to CAs, which do not have signing keys at all.
+
+Instead, CAs are independent entities within the EVM that retain the same ownership rights as EOAs that ALSO retain its ownership of itself.
+
+That ownership is manifested through the contract's code.
+
+## Properties of an Account
+
+On a technical level, both CAs and EOAs have the same 3 properties:
+
+*   an address
+*   an ETH balance
+*   a nonce (a counter that uniquely identifies each transaction per account)
+
+CAs have two additional properties: code and storage.
+
+### Tokens
+
+Notice that EOAs (the accounts used by the vast majority of users, including me) don't have a field for tokens or assets other than ETH.
+
+In fact, those assets exist in the records of CAs, registered to the EOA's account.
+
+Consider a user who has 100 USDC. This USDC is not "in" the EOA account.
+
+The CA account that controls USDC contains a database of Ethereum addresses and their balances.
+
+And so, the ownership of the 100 USDC appears in the CA code and not within the EOA.
+
+### Multicalls
+
+The ability for CAs to have code/storage gives CAs much more flexibility than EOAs.
+
+For example, CAs can execute many different actions in a single Ethereum transaction. [This Argent/Uniswap tool](https://www.argent.xyz/blog/uniswap-multicall/) allows for 1-click Uniswap LPing.
+
+### Triggers
+
+But CAs are not "more powerful" than EOAs - they are different.
+
+The most important thing to know about Ethereum accounts is that only 1 type can initiate transactions (and therefore computation): EOAs.
+
+CAs can take actions, but they must be first triggered by an EOA.
+
+But this rule is not a law of nature - it was a philosophical decision to ensure that all transactions are triggered externally to the EVM.
+
+This is a decision that could be changed through the Ethereum Improvement Process (EIP) procedure.
+
+## Looking Forward
+
+In fact, many more of the things we've discussed were similar design decisions, made by the visionaries building Ethereum at a specific time and for a specific reason.
+
+Reasons that might not necessarily hold up for the long haul.
+
+For example, Ethereum keypairs.
+
+ECDSA (secp256k1) was a great, secure choice for the time, but it is incredibly vulnerable to quantum computers. In fact, a commercial quantum computer could completely break (today's) Ethereum...
+
+...without even trying.
+
+Fortunately, we've been thinking about this problem for a long time now.
+
+The solution, led by groups like Stark Ware, ZK-Sync and Argent: Account Abstraction!
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1612265449923956737)

@@ -1,0 +1,106 @@
+---
+title: "Ethereum Transaction"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2023-01-14"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/transaction-full-txn.jpeg)
+
+*original*
+
+# Ethereum Transaction
+
+Ethereum is the World Computer: a globally shared utility that exists between a network of 1000s of computers. Users interact with Ethereum through a wallet (like MetaMask), which creates and sends transactions to the network. 
+
+Once accepted, the transactions are written into a block.
+
+An Ethereum transaction is made of up 3 parts:
+
+\- metadata, including to/from, $ETH amount, gas details and signature data
+
+\- cache, a list of accounts and keys the transaction expects to use
+
+\- data, the payload of the transaction (smart contract code or API call)
+
+## Metadata
+
+![](/images/transaction-metadata.jpeg)
+
+*original*
+
+*   **blockHash** - the unique signature created by [hashing](/concepts/hash) the block the transaction is contained in.
+*   **blockNumber** - a unique, sequential number that identifies the block's position in the blockchain.
+*   **chainId** - signifies the transaction is on the Ethereum chain (introduced by [EIP-155](https://eips.ethereum.org/EIPS/eip-155) to protect against an [ETC replay attack](https://www.coindesk.com/markets/2016/07/29/rise-of-replay-attacks-intensifies-ethereum-divide/))
+*   **from** - address (wallet or smart contract) the transaction is being sent from
+*   **gas** - [units of gas](/concepts/gas) used by the transaction
+*   **gasPrice** - amount paid (in [WEI](https://www.investopedia.com/terms/w/wei.asp)) per unit of gas for this transaction
+*   **hash** \- [hash](/ethereum/blockchain/transaction) of the transaction
+*   **maxFeePerGas** - maximum amount (WEI per gas) the user who created the transaction is willing to pay. Inclusive of base fee and priority fee
+*   **maxPriorityFeePerGas** - maximum amount (WEI per gas) above the base fee the user who created the transaction is willing to pay.
+    *   This fee will be paid directly to the miner/validator as a tip to incentive inclusion.
+*   **nonce** - number of transactions sent from a given address.
+    *   Once imprinted on a block, the wallet's nonce is increased. Protects against replay attacks
+*   **(r, s, v)** - three values that form the signature of the user who created the transaction. They can be used to verify that the user authorized the transaction before it was executed in the EVM.
+    *   For more information, see: [Elliptic Curve Digital Signature Algorithm](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) (ECDSA)
+*   **to** - address (wallet or smart contract) the transaction is being sent to
+*   **transactionIndex** \- position of transaction within block
+*   **type** - there are two types: a new contract (0x0) and all others (0x2).
+    *   [EIP-2718](https://eips.ethereum.org/EIPS/eip-2718) introduced a wrapper (0x2) that allows for infinitely more types without affecting the core Ethereum specs
+*   **value** - amount of ETH being transferred.
+    *   Note - this is ONLY for ETH (no other token)
+
+## Cache
+
+*(Cache is the term I use; the accessList is not officially delineated)* 
+
+![](/images/transaction-cache.jpeg)
+
+*original*
+
+Contains the accessList, a list of addresses and keys the transaction anticipates using. The transaction will still be able to use resources off this list, but at a higher (gas)cost.
+
+The accessList was added by EIP-2929, allowing clients to fetch/cache data to be used during the transaction. 
+
+Today, the discount for using addresses & keys in the accessList is ~10%. However, this will increase in the future as Ethereum moves to support light clients.
+
+## Data
+
+![](/images/transaction-data.jpeg)
+
+The data payload being delivered by the transaction. This can be used in 3 ways:
+
+*   ETH transfer - empty
+*   smart contract API call - name of function and parameters
+*   new smart contract - code of the smart contract
+
+![](/images/transaction-data-decode.jpeg)
+
+*original*
+
+![](/images/transaction-data-encode.jpeg)
+
+*original*
+
+Data in the input field is recorded in binary, but can be translated back to a human readable form.
+
+The input field exists on-chain, but is not part of the EVM state. It simply provides data for the contract to use during the transaction, it is not tracked by Ethereum nor used in consensus.
+
+The EVM can only use data supplied in that transaction; it cannot look back.
+
+This property becomes useful for applications that want to write historical data to the Ethereum blockchain (eg for manual retrieval later) but don't care about having direct EVM access.
+
+## Full Transaction
+
+![](/images/transaction-full-txn-2.jpeg)
+
+## Resources
+
+Source Material - [Original Tweet](https://twitter.com/SalomonCrypto/status/1568092433803808770)
+
+Source Material - [PDF](/twitter-pdf-2022-09-08_transactions.pdf)

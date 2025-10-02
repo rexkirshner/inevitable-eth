@@ -1,0 +1,169 @@
+---
+title: "Scaling Ethereum Execution"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-20"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/scaling-1.jpeg)
+
+# Scaling Ethereum Execution
+
+## Prerequisites
+
+### Settlement
+
+[Settlement](https://inevitableeth.com/home/concepts/settlement) is the "final step in the transfer of ownership, involving the physical exchange of securities or payment". 
+
+After settlement, the obligations of all the parties have been discharged and the transaction is considered complete.
+
+## The World Computer
+
+Ethereum is the [World Computer](/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](/ethereum/network/node)). 
+
+The nodes provide the hardware, the [Ethereum Virtual Machine](/ethereum/evm) (EVM) provides the [virtual computer](/concepts/virtual-machine) and the [blockchain](/ethereum/blockchain) records Ethereum's history.
+
+This "network of nodes" is the foundation upon which Ethereum ultimately derives its value. The more decentralized, the more value.
+
+From decentralization comes [credible neutrality](/concepts/credible-neutrality). 
+
+Without credible neutrality, we might as well be using FB-dollaroos in Farmville-DeFi.
+
+## The Settlement Layer of the Internet
+
+[Deep Dive: Internet-Native Settlement](/ethereum/world-computer/internet-settlement)
+
+Today, the World Computer is slow and expensive to use. 
+
+Raising the minimum requirements of a node would improve both the execution and associated costs. But raising requirements is the opposite of decentralization.
+
+higher requirements = higher costs = less participants
+
+And here is where the phrase "World Computer" might actually be more confusing than helpful...
+
+Today, Ethereum is a complete computing platform, but this is not its final state. What we are really building is like a huge, completely unalterable public notice board.
+
+The core at the center of Ethereum is the EVM, specifically that the EVM has [native property rights](/ethereum/evm/property-rights).
+
+Ethereum will be the global settlement layer and applications (centralized or not) will compute elsewhere and simply post proof back to Ethereum.
+
+## Rollups and Layer 2s
+
+![](/images/scaling-execution.jpeg)
+
+[Deep Dive: Scaling Execution](/ethereum/upgrades/scaling/execution)
+
+Let's say Alice enters into a computationally difficult transaction. Both parties want to settle to Ethereum, so that ultimate ownership exists and is transferred on Ethereum mainnet.
+
+But the computation itself? Well that can be done by basically anyone.
+
+This is the core idea behind Execution [transaction](/ethereum/blockchain/transaction) scaling: move execution off-chain, retain settlement on-chain.
+
+Moving execution off-chain is easy, we can use performance-tuned blockchain (or even [AWS](https://aws.amazon.com/)). 
+
+The trick is settlement.
+
+After a few attempts, we've aligned on the best path forward: rollups.
+
+A rollup is a blockchain that posts a full record of itself onto Ethereum mainnet. 
+
+With this record, users can permissionlessly withdraw (even if the rollup is offline or acting maliciously).
+
+Rollups ARE the path forward to >100k transactions per second, but they are not the entire solution.
+
+## Data Availability Bottleneck
+
+![](/images/data-availability-sampling-2.jpeg)
+
+[Deep Dive: Data Availability Bottleneck](/ethereum/upgrades/scaling/data/data-availability-bottleneck)
+
+Let's break Ethereum transaction costs into two buckets: execution and data storage.
+
+Rollups solve execution, but they only make data storage worse.
+
+Tl;dr in order to ACTUALLY settle to Ethereum, rollups need to post a record of every transaction. 
+
+We can greatly compress them (getting good data storage gains), but we still need a record.
+
+As rollups make execution cheaper, data storage becomes a bigger problem.
+
+## Danksharding
+
+![](/images/danksharding-1.png)
+
+[Deep Dive: Danksharding](/ethereum/upgrades/scaling/data)
+
+Fortunately, we have a solution: Danksharding (named after [Dankrad Feist](https://twitter.com/dankrad)).
+
+Danksharding creates a new Ethereum data structure tailor-made for rollups: a blob. 
+
+A blob is simply a huge, cheap storage container that cannot be accessed by the EVM.
+
+Here's an analogy: imagine Ethereum is a train company and rollup data is cargo.
+
+*   Before Danksharding, the cargo needed to go in the passenger cabin, paying passenger pricing.
+*   After, the cargo can go in its own separate car, but the train company can't monitor it.
+
+### Proto-Danksharding
+
+[Deep Dive: Proto-Danksharding](/ethereum/upgrades/scaling/data/proto-danksharding)
+
+Danksharding is a huge upgrade and needs to be approached in phases.
+
+Phases 1 is Proto-Danksharding (named for [protolambda](https://twitter.com/protolambda) and Danksharding), which will make the changes needed to support a single blob (per block) and create an independent [gas](/concepts/gas) market just for blobs.
+
+## Protocol-Enshrined Proposer-Builder Separation
+
+![](/images/pbs-1.jpeg)
+
+[Deep Dive: Proposer-Builder Separation](/ethereum/upgrades/pbs)
+
+Phase 2 is enshrined PBS, an upgrade that was first developed from [MEV](/concepts/mev) research. 
+
+Full Danksharding requires so much computation that it would compromise the decentralization of Ethereum. 
+
+Fortunately, we can limit this to block building (and maintain decentralization).
+
+## A Fully Scaled Ethereum 
+
+Phase 3: Danksharding.
+
+To achieve full Danksharding, first we need to implement a [data sampling scheme that will distribute blobs across the network](/ethereum/upgrades/scaling/data/p2p-network). 
+
+The purpose is to ensure that no node has to download every single blob while still guaranteeing all data is available.
+
+Once the data has been distributed across the network, we can increase the amount of data Ethereum can accept. We will increase the amount of blobs from 1 to 64 blobs per block.
+
+At 64 blobs we are done; Danksharding will be fully deployed.
+
+Let's do some SUPER rough calculations.
+
+*   Today, [Ethereum does ~25 transactions per second](https://ethtps.info/).
+*   First, let's consider what a high performance rollup might look like. Lot's of good projections to pull from, but I think we should just look at real world examples. Solana claims 50k txs/sec, but that seems high. Let's just drop it down to 5k txs/sec.
+*   Now let's look at data storage. Today, an Ethereum block is limited to 1MB. This space must be shared between EVM and rollup transactions. Full Danksharding is spec'ed at 16MB per block JUST for rollups.
+*   Final piece: how much storage space does a rollup transaction take? Fortunately, [Vitalik Buterin answered that for us in this blog post](https://vitalik.ca/general/2021/01/05/rollup.html). Let's use the biggest number, 296 bytes.
+
+Putting this together:
+
+16 MB per block/ 296 bytes per txn = 54k txn per block
+
+Ethereum could support 54k txns without even moving the (new blob) gas market.
+
+That's basically the equivalent of 10 Solanas, all paying pennies on the dollar for the full security of $ETH.
+
+So, yes, the Ethereum we have today is slow and expensive.
+
+But the Merge was barely 2 months ago, this is just the beginning of the second act.
+
+Everything gets faster, cheaper and better from here!
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1591614638138875905)
+
+Source Material - [PDF](/twitter-pdf-2022-11-12_scaling.pdf)

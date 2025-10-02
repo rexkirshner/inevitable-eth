@@ -1,0 +1,151 @@
+---
+title: "Data Availability Bottleneck"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-20"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/randomly-sampled-committees-2.jpeg)
+
+# Data Availability Bottleneck
+
+## Prerequisites
+
+### Merkle Tree
+
+A [Merkle Tree](https://inevitableeth.com/home/concepts/merkle-tree) is a data structure used to organize and encrypt huge data sets. 
+
+Merkle Proofs can be used to efficiently verify that data exists in a dataset (confirmation a piece of data exists without transferring the whole dataset).
+
+### Settlement
+
+[Settlement](https://inevitableeth.com/home/concepts/settlement) is the "final step in the transfer of ownership, involving the physical exchange of securities or payment". 
+
+After settlement, the obligations of all the parties have been discharged and the transaction is considered complete. 
+
+## The World Computer
+
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+
+Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
+
+Today, the World Computer is SLOW.
+
+However, this slowness is a feature, not a bug. 
+
+## Decentralization
+
+In order to keep the World Computer as decentralized as possible, we want to allow as many machines/connections to be able to be nodes as possible. 
+
+Staking isn't just for AWS and supercomputers; everyone can participate.
+
+The core value Ethereum is decentralization.
+
+ Everyone person, whether MEGACORP CEO or Aunt Phillis, can become a node operator and keep the network honest. 
+
+From decentralization flows [credible neutrality](/concepts/credible-neutrality). 
+
+From credibly neutrality comes global dominance.
+
+The result: while nearly anyone can operate an Ethereum node, the network can only process ~15 txns/second.
+
+There are ~8B people on this planet. The WOLRD computer is going require A LOT more power to service the entire globe.
+
+Fortunately, we have solutions: rollups!
+
+## Increasing Transactions per Second
+
+[Deep Dive: Scaling Ethereum Execution](/ethereum/upgrades/scaling/execution)
+
+Rollups are independent blockchains that anchor to the World Computer. 
+
+Rollups are (/can be) much more centralized, but because they settle Ethereum, they derive the same security and decentralization properties as mainnet.
+
+Conceptually, rollups work by splitting an Ethereum transaction into two parts: execution and settlement.
+
+*   Execution: the computational work needed to complete the transaction.
+*   Settlement: the transfer of ownership, including the exchange of assets and record keeping.
+
+It will always remain vital to retain settlement on Ethereum; settlement is the purpose of the World Computer and the reason we care so much about decentralization.
+
+Execution is a different animal. We care much less about decentralization, we just need the job done.
+
+## Inside the Chain
+
+[Deep Dive: Blockchain Computer State](/ethereum/evm/state-machine)
+
+Rollups execute all of their transactions on a separate (high performance) blockchain. Once every \[interval\], the bundle up all the transactions they've executed and post a record back on to mainnet.
+
+In reality, these checkpoints are complicated data structures, but we can think of them as having two parts: 
+
+*   the rollup's state root
+*   a compressed record of every transaction that happened during the previous interval.
+
+The state root is the Merkle root for Ethereum's state... but let's unpack that into something a little more useful.
+
+A machine's state is its configuration. Think about your computer, the state is the contents of your hard drive, memory, what's on the screen, etc.
+
+For the World Computer, the state is a snapshot of all the accounts, balances and smart contracts at a given point in time. 
+
+The state is what we need to keep in sync between all nodes in a blockchain network.
+
+## Merkle-Based Compression
+
+Unfortunately, Ethereum's state is MASSIVE (GBs).
+
+Instead of passing around the World Computer's full state, we can organize it into a data structure called a Merkle Tree. 
+
+Merkle trees allow us to condense an arbitrarily large amount of data into a single unique line (Merkle root).
+
+Ethereum (and rollups) communicate the state of the EVM by socializing the state root and a list of all the transactions executed since the last block. Each node can locally execute every transaction on that list and compare their local state root to the one published by the network.
+
+A Merkle root cannot extract the transactions that were applied to create the current state. 
+
+Imagine a list of balances at a bank. You can confirm all the transactions were included by checking balances, but you can't see the individual transactions.
+
+![](/images/data-availability-problem-1.jpeg)
+
+Thus, coordination requires both the state root and the list of transactions. 
+
+With both these pieces of information, every node of the Ethereum network can update their copy of the EVM and progress the World Computer.
+
+Rollups post both pieces of information on-chain.
+
+## Settlement on Ethereum
+
+This is the method by which rollups settle to Ethereum. By posting the canonical version of the state root and transactions, rollups are ensuring that ultimate ownership will always be resolved on mainnet.
+
+In fact, this can literally be true...
+
+Some rollups optimistically accept all updates  and then open a fraud challenge period for each update. If a challenger submits a fraud proof, the rollup runs the disputed transaction on mainnet and evaluates the result.  Ownership is resolved on-chain, by smart contracts.
+
+In summary, rollups scale the World Computer by providing a very high performance computing environment while still respecting the rules of Ethereum. 
+
+It does this by posting a canonical copy of the rollups machine state and all the transactions executed off-chain.
+
+## A New Bottleneck
+
+However, this model has scaling limits: regardless of how much computation you can offload, you still need to post the transaction data back to mainnet. 
+
+Rollups make progress by compressing transaction data into the smallest possible form factor. 
+
+Even still, these costs add up quick.
+
+## Summary
+
+Today, tomorrow and forever, Ethereum (mainnet) will be slow. The slower we keep mainnet, the more decentralized we can keep the network. To scale, we will move execution to rollups and post a recoverable copy to mainnet.
+
+The problem: this still requires us to post data to mainnet. Eventually, we are going to run into the same problems, just with the compressed rollup data. 
+
+And so, we need add more space for rollup data!
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1571524423639007232)
+
+Source Material - [PDF](/twitter-pdf-2022-09-18_data_availability_problem.pdf)

@@ -1,0 +1,145 @@
+---
+title: "Casper FFG"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-07"
+readingTime: 6
+toc: true
+related: []
+---
+
+![](/images/casper-ffg-1.jpeg)
+
+# Casper FFG
+
+## Prerequisites
+
+### Byzantine Fault Tolerance
+
+The Byzantine Generals' Problem describes a thought experiment that illustrates the challenges of asynchronous coordination. 
+
+The field looks for answers to the question "how can members of a network agree on a specific reality when no one can verify the identities of other members?"
+
+If a system can safely progress even if under ⅓ of participants are malicious, it is call [Byzantine Fault Tolerant](/concepts/bft).
+
+## The World Computer
+
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+
+Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
+
+Keeping 1,000s of copies of the EVM in sync is trivial... if we are willing to have them all sync to a centralized server.
+
+## Decentralized Coordination
+
+Unfortunately the easy solution breaks the core principle of Ethereum: [credible neutrality](https://inevitableeth.com/home/concepts/credible-neutrality) through decentralization.
+
+Fortunately, we have a solution: decentralized consensus! 
+
+A consensus mechanism is the system a blockchain uses to keep all its nodes in sync. 
+
+Until recently, Ethereum used Proof of Work (PoW); ~2 weeks ago we experienced The Merge and switched to Proof of Stake (PoS).
+
+Both PoW and PoS are systems that designate a "leader" node and allow them to progress their copy of the EVM forward (using transactions submitted from users like you and me). Once they have done as many transactions as they can (limited by the [gas](https://inevitableeth.com/home/concepts/gas) limit), they create a block.
+
+## Ethereum Blocks
+
+A [block](https://inevitableeth.com/home/ethereum/blockchain/block) is a complete record of all the transactions that occurred within the EVM during each node's turn at being leader. 
+
+Any other node can read the block, process the transactions and progress their copy of the EVM to match the leader.
+
+## The Problem with Forks
+
+![](/images/casper-ffg-2.jpeg)
+
+Under PoS, during normal operation, every ~12 seconds a leader is chosen, who then builds and proposes a block. 
+
+However, the network can fall out of sync and more than one node might broadcast a validly produced block. One of these choices is called a fork, and forks can grow. 
+
+Even small forks are existential threats to a distributed system. 
+
+Without one true blockchain, the independent EVMs on each node must decide which transaction to execute.
+
+This creates an issue for both the nodes of the network and the users of the network: 
+
+*   The nodes can't be certain which is the one true path through the block tree
+*   The users can't be certain if their transactions are on the "true" path,  
+    *   if they aren't “true” then they wont count
+
+## Casper the Friendly Finality Gadget (FFG)
+
+[Casper the Friendly Finality Gadget](https://arxiv.org/pdf/1710.09437.pdf) (FFG) was introduced by Vitalik Buterin and Virgil Griffith in 2019 to provide block certainty.
+
+BTW, all of you should know who [Virgil Griffith](https://en.wikipedia.org/wiki/Virgil_Griffith) is; he is paying for his belief in Ethereum.
+
+Casper FFG is a process that exists atop a block proposal mechanism; it is responsible for finalizing these blocks, canonizing the true Ethereum blockchain.
+
+Casper consists of two main parts: the finalization algorithm and the penalization scheme.
+
+## Finalization
+
+![](/images/casper-ffg-3.jpeg)
+
+Casper is derived from a particular solution to the Byzantine Generals Problem called practical Byzantine Fault Tolerance (pBFT). 
+
+pBFT is a two vote process. After both votes, consensus can always be reached (as long as >2/3 of the validators are honest).
+
+At its core, pBFT uses a voting scheme to provide mathematical certainty that a decentralized network has made a collective, final decision.
+
+This is the principle that Casper applies: finalization certainty for Ethereum.
+
+Rather than finalizing blocks, Casper finalizes "checkpoints," a single block once every N blocks (N = 32 blocks for PoS). The Casper equivalent of pBFT's voting is called a "supermajority link," meaning >2/3s of validators confirmed the validity of the checkpoint.
+
+The two rounds of voting in pBFT are called prepare and commit; at the end of commit the action is final. In Casper, these ideas have different names: if a checkpoint has been confirmed once it is "justified." If it has been confirmed twice it is "finalized."
+
+  
+Every time a checkpoint is reached, each validator is responsible for evaluating the block and creating a vote. A vote simply marks the source checkpoint, the target block, proof of validity and the validator's signature.
+
+## Voting Rules
+
+![](/images/casper-ffg-4.jpeg)
+
+Every time a checkpoint is reached, each validator is responsible for evaluating the block and creating a vote. 
+
+A vote simply marks the source checkpoint, the target block, proof of validity and the validator's signature.
+
+![](/images/casper-ffg-6.png)
+
+These votes are both a privilege and a responsibility of being a validator. Successfully voting earns $ETH rewards, but missing votes will incur an $ETH penalty. 
+
+![](/images/casper-ffg-5.jpeg)
+
+Voting maliciously will incur a much bigger penalty and get the validator removed from the network.
+
+## Mathematical Certainty
+
+Building on the pBFT and the other research around the Byzantine Generals Problem, we can mathematically prove that these properties round out a robust BFT system.   
+BFT systems have two properties: safety (any txn run by one node will be run by all) and liveness (consensus cannot stall). 
+
+Casper FFG is not a full BFT algorithm (hence "gadget"). It will guarantee safety, but liveness depends on the proposal mechanism.
+
+However, Casper does provide new properties: 
+
+*   Accountability, violations of Casper can be detected and the violator can be identified 
+*   Defenses, against long range revision attacks and situations where >1/3 of nodes are offline 
+*   Dynamic, nodes can be added or removed
+
+## Proof of Stake
+
+Casper FFG is a Proof of Stake system derived from decades of research - however it is not entirely complete. 
+
+For one, there is no block proposal method. 
+
+For another, Casper does not direct validators which checkpoint to pick if it needs to make a choice.
+
+Fortunately, research did not stop in 2019; in fact, it still continues to this day, building on the work of pBFT and Casper. 
+
+And before long, Casper will become mature enough to take center stage, Merge with LMD-GHOST and provide consensus to Ethereum.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1576721911265996800)
+
+Source Material - [PDF](/twitter-pdf-2022-10-02_casper_ffg.pdf)

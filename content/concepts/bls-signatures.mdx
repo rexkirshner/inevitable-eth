@@ -1,0 +1,88 @@
+---
+title: "BLS Digital Signatures"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-09"
+readingTime: 3
+toc: true
+related: []
+---
+
+![](/images/bls-signatures-1.jpeg)
+
+## Prerequisites
+
+### Digital Signatures
+
+[Digital signatures](/concepts/digital-signatures) support the basic properties of digital signatures: proof that the: 
+
+*   message was sent by the person claiming to send it
+*   message has not been tampered with
+
+![](/images/bls-signatures-2.jpeg)
+
+Private Key + Message = Signature 
+
+Public Key + Message + Signature = Verification 
+
+Verification = SPECIFIC message was sent by SPECIFIC sender
+
+## BLS Signatures
+
+[Boneh–Lynn–Shacham Digital Signatures (BLS signatures)](https://en.wikipedia.org/wiki/BLS_digital_signature) are a specific type of digital signature. BLS signatures function perfectly fine (albeit relatively slowly) as standard cryptographic scheme, but the real magic comes from aggregation. 
+
+Aggregation means that given a single message, multiple signatures can be verified with a single operation.
+
+## Signature Aggregation
+
+![](/images/bls-signatures-3.jpeg)
+
+Technically "signatures" represent a specific point in an elliptic curve and can be "added up." This is a (computationally) easy operation. 
+
+The final result is also a point in the elliptic curve, and is therefore indistinguishable from a non-aggregated signature.
+
+## Public Key Aggregation
+
+![](/images/bls-signatures-4.jpeg)
+
+Just like a signature, a "public key" is also a point on an elliptic curve and can be similarly "added up" (also computationally easy). 
+
+Once again, aggregated public keys are mathematically indistinguishable from non-aggregated public keys.
+
+## Aggregated Verification
+
+![](/images/bls-signatures-5.jpeg)
+
+Since aggregate signatures are indistinguishable from normal signatures, and aggregate public keys are indistinguishable from normal public keys, we can reuse our normal verification algorithm. 
+
+Thus, a single operation can verify a huge amount of signatures.
+
+## Benefits of Aggregation
+
+As previously mentioned, BLS signatures are computationally expensive when compared to verifying a more standard scheme - more than an order of magnitude slower. However, each verification can count for MUCH more than a standard scheme (a single verification).
+
+Imagine you need to verify 100 signatures: 
+
+*   Standard digital signature: x time/verification \* 100 verifications = 100x 
+*   BLS digital signature: 10x time/verification \* 1 verification = 10x 
+
+The more signatures you can aggregate, the higher the savings
+
+But verification speed is not the only benefit: BLS signatures offer huge space savings over non-aggregated signatures. An aggregated signatures is the same size as a single signature, regardless of how many signatures have been aggregated.
+
+Imagine you need to verify 100 signatures: 
+
+*   Standard digital signature: x bytes/signature \* 100 signatures = 100x 
+*   BLS digital signature: x bytes/signature \* 1 signature = x 
+
+More aggregation equals more savings, but even more with space than speed.
+
+BLS signatures are a type of digital signature that provide the same guarantees as any signature (authenticity and liveness) but provide huge scaling benefits when verifying large groups of signatures.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1575279806618292226)
+
+Source Material - [PDF](/twitter-pdf-2022-09-29_bls_signatures.pdf)

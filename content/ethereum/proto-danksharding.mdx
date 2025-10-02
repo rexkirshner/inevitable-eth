@@ -1,0 +1,134 @@
+---
+title: "Proto-Danksharding"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-20"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/proto-danksharding-3.jpeg)
+
+[*source*](https://mirror.xyz/hirokennelly.eth/W2nwcAMquPIdpPg1nbdKCr1D3lS4_MPquQZ4VwSqUuM)
+
+# EIP 4844: Proto-Danksharding
+
+## The World Computer
+
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+
+Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
+
+Today the computer is... primitive. Execution is slow, [gas](/concepts/gas) costs are outrageous and user experience is terrible. 
+
+What's worse: the more people use it the worse it gets. 
+
+Fear not... upgrades are coming!
+
+## Scalability Trilemma
+
+![](/images/proto-danksharding-2.webp)
+
+[*source*](https://medium.com/logos-network/everything-you-know-about-the-scalability-trilemma-is-probably-wrong-bc4f4b7a7ef)
+
+Before we discuss Ethereum's roadmap, we need to understand the challenges of blockchain scaling.
+
+Summarized by the Scalability Paradox, it is (seemingly) impossible to remain decentralized, secure and scalable; optimizing for one compromises the other two.
+
+But thanks to the world class researchers and devs at the Ethereum Foundation, we have a solution; the Scalability Paradox has been reduced to the Scalability Trilemma! 
+
+Here's how it'll be done:
+
+## The Merge
+
+The first major upgrade has already happened: Ethereum will be switching its [consensus system](/ethereum/network/consensus) from Proof of Work to [Proof of Stake](/ethereum/network/consensus/pos).
+
+Instead of being secured by the computing power of the computers (minders) supporting it, The World Computer is secured by the economic value of ETH.
+
+With Proof of Work, the system required top-of-the-line computers; now anyone with a home computer will be able to participate in the Ethereum network.
+
+The Merge was  a leap forward for decentralization, allowing large scale participation and removing the economies of scale factor.
+
+This provides a network with [credible neutrality](/concepts/credible-neutrality), where everyone plays by the same rules. 
+
+No centralized player can change the rules to pick winners and losers. No personal conflict can spill over into the rules of the network. 
+
+One computer, supported by >10k nodes.
+
+## Scaling Execution
+
+[Deep Dive: Scaling Execution](/ethereum/upgrades/scaling/execution)
+
+The problem: as Ethereum/the EVM becomes more simple, its capabilities/speed stop improving. 
+
+The solution: move the execution environment off-chain. 
+
+The Ethereum blockchain will always be the settlement layer of The World Computer, but execution will migrate to layer 2. [Rollups will focus on execution, users will interact with rollups](https://polynya.medium.com/understanding-ethereums-rollup-centric-roadmap-1c60d30c060f). 
+
+Proof-of-stake will make Ethereum the most secure and decentralized consensus layer for rollups while all the difficult stuff moves off-chain, to the powerful computers. 
+
+Today, we already have rollups. Between chains like Arbitrum and ZKSync, billions of dollars of TVL have been moved to layer 2.
+
+But this is just the beginning! Ethereum is currently general purpose, now its time to build to the rollup-roadmap.
+
+## Data Availability
+
+[Deep Dive: Data Availability Bottleneck](/ethereum/upgrades/scaling/data/data-availability-bottleneck)
+
+The EVM is the virtual computing environment in which all of Etherum exists and all [transactions](/ethereum/blockchain/transaction) happen.
+
+After compressing a bundle of transactions, a rollup loads it into the EVM and commits it to the Ethereum blockchain.
+
+From a function standpoint, we only care that the compressed bundle is committed to the blockchain (settlement). 
+
+We can build tools to decompress the bundle into a readable format and/or move the data off-chain, but we don't need the EVM to be able to access it.
+
+Today, the EVM treats a bundle exactly the same as core programatic variables... and the gas fee market reflects that.
+
+A rollup must pay a relatively large amount of ETH to commit a bundle, even though the bundle's contents are irrelevant to the operation of the EVM.
+
+## EIP-4844: Proto-Danksharding
+
+Which brings us to [EIP-4844: Proto-Danksharding](https://eips.ethereum.org/EIPS/eip-4844). (Fun fact: Danksharding is named after researcher [Dankrad Feist](https://twitter.com/dankrad). Proto-Danksharding is an upgrade recommended by researcher [protolamda](https://twitter.com/protolambda), hence Proto-Danksharding). 
+
+The technicals are out of scope of this thread, but we are going to talk big picture. EIP-4844 brings important changes to Ethereum's base layer that fundamentally reorients the system towards the rollup-centric future.
+
+Today, rollups post into a field called "calldata," storage which persists on-chain forever. [You can see this data within a transaction](/ethereum/blockchain/transaction). 
+
+Under EIP-4844 rollups will be able to post bundles under a new transaction type. 
+
+This transaction will carry a blob, a large amount of data - inaccessible by the EVM - which is much cheaper than calldata.
+
+Blobs are 10x larger than blocks, but they are pruned out of the blockchain after ~a month. 
+
+A new data-availability layer will arise, and the scalability of the system increases by an order of magnitude. 
+
+## A Dedicated Gas Market
+
+EIP-4844 also creates a separate fee market for these transactions.
+
+The result will be a tailored data layer – regular transactions and blobs will get distinct fee markets with independent gas prices. 
+
+So even if some NFT project is blowing up gas fees or arb bots are desperately chasing a huge liquidation, your rollup data costs won’t go up (though settlement costs would).
+
+## Summary
+
+Proto-Danksharding is an upgrade critical to the [Ethereum endgame](https://vitalik.ca/general/2021/12/06/endgame.html). 
+
+The most important thing to understand is that Ethereum will scale by offloading execution to high performance (possibly centralized) chains while retaining decentralized settlement.
+
+Rollups will still generate data, in fact far more data than Ethereum can economically hold.
+
+The solution: 
+
+*   create more space for rollups
+*   decouple the market for EVM code and rollup settlement data
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1559402384526258176)
+
+Source Material - [PDF](/twitter-pdf-2022-08-16_proto-danksharding.pdf)

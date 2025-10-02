@@ -1,0 +1,108 @@
+---
+title: "Perpetual Futures"
+description: "published: true"
+category: "concepts"
+tags: ["editor: ckeditor"]
+difficulty: "intermediate"
+updated: "2022-12-07"
+readingTime: 3
+toc: true
+related: []
+---
+
+![](/images/perps-banner.jpeg)
+
+[*source*](https://lh5.googleusercontent.com/ZYRLGOAvU87oNDMzaJi3QACK22TVBUsUIX02ig-wTAvbkp0LOAGYfKeju0I40GEioVWNUvBBXmeQEcwp74DMevgcCpzig9p3yiPsRMDreYtToHWITnjzxShhwMeVldBK4LbCDnG9GwcqNJYDvUWOzC0)
+
+# Perpetual Futures
+
+## Perps
+
+[Perpetual Futures](https://en.wikipedia.org/wiki/Perpetual_futures) (perps) were a concept developed in the 90s but not really tried until [BitMEX](https://www.bitmex.com/) released crypto perps in 2016.
+
+After less than a decade, they are MASSIVE.
+
+"[Bitcoin perpetual futures... hit record open interest in 2021, with avg volumes of ~$62B per day](https://www.livemint.com/market/cryptocurrency/crypto-exchange-crosstower-introduces-perpetual-futures-trading-11649936286414.html)"
+
+Ever wonder why [GMX](https://gmx.io/#/) or [dYdX](https://dydx.exchange/) are worth so much? Or where [Binance's](https://www.binance.com/en) or [Kucoin's](https://www.kucoin.com/) revenue growth is coming from?
+
+$62B per day in 2021!!!
+
+## Definitions
+
+Definitions: 
+
+*   Futures Contract - agreement to buy/sell an asset for a fixed price at a known future date 
+*   Perpetual Future - futures contract without an expiry date 
+*   In human: a contract that tracks price of an asset without control of it
+
+## Why Perps?
+
+Before we go any deeper into mechanics, let's talk about the purpose of perps. 
+
+I mean, if want to bet on the price of an asset, why don't you just buy it? 
+
+Especially in crypto where assets don't take up space. We aren't talking about oil or wheat.
+
+The most important reason for perps is to give traders exposure to asset prices but with the properties inherent in futures contracts. 
+
+Futures are a capital efficient way to speculate on assets.
+
+It's much easier to see this in the real world. 
+
+*   Natural gas 
+*   2 traders 
+*   6 months 
+*   1 trade/week/trader 
+
+Normal trading: natural gas needs to actually move around the world 54 times 
+
+Futures: natural gas stays in 1 place, moved once in 6 months
+
+Futures don't require the time/effort/cost of moving the gas each trade. 
+
+Also think about the implication of the time value of money. Whatever buying gas today costs, it will cost considerably less to buy the promise of it in 6 months (assuming neutral market/price).
+
+Same in crypto, but since it's all digital it's hard to conceptualize. 
+
+For now, futures are capitally efficient because they allow the economic activity to happen before a single, final settlement. 
+
+Perps remove the need for final settlement.
+
+## Keeping Things in Balance
+
+The issue with perps is that because they never settle, they've lost their tether to the underlying asset. 
+
+*   Perp: future with no end date 
+*   Future: promise to deliver an asset at an end date 
+
+Ummm...
+
+Enter the [Funding Rate](https://medium.com/derivadex/what-is-the-funding-rate-for-perpetual-swaps-a0335c4228a9) (FR) The FR is a flow of payments between long and short traders. 
+
+When the price of the perp is above the price of the real assets, funding rate is positive and long traders pay short traders (and vice versa).
+
+As perp price deviates from real asset price, the magnitude of the FR increases. This creates opposing pressure on the price of the perp; people sending FR will close, people receiving FR will open. 
+
+The FR acts as an automatic stabilizer and keeps perp price accurate.
+
+How it works: 
+
+*   1) Deposit initial collateral 
+*   2) Select leverage multiplier 
+*   3) Open position at current market price 
+*   4) Value is added or taken from collateral account as market moves 
+*   5a) Close position 
+*   5b) Get liquidated
+
+A liquidation happens when your liability exceeds your collateral. 
+
+A perp trader needs to manage (at least) two things in order to avoid liquidation: spot price and FR impact. 
+
+Spot price will effect the size of your liability. FR will effect the size of your collateral
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1526275021718577152)
+
+Source Material - [PDF](/twitter-pdf-2022-05-16_perps.pdf)

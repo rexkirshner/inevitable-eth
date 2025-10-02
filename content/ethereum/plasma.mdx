@@ -1,0 +1,135 @@
+---
+title: "Plasma"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-07"
+readingTime: 4
+toc: true
+related: []
+---
+
+![](/images/plasma-1.jpeg)
+
+# Plasma
+
+## Prerequisites
+
+### Merkle Tree
+
+A [Merkle Tree](https://inevitableeth.com/home/concepts/merkle-tree) is a data structure used to organize and encrypt huge data sets. 
+
+Merkle Proofs can be used to efficiently verify that data exists in a dataset (confirmation a piece of data exists without transferring the whole dataset).
+
+### Settlement
+
+[Settlement](/concepts/settlement) is the "final step in the transfer of ownership, involving the physical exchange of securities or payment". 
+
+After settlement, the obligations of all the parties have been discharged and the transaction is considered complete.  
+
+## Scaling the World Computer
+
+In 2008, Satoshi Nakamoto gave us Bitcoin and introduced the dream.
+
+In 2015, Vitalik Buterin gave us Ethereum and delivered on that dream: [the World Computer](/ethereum/world-computer) was born.
+
+In its early years, the World Computer is painfully slow. Fortunately, we have scaling solutions.
+
+## Early Scaling
+
+### State Channels
+
+[Deep Dive: State Channels](/ethereum/upgrades/scaling/execution/state-channel) 
+
+The first category: state channels.
+
+To open a channel, the participating parties fund a smart contract where the funds are held in on-chain-escrow. The participants can transact off-chain as much as they want. When finished, the smart contract settles channel.
+
+While state channels are powerful; they have limits.
+
+The next development in blockchain scaling is a technology called Plasma. 
+
+## Plasma
+
+A plasma chain is a separate blockchain anchored to Ethereum but that executes transactions off-chain (with its own [consensus system](/ethereum/network/consensus)).
+
+### Deposit
+
+![](/images/plasma-2.jpeg)
+
+Users interact with a plasma chain by depositing assets into a smart contract on Ethereum mainnet. 
+
+The plasma operator then mints an equivalent amount of assets on the plasma chain and gives it to the depositor.
+
+The on-chain assets remain in escrow.
+
+### Execute
+
+![](/images/plasma-3.jpeg)
+
+Because the plasma chain ultimately relies on Ethereum for decentralized property rights, the plasma operator can be much more centralized (often a single entity) resulting in cheap and fast execution.
+
+The plasma chain is its own blockchain with its own [virtual machine](/concepts/virtual-machine) and [state](/ethereum/evm/state-machine). 
+
+A virtual machine state describes everything within the virtual machine (and therefore blockchain/plasma computer) - every account, every smart contract, and every balance.
+
+Blockchain computers, including plasma chains, store the state in a (modified) Merkle tree. A Merkle tree can be reduced to a single [hash](/concepts/hash). 
+
+A Merkle tree allows the efficient confirmation a piece of data exists without transferring the whole dataset.
+
+### Commit On-Chain
+
+![](/images/plasma-4.jpeg)
+
+Once every interval (15 sec, 1 hour,etc), the plasma operator batches all the txns they have received and generate a Merkle tree for the state of the plasma chain.
+
+First, the operator posts the Merkle root (the single hash representing the full state of the plasma chain) to mainnet. 
+
+Next, the operator sends the Merkle branch to the current owner of each asset.
+
+### Withdraw
+
+![](/images/plasma-5.jpeg)
+
+To withdraw an asset, the user sends the Merkle branch (proving they own the asset) to the smart contract. 
+
+This begins a withdrawal period.
+
+During the withdrawal period, anyone can invalidate the withdrawal by submitting a Merkle branch that proves the withdrawer doesn't own the asset. 
+
+If the period passes without any successful challenges, the assets can be withdrawn.
+
+## Persistent State
+
+The biggest difference between state channels and plasma is that plasma supports a persistent state. 
+
+*   A new state channel means a new state; when that channel is closed, that state is destroyed.
+*   Plasma state exists in its own context, even if users enter and exit.
+
+Plasma provides much stronger security properties than state channels; a record of your transactions exist on-chain while in operation. 
+
+It also allows users to send assets to participants who are not yet part of the system (state channels require opt-in).
+
+## Limitations
+
+However, Plasma has trade-offs: 
+
+*   it requires regular (costly) transactions on mainnet
+*   doesn’t support instant withdrawal (must wait for operator to post to mainnet)
+
+The biggest weakness of plasma is shared with state channels: they both rely on explicit ownership (for example, the plasma must deliver the Merkle branch). 
+
+Each asset must have a logical owner, and if the owner isn't paying enough attention then their asset is vulnerable.
+
+This is a reasonable trade-off for some applications, but fundamentally cannot support more [EVM-native applications that don't have an explicit owner](https://uniswap.org/). 
+
+Plasma even struggles with applications that can change a balance without a users explicit consent (eg paying interest).
+
+These factors the main reasons that it is just not possible to build a full EVM environment in a plasma. Therefore, the Ethereum community has taken the learnings from plasma and built something better. Something we call a rollup!
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1568779570492637185)
+
+Source Material - [PDF](/twitter-pdf-2022-09-11_plasma.pdf)

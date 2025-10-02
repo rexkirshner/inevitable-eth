@@ -1,0 +1,141 @@
+---
+title: "Potential EigenLayer Services"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-23"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/services-banner.png)
+
+# Potential EigenLayer Services
+
+## The World Computer
+
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)). 
+
+These nodes are real computers in the real world, communicating directly from peer to peer. 
+
+The purpose of the greater Ethereum apparatus is to offer a single shared computing platform - the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM).
+
+The EVM provides the context for transactions (computation); everything you "do" on-chain happens within the EVM.
+
+Each node runs a local version of the EVM, which is then held perfectly in sync with every other copy of the EVM through a process called [Proof of Stake](https://inevitableeth.com/home/ethereum/network/consensus/pos) (PoS).
+
+Any individual EVM is a window into the shared state of the World Computer.
+
+There are a lot of ways to think about PoS, but let's take a step back and think big picture.
+
+## Ethereum and Crypto-Economics
+
+[Deep Dive: Crypto-Economics](/concepts/crypto-economics)
+
+Taken all together, Ethereum is decentralized and untrusted, but if you look under the hood you'll find that every step is predicated on a centralized entity (validator).
+
+When it comes down to it, [proposing](/ethereum/network/consensus/block-proposal) or [attesting](/ethereum/network/consensus/attestation) to a [block](/ethereum/blockchain/block) is an action that an individual actor needs to take.
+
+PoS is the system that takes the implicit trust assumptions we need to make in each actor and transforms it into an economic-rationality assumption.
+
+Enter crypto-economics: cryptography + economic models combined to create secure, transparent and immutable systems.
+
+We can use crypto-economics to express how secure a system is; in PoS, security is a reflection of staked capital.
+
+By recognizing Ethereum PoS as a crypto-economic system, we can easily realize that PoS is applicable to many more systems than just securing a blockchain.
+
+We can use this same principle to transform ANY centralized trust assumption into a crypto-economic one.
+
+Opinion: crypto-economic systems, particularly Proof of Work (PoW) and PoS, are the most important gift of [Satoshi](https://en.wikipedia.org/wiki/Satoshi_Nakamoto). 
+
+PoW was the prototype, PoS the delivery.
+
+These systems not only secure Ethereum, they provide the incentives needed to keep the World Computer running in perpetuity.
+
+## Fracturing Capital
+
+But here's the thing about crypto-economic systems: they are directly dependent on the capital locked up in each specific system.
+
+Each time we create a new system (PoW, PoS or anything else), we fracture the capital that is interested securing crypto-economic systems.
+
+The more systems we add, the less capital available to any single one. Think about L1s; imagine if all that crypto-economic value was concentrated into one place.
+
+Enter [Sreeram Kannan's](https://twitter.com/sreeramkannan) paradox: a world with more PoS systems is a less secure, more trusted world.
+
+Sreeram identified the issue, but he didn't stop there. He created EigenLayer to solve it.
+
+## EigenLayer
+
+[Deep Dive: EigenLayer](/ethereum/upgrades/middleware/eigenlayer)
+
+EigenLayer allows a validator to place their 32 ETH under additional slashing conditions in exchange for providing a centralized service.
+
+This process, called re-staking, replicates the crypto-economic magic of PoS for any service but uses ETH as the staked capital.
+
+Using EigenLayer, a centralized service can become trustless by executing against re-staked capital... without needing to issue a token.
+
+We live in a world cluttered by PoS systems; each one less secure than they could be.
+
+EigenLayer brings us a step closer to the endgame, when [ETH is the pristine collateral of trustless trust](/ethereum/world-computer/endgame/trustless-trust).
+
+The purpose of ETH: to imbue trustlessness.
+
+## Potential EigenLayer Services
+
+At this point you must be asking yourself: what kinds of centralized services are you talking about? Who would be interested in "imbuing trustlessness?"
+
+I've got a few ideas to share (some from Sreeram himself), but this is the beginning of a new category.
+
+[Rollups](/ethereum/upgrades/scaling/execution), [bridges](/concepts/bridge) and [oracles](/concepts/oracle) are all services that require a centralized entity to take action on behalf of its users.
+
+Rather than securing each service with its own token, all can use ETH.
+
+But EigenLayer isn't just about consolidating trustless trust into ETH for these kinds of existing services. EigenLayer opens up an brand new innovation surface for a whole new category of Ethereum, trustless services.
+
+Let's start close to the EVM.
+
+### External Events Trigger
+
+One of the rules of the EVM is that every action must be initiated by an entity outside of the EVM; a smart contract cannot automatically activate.
+
+Put another way, a private key must sign a transaction and pay for gas before anything can happen within the EVM.
+
+Imagine a world where there is plenty of capital available for re-staking. Now imagine a centralized service that watches the EVM, ready to make transactions on behalf of users.
+
+Limit orders, liquidations, etc.
+
+Untrusted, general purpose EVM triggers.
+
+### SNARK Prover
+
+Another idea requires some low level knowledge - apologies for those I lose along the way.
+
+Verifying a SNARK has a theoretical minimum amount computation. If we want to verify an SNARK within the EVM, even in the best case scenario, it's going to take a lot of gas.
+
+I'm def not the expert, but I've been told it's going to take at least 1-2MM gas to verify a SNARK within the EVM.
+
+The implication: the maximum SNARK throughput of Ethereum is ~12-15 SNARKs/slot -> ~1 SNARK per second.
+
+This will become a significant bottleneck.
+
+Now let's return to our imaginary world where there is a ton of re-staked capital available.
+
+We could build a centralized SNARK prover, capable of proving (basically) infinity SNARKs/second. Instead proving within the EVM, we prove off-chain and then post a commitment.
+
+At any point, someone can submit a challenge (and a challenge bond), identifying a specific SNARK and asking the EigenLayer smart contract to verify it within the EVM.
+
+If it verifies, the bond is confiscated. If it does not verify, the SNARK prover is slashed.
+
+## EigenLayer World
+
+From here, the sky's the limit.
+
+Shipping containers, climate sensors, driverless cars... maybe even artificial intelligence. Anything that exists in the real world and could benefit from untrusted trust.
+
+All secured by (and adding to) the value of ETH.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1617727903466422284)

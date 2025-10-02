@@ -1,0 +1,197 @@
+---
+title: "Proof of Stake"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2022-12-08"
+readingTime: 6
+toc: true
+related: []
+---
+
+![](/images/pos-banner.jpeg)
+
+# Proof of Stake (PoS)
+
+## The World Computer
+
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+
+Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
+
+This distributed network of EVMs is held in sync via a [consensus mechanism](https://inevitableeth.com/home/ethereum/network/consensus). A consensus mechanism is a system by which a leader (block proposer) updates the state of their EVM and the rest of the network trustlessly follows.
+
+The leader then packages all these changes into a [block](/ethereum/blockchain/block); the rest of the network uses the block to sync their EVM with the proposer's.
+
+## The Merge
+
+![](/images/merge-banner.jpeg)
+
+Until September 2022, the World Computer relied on Proof of Work (PoW) to achieve consensus. 
+
+But earlier this year The Merge finally came; Ethereum is Proof of Stake (PoS)!
+
+Before we dive in, let me just address the unasked question: “Was the switch to PoS a good thing for Ethereum?”
+
+The answer is an unhesitating, emphatic YES!
+
+But don't take my word for it, Vitalik has already explained why:
+
+[Deep Dive: PoS vs PoW](/ethereum/network/consensus/PoW-vs-PoS)
+
+## Nodes in the Network
+
+A node is a real-world computer; a validator stakes 32 ETH and has responsibilities to operate and secure the network.
+
+A node runs validator software and a single node can run many validators.
+
+There are currently 8k nodes and ~440k validators.
+
+![](/images/pos-1.jpeg)
+
+![](/images/pos-2.jpeg)
+
+## Digital Signatures
+
+At the most basic level, the process is based around digital signatures. 
+
+A [digital signature](/concepts/digital-signatures) proves a SPECIFIC validators signed a SPECIFIC message (in our case, a block). 
+
+A [BLS signature](/concepts/bls-signatures) is a special kind of signature that can be aggregated for batched verification.
+
+Digital signatures allow us to hold individual validators accountable. If they act maliciously, they can be identified and the ETH they staked can be slashed.
+
+## Slashing
+
+Slashing is the processes of destroying a validators stake and ejecting them from the validator set.
+
+Because validators do not want to lose their investment in resources and infrastructure, slashing ensures that validators stay honest and act in a fashion that does not harm the network. 
+
+Slashing is the mechanism that gives PoS its security. 
+
+## Epoch Cycle
+
+[Deep Dive: Time in Ethereum](https://inevitableeth.com/home/ethereum/network/consensus/time)
+
+Every 12 seconds, Ethereum opens a new slot, expecting a new block. 
+
+Within a block there are thousands [transactions](/ethereum/blockchain/block), but they execute atomically: either all together or none at all.
+
+An epoch is made up of 32 slots.
+
+### Selecting a Leader
+
+![](/images/randao-1.jpeg)
+
+[Deep Dive: RANDAO](https://inevitableeth.com/home/ethereum/network/consensus/randao)
+
+Every epoch, Ethereum shuffles the validator set into 32 committees (one per slot) and each committee into 64 subnets. 
+
+The security of the World Computer requires credible randomness during this shuffling, which is delivered by a process known as RANDAO.
+
+### Proposing a Block
+
+![](/images/block-proposal-1.jpeg)
+
+[Deep Dive: Proposal](/ethereum/network/consensus/block-proposal)
+
+The first member of each committee is designated the block proposer and earns the right to progress the EVM. 
+
+The proposer must build (or otherwise source) the block and then broadcast it to the network. 
+
+The proposer's stake is at risk if s/he proposes an invalid block.
+
+### Updating the EVM
+
+[Deep Dive: State Transition Function](https://inevitableeth.com/home/ethereum/network/consensus/state-transition)
+
+![](/images/state-transition-1.jpeg)
+
+Every validator on the network is listening for a copy of every block. When it receives a new block, it executes the state transition function. 
+
+The state transition function is the actual process of updating the EVM (and processing epochs, when appropriate).
+
+### Attestation
+
+![](/images/attestation-1.jpeg)
+
+[Deep Dive: Attestation](/ethereum/network/consensus/attestation)
+
+The validators in the committee corresponding with each slot have an additional duty: they must verify the block. 
+
+Assuming each block is valid, each committee member creates and publishes a cryptographic signature (attestation), putting their stake at risk.
+
+In a perfect world, this is pretty straightforward; in the real world, things get tricky very quickly. 
+
+In sub-ideal network conditions (the vast majority), it's possible that every validator might not receive every block.
+
+#### Attestation Aggregation
+
+Every slot a new committee becomes active and is expected to provide attestations. 440k validators / 64 committees = ~17k validators/committee. 
+
+17k validators poses a problem; it's both too much network chatter and too many signatures to aggregate all at once.
+
+Fortunately, we've already split committees into 64 subnets. 
+
+Each subnet consists of ~250 validators, of which 16 are designated as aggregators. As validators review blocks, they broadcast their attestations to their subnet.
+
+All 16 aggregators are attempting to build the same aggregate signatures, but network conditions often make perfection possible. 
+
+The best aggregate in each subnet is chosen and aggregated one final time, created a single BLS signature representing the entire committee.
+
+Technically speaking, the aggregation process (obviously) happens after the block is proposed (and therefore created); the final aggregate attestation cannot be added on to it. Instead, it is included in the next block. 
+
+Conceptually, it's part of the same slot cycle.
+
+#### Fork Choice
+
+![](/images/lmd-ghost-1.png)
+
+[Deep Dive: LMD-GHOST](https://inevitableeth.com/home/ethereum/network/consensus/lmd-ghost)
+
+Imagine the impending block proposer didn't receive a copy of the last block; he creates a new block based on the previous state and sends it out to the network. Now our blockchain has turned into a block-fork. 
+
+LMD-GHOST is the rule we use to resolve these situations.
+
+### Finalization
+
+![](/images/casper-ffg-1.jpeg)
+
+[Deep Dive: Casper FFG](https://inevitableeth.com/home/ethereum/network/consensus/casper-ffg)
+
+At the end of every epoch, all 32 committees (and therefore every validator) has either proposed or attested; therefore the entire network has voted and made their stake eligible for slashing. 
+
+Thus, the epoch is the unit of time we judge finalization on.
+
+Finalization is a mathematical guarantee that Ethereum has fully applied PoS to an epoch; it cannot be reverted without the destruction (via slashing) of at least 1/3 of the ETH at stake (~$6B right now).
+
+If more than 2/3s of the network votes on an epoch, that epoch becomes justified. 
+
+If more than 2/3s of the network votes for an epoch that is dependent on a justified epoch, the justified epoch becomes finalized. 
+
+These rules are defined by Casper FFG.
+
+## Sync Committes
+
+![](/images/sync-committee-banner.jpeg)
+
+[Deep Dive: Sync Committee](/ethereum/network/consensus/sync-committee)
+
+At this point we've nearly finished out Ethereum PoS specifications; as you can see it is complicated. In fact, it is so complicated that many computers with limited resources and/or bandwidth cannot possibly execute it.
+
+Many computers that would be incredibly useful.
+
+And so, before Ethereum was ever actually PoS, the future of the World Computer was baked directly into the consensus specs.
+
+In fall 2021, in preparation for a light client-based future, the [Altair upgrade](https://decrypt.co/84176/ethereum-altair-upgrade-next-week-heres-whats-in-it) introduced the third validator responsibility: sync committee.
+
+Tl;dr a sync committee is a subset of 512 validators, chosen once every 256 epochs (~27 hours). Members of the sync committee must listen for EVERY block and provide a digital signature. 
+
+This provides the blockchain-level scaffolding needed to support light clients.
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1579594609855934465)
+
+Source Material - [PDF](/twitter-pdf-2022-10-10_pos.pdf)

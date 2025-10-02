@@ -1,0 +1,160 @@
+---
+title: "Danksharding and Rollups"
+description: "published: true"
+category: "ethereum"
+tags: ["editor: ckeditor"]
+difficulty: "advanced"
+updated: "2023-01-20"
+readingTime: 5
+toc: true
+related: []
+---
+
+![](/images/dar-banner.png)
+
+# Danksharding and Rollups
+
+## Prerequisites
+
+### Settlement
+
+[Settlement](https://inevitableeth.com/home/concepts/settlement) is the "final step in the transfer of ownership, involving the physical exchange of securities or payment". 
+
+After settlement, the obligations of all the parties have been discharged and the transaction is considered complete.
+
+## The World Computer
+
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)).
+
+The [Ethereum Virtual Machine](/ethereum/evm) (EVM) provides the [virtual computer](/concepts/virtual-machine), the [blockchain](/ethereum/blockchain) recording its history.
+
+Each node runs a local version of the EVM, which is then held perfectly in sync with every other copy of the EVM through a process called [Proof of Stake](/ethereum/network/consensus) (PoS).
+
+Any individual EVM is a window into the shared state of the World Computer.
+
+At the end of the day, real computers need to run the Ethereum software. And so, the World Computer is limited by the minimum requirements it sets for nodes.
+
+Here lies a fundamental trade-off: higher minimum requirements = less decentralization.
+
+## Rollup-centric Roadmap
+
+![](/images/scaling-1.jpeg)
+
+[Deep Dive: Scaling Ethereum Execution](/ethereum/upgrades/scaling)
+
+Enter Ethereum's [rollup](/ethereum/upgrades/scaling/execution)\-centric roadmap:
+
+*   computation will migrate from the EVM to rollups
+*   rollups will settle to Ethereum (post the final copy of ownership to mainnet)
+*   Danksharding will increase Ethereum's capacity for this data
+
+From this point, I'll assume you are familiar with rollups:
+
+*   [Optimistic rollups](/ethereum/upgrades/scaling/execution/optimistic-rollup) automatically accept batches, but leave a challenge period for fraud proofs
+*   [ZK-rollups](/ethereum/upgrades/scaling/execution/zk-rollup) submit validity proofs along with batches
+
+## Data Availability Scaling
+
+![](/images/randomly-sampled-committees-2.jpeg)
+
+[Deep Dive: The Data Availability Bottleneck](/ethereum/upgrades/scaling/data/data-availability-bottleneck)
+
+Rollups are an elegant solution to Ethereum computational bottleneck, but that is only part of the problem.
+
+The rollup paradigm is based on final settlement on Ethereum, and that requires rollups to post a copy of every transaction to mainnet.
+
+In order to achieve Ethereum-based settlement, each rollup has a smart contract on mainnet.
+
+The external rollup chain will execute thousands of transactions and then periodically send a compressed bundle to this smart contract.
+
+Today, there is one place to "store" data on Ethereum: you can pass it into a smart contract in the same way you would pass variables and other computational variables.
+
+Herein lies the solution to the data availability bottleneck: create dedicated space for rollups.
+
+## Danksharding
+
+![](/images/danksharding-1.png)
+
+[Deep Dive: Danksharding](/ethereum/upgrades/scaling/data)
+
+Long term, we have a solution: Danksharding.
+
+Tl;dr Ethereum will gain "blobs" (large data chunks inaccessible by the EVM). Ethereum will guarantee the availability all blob data for a long but limited amount of time.
+
+Post-Danksharding, when a blob is posted to Ethereum it will be immediately archived by services like [Etherscan](https://etherscan.io/) or the [Portal Network](/ethereum/upgrades/light-clients).
+
+Then after ~1 month, blobs will expire. Only a cryptographic signature will remain on the blockchain/within the EVM in perpetuity.
+
+At this point, there may be a nagging feeling in the back of your head; I've mentioned a few times now that blobs wont be accessible by the EVM...
+
+The problem is that rollups, both optimistic and zk, need access to this data in order to function...
+
+...right?
+
+Of course not! We've got the magic of KZG Commitments!
+
+### KZG Commitments
+
+![](/images/kzg-commitment-summary-1.jpeg)
+
+[Deep Dive: KZG Commitment Scheme](/concepts/kzg-commitment)
+
+Tl;dr KZG commitments allow each blob to be compressed to a single value. Using [elliptic curve cryptography](/concepts/elliptic-curve-cryptography), you can use this value to prove a specific piece of data existed in a blob.
+
+Every single time a new block is created, a block builder will first gather all of the blobs and compute KZG commitments and add them to the block.
+
+Though the EVM wont have access to the blobs directly, it will have access to these commitments.
+
+This is the true magic of KZG commitments - of elliptic curve cryptography! Using just this lightweight commitment, the EVM effectively has access into the blobs...
+
+...even after they expire!
+
+All with cryptographic, trustless certainty.
+
+## Rollups in a post-Danksharding World
+
+So let's talk specifically about how this would be implemented. Once again, if you don't have a good understanding of how rollups work, [please see this article](/ethereum/upgrades/scaling/execution).
+
+Let's imagine an optimistic and zk rollup in a post-Danksharding world.
+
+### Optimistic Rollups 
+
+By definition, optimistic rollups don't need access to the blob data when its posted; they only need it when fraud proofs are being submitted.
+
+Posting an update to an optimistic rollup would remain largely unchanged, simply adding a reference to the KZG commitment.
+
+During a fraud proof challenge period, the rollup-smart contract would need access to all the previous transactions (stored in blobs).
+
+The fraud proof will include KZG proofs, which will be verified against the stored reference; then verification can continue as it does today.
+
+### ZK-Rollups
+
+On the other hand, the smart contract for zk-rollups don't need access to the transaction data ever - however, they do need to prove that they did post the transaction data to Ethereum.
+
+Just to over-emphasize, settlement requires transaction data to be made available.
+
+Post Danksharding, zk-rollups will post 2 commitments:
+
+*   whatever zero-knowledge proof it uses internally
+*   the KZG commitment for the data in the blob with the transaction data
+
+The the smart contract will verify both of these commitments refer to the same data.
+
+In order to prove the two commitments refer to the same data, the smart contract would use a [Proof of Equivalence Protocol](https://ethresear.ch/t/easy-proof-of-equivalence-between-multiple-polynomial-commitment-schemes-to-the-same-data/8188) (this has math that might make you squeamish, just know that you can prove equivalence).
+
+## Summary
+
+And that is how rollups are going to work in a post-Danksharding world.
+
+The big takeaways:
+
+*   Danksharding will create blobs, data external to but provable by the EVM
+*   Rollups will use the same paradigms we have today, but will rely on KZG commitments
+
+If you found this interesting, then you might want to participate in building the core Ethereum protocol by [contributing](https://ceremony.ethereum.org/) to the [KZG-summoning ceremony](https://inevitableeth.com/en/home/ethereum/upgrades/scaling/data/proto-danksharding/kzg-ceremony)!
+
+You've got ~2 months, but don't forget. Help secure the World Computer!
+
+## Resources
+
+Source Material - [Twitter Link](https://twitter.com/SalomonCrypto/status/1616647595501449216)
