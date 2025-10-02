@@ -19,6 +19,26 @@ export const metadata: Metadata = {
   title: "Inevitable Ethereum",
   description: "A comprehensive guide to Ethereum, the World Computer, and the future of decentralized systems.",
   keywords: ["Ethereum", "blockchain", "cryptocurrency", "web3", "DeFi", "smart contracts"],
+  openGraph: {
+    title: "Inevitable Ethereum",
+    description: "A comprehensive guide to Ethereum, the World Computer, and the future of decentralized systems.",
+    url: "https://inevitableeth.com",
+    siteName: "Inevitable Ethereum",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Inevitable Ethereum",
+    description: "A comprehensive guide to Ethereum, the World Computer, and the future of decentralized systems.",
+    creator: "@logarithmicrex",
+  },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
@@ -32,8 +52,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {/* Skip to content link for accessibility */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--background)] focus:text-[var(--link)] focus:border focus:border-[var(--link)] focus:rounded"
+          >
+            Skip to main content
+          </a>
           <Header />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

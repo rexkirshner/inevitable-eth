@@ -58,8 +58,36 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const contentTree = buildContentTree();
   const renderedContent = await renderMarkdown(content);
 
+  // JSON-LD structured data
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: frontmatter.title,
+    description: frontmatter.description,
+    datePublished: frontmatter.updated,
+    dateModified: frontmatter.updated,
+    author: {
+      '@type': 'Person',
+      name: 'Rex Kirshner',
+      url: 'https://twitter.com/logarithmicrex',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Inevitable Ethereum',
+      url: 'https://inevitableeth.com',
+    },
+    keywords: frontmatter.tags.join(', '),
+    articleSection: category,
+    inLanguage: 'en-US',
+  };
+
   return (
-    <div className="flex min-h-screen">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="flex min-h-screen">
       {/* Left Sidebar */}
       <Sidebar contentTree={contentTree} />
 
@@ -110,5 +138,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       {/* Right TOC */}
       {frontmatter.toc && <TableOfContents />}
     </div>
+    </>
   );
 }
