@@ -1,8 +1,8 @@
 # InevitableETH.com Complete Rebuild - Product Requirements Document
 
-**Version:** 2.0
+**Version:** 2.1
 **Date:** 2025-10-02
-**Status:** In Progress - Phase 1 Complete ✅
+**Status:** In Progress - Phase 3 Complete ✅
 
 ---
 
@@ -258,82 +258,137 @@ Created/Enhanced `/lib/content.ts`:
 
 ---
 
-### Phase 2: Wikipedia-Style Design System (NEXT UP)
+### ✅ Phase 2: Wikipedia-Style Design System (COMPLETED)
 
-#### 2.1 Tailwind Configuration ⏳
-Update `tailwind.config.js` with Wikipedia-inspired palette
+#### 2.1 Tailwind Configuration ✅
+Updated `app/globals.css` with Wikipedia-inspired color palette:
+- CSS custom properties for light/dark themes
+- Variables: `--background`, `--surface`, `--border`, `--text`, `--text-secondary`, `--link`, `--link-visited`, `--link-red`
+- Responsive dark mode with `@media (prefers-color-scheme: dark)`
 
-#### 2.2 Global Styles ⏳
-Update `/app/globals.css`:
-- Wikipedia-style link underlines (show on hover)
-- Heading styles (h2 with bottom border like Wikipedia)
-- Code block styling
-- Print CSS (for "Printable version" link)
-- Focus states for accessibility
+#### 2.2 Global Styles ✅
+Comprehensive Wikipedia-style CSS in `/app/globals.css`:
+- ✅ Link styles (underline on hover, visited states, external link indicators)
+- ✅ Heading hierarchy (h1/h2 with bottom border)
+- ✅ Typography (serif headings via Linux Libertine fallback, sans-serif body)
+- ✅ Code block styling (syntax highlighting ready)
+- ✅ Prose styles (.prose class for article content)
+- ✅ Table styling
+- ✅ Print CSS (hides nav/sidebar, shows link URLs)
 
-#### 2.3 Font Configuration ⏳
-Update `/app/layout.tsx`:
-- Keep Geist Sans for headings and UI
-- Add Georgia or system-ui serif for body text
-- Preload critical fonts, subset to Latin
-
----
-
-### Phase 3: Core Layout Components
-
-#### 3.1 Header (Revamp existing) ⏳
-Wikipedia-style: Minimal, functional, search-prominent
-
-#### 3.2 Sidebar Navigation (New) ⏳
-Sticky left sidebar with collapsible category tree
-
-#### 3.3 Table of Contents (Right Sidebar) ⏳
-Wikipedia-style sticky TOC with scroll-spy
-
-#### 3.4 Footer (Enhance existing) ⏳
-Minimal, Wikipedia-style
+#### 2.3 Font Configuration ✅
+Configured in `/app/layout.tsx`:
+- ✅ Geist Sans for UI elements
+- ✅ Geist Mono for code
+- ✅ CSS fallback to Linux Libertine/Georgia for headings
 
 ---
 
-### Phase 4: MDX Content Components
+### ✅ Phase 3: Core Layout Components (COMPLETED)
+
+#### 3.1 Header ✅
+Created Wikipedia-style header at `components/layout/header.tsx`:
+- ✅ Two-tier design (logo bar + navigation bar)
+- ✅ Search link, logo with BookOpen icon
+- ✅ Category navigation (Background, Concepts, Ethereum, About)
+- ✅ Mobile menu button (UI only, functionality pending)
+- ✅ Semantic HTML with proper ARIA labels
+
+#### 3.2 Sidebar Navigation ✅
+Created at `components/layout/sidebar.tsx`:
+- ✅ Client component with collapsible category tree
+- ✅ All categories expanded by default
+- ✅ Active state tracking via usePathname
+- ✅ Article count badges
+- ✅ Wikipedia-style Tools section (Random, Recent changes)
+- ✅ Proper accessibility (aria-expanded, aria-controls)
+
+#### 3.3 Table of Contents ✅
+Created at `components/layout/table-of-contents.tsx`:
+- ✅ Auto-extracts h2, h3, h4 headings from article DOM
+- ✅ Intersection Observer for active heading tracking
+- ✅ Smooth scroll with header offset
+- ✅ Indentation based on heading level
+- ✅ "Back to top" button
+- ✅ Returns null if no headings found
+
+#### 3.4 Footer ✅
+Enhanced at `components/layout/footer.tsx`:
+- ✅ Four-column layout (About, Categories, Resources, Community)
+- ✅ External link indicators
+- ✅ CC BY-SA 4.0 licensing
+- ✅ Links to GitHub and original site
+- ✅ Dynamic year calculation
+
+---
+
+### Phase 4: MDX Content Components (NEXT UP)
 
 #### 4.1 Infobox ⏳
 Wikipedia's signature feature - right-aligned box with key facts
+**Priority:** HIGH (needed for rich article pages)
 
 #### 4.2 Callout ⏳
 Note/Warning/Tip boxes (Wikipedia-style colored note boxes)
+**Priority:** HIGH
 
 #### 4.3 Figure ⏳
 Centered image with border and caption
+**Priority:** HIGH
 
 #### 4.4 References ⏳
 Footnote-style citations at article end
+**Priority:** MEDIUM
 
 #### 4.5 Additional Components ⏳
 - Definition (bold term with hover tooltip)
 - Equation (math formula wrapper)
 - Quote (styled blockquote)
 - Badge (difficulty/category tags)
+**Priority:** LOW (can add incrementally)
 
 ---
 
 ### Phase 5: Pages & Routes
 
-#### 5.1 Homepage (Revamp) ⏳
-Wikipedia Main Page inspired
+#### 5.1 Article Pages ⏳ **CRITICAL - DO FIRST**
+`/app/[category]/[slug]/page.tsx` - Full three-column layout
+**Why first:** Need to test Sidebar + TOC components we just built
+**Requirements:**
+- Three-column layout (Sidebar | Content | TOC)
+- MDX rendering with rehype plugins
+- Metadata generation for SEO
+- Static generation for all 141 articles
 
 #### 5.2 Category Pages ⏳
 `/app/[category]/page.tsx`
+**Requirements:**
+- List all articles in category
+- Filter by difficulty/tags
+- Article cards with previews
 
-#### 5.3 Article Pages ⏳
-`/app/[category]/[slug]/page.tsx` - Full three-column layout
+#### 5.3 Homepage (Revamp) ⏳
+Wikipedia Main Page inspired
+**Requirements:**
+- Featured articles
+- Category overviews
+- Recent updates
 
 #### 5.4 Search Page ⏳
 `/app/search/page.tsx`
+**Requirements:**
+- Client-side Fuse.js search
+- Filters (category, difficulty, tags)
+- Search results with highlights
 
-#### 5.5 Error Pages ⏳
-- Custom 404
-- Error boundary
+#### 5.5 Additional Pages ⏳
+- `/about` - About this project
+- `/random` - Random article redirect
+- `/recent` - Recent changes log
+
+#### 5.6 Error Pages ⏳
+- Custom 404 (`app/not-found.tsx`)
+- Error boundary (`app/error.tsx`)
 
 ---
 
@@ -487,9 +542,9 @@ inevitable-eth/
 | Phase | Tasks | Status |
 |-------|-------|--------|
 | **Phase 1** | Content migration infrastructure | ✅ COMPLETE |
-| **Phase 2** | Wikipedia design system | ⏳ NEXT UP |
-| **Phase 3** | Core layout components | ⏳ PENDING |
-| **Phase 4** | MDX content components | ⏳ PENDING |
+| **Phase 2** | Wikipedia design system | ✅ COMPLETE |
+| **Phase 3** | Core layout components | ✅ COMPLETE |
+| **Phase 4** | MDX content components | ⏳ NEXT UP |
 | **Phase 5** | Page templates & routes | ⏳ PENDING |
 | **Phase 6** | Performance & polish | ⏳ PENDING |
 | **Phase 7** | Quality assurance | ⏳ PENDING |
@@ -500,7 +555,7 @@ inevitable-eth/
 
 ## Progress Log
 
-### 2025-10-02
+### 2025-10-02 - Session 1
 - ✅ Created comprehensive Zod schema for frontmatter validation
 - ✅ Built HTML → MDX migration script with Turndown
 - ✅ Successfully migrated 141 articles from Wiki.js to MDX
@@ -508,6 +563,19 @@ inevitable-eth/
 - ✅ Enhanced content utilities with all necessary functions
 - ✅ **Phase 1 Complete**
 - 📝 Created PRD.md for ongoing reference
+
+### 2025-10-02 - Session 2
+- ✅ Implemented Wikipedia color palette in CSS custom properties
+- ✅ Added comprehensive global styles (links, headings, prose, print)
+- ✅ **Phase 2 Complete**
+- ✅ Created Wikipedia-style Header (two-tier navigation)
+- ✅ Built Sidebar component with collapsible category tree
+- ✅ Built Table of Contents with Intersection Observer
+- ✅ Enhanced Footer with four-column layout
+- ✅ **Phase 3 Complete**
+- 📝 Created CLAUDE.md for future Claude Code instances
+- 📝 Conducted comprehensive code review
+- 🎯 **Ready for Phase 4: MDX Components**
 
 ---
 
@@ -547,5 +615,6 @@ inevitable-eth/
 ---
 
 **Last Updated**: 2025-10-02
-**Current Phase**: Phase 2 - Wikipedia Design System
-**Next Milestone**: Tailwind config + global CSS
+**Current Phase**: Phase 3 Complete ✅
+**Next Up**: Phase 4 - MDX Content Components (BUT FIRST: Add article page route + ThemeProvider)
+**Critical Path**: Article pages → MDX components → Category pages → Search

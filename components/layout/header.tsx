@@ -1,43 +1,80 @@
 import Link from 'next/link';
-import { Menu } from 'lucide-react';
+import { Search, Menu, BookOpen } from 'lucide-react';
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center">
-        <div className="mr-4 flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold text-xl">Inevitable Ethereum</span>
+    <header className="sticky top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--background)] shadow-sm">
+      <div className="mx-auto max-w-[1440px] px-4">
+        {/* Top bar - Wikipedia style */}
+        <div className="flex h-14 items-center justify-between">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-[var(--text)] hover:no-underline"
+          >
+            <BookOpen className="h-6 w-6" aria-hidden="true" />
+            <span className="text-xl font-normal" style={{ fontFamily: '"Linux Libertine", Georgia, Times, serif' }}>
+              Inevitable Ethereum
+            </span>
           </Link>
-          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+
+          {/* Search and utilities */}
+          <div className="flex items-center gap-4">
             <Link
-              href="/background"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              href="/search"
+              className="flex items-center gap-1.5 text-sm text-[var(--text)] hover:text-[var(--link)] transition-colors"
+              aria-label="Search"
             >
-              Background
+              <Search className="h-4 w-4" />
+              <span className="hidden sm:inline">Search</span>
             </Link>
-            <Link
-              href="/concepts"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+
+            <button
+              className="md:hidden text-[var(--text)]"
+              aria-label="Toggle menu"
             >
-              Concepts
-            </Link>
-            <Link
-              href="/ethereum"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              Ethereum
-            </Link>
-          </nav>
-        </div>
-        <div className="flex flex-1 items-center justify-end space-x-2">
-          <nav className="flex items-center">
-            <button className="md:hidden">
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Toggle menu</span>
+              <Menu className="h-5 w-5" />
             </button>
-          </nav>
+          </div>
         </div>
+
+        {/* Navigation bar */}
+        <nav className="hidden md:flex border-t border-[var(--border)] bg-[var(--surface)] -mx-4 px-4">
+          <ul className="flex items-center gap-6 h-10 text-sm">
+            <li>
+              <Link
+                href="/background"
+                className="text-[var(--text)] hover:text-[var(--link)] transition-colors"
+              >
+                Background
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/concepts"
+                className="text-[var(--text)] hover:text-[var(--link)] transition-colors"
+              >
+                Concepts
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/ethereum"
+                className="text-[var(--text)] hover:text-[var(--link)] transition-colors"
+              >
+                Ethereum
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/about"
+                className="text-[var(--text-secondary)] hover:text-[var(--link)] transition-colors"
+              >
+                About
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
   );
