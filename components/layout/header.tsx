@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Search, Menu, BookOpen } from 'lucide-react';
+import { ThemeToggle } from './theme-toggle';
 
 export function Header() {
   return (
@@ -19,18 +20,20 @@ export function Header() {
           </Link>
 
           {/* Search and utilities */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <Link
               href="/search"
-              className="flex items-center gap-1.5 text-sm text-[var(--text)] hover:text-[var(--link)] transition-colors"
+              className="flex items-center gap-1.5 text-sm text-[var(--text)] hover:text-[var(--link)] transition-colors p-2"
               aria-label="Search"
             >
               <Search className="h-4 w-4" />
               <span className="hidden sm:inline">Search</span>
             </Link>
 
+            <ThemeToggle />
+
             <button
-              className="md:hidden text-[var(--text)]"
+              className="md:hidden text-[var(--text)] p-2"
               aria-label="Toggle menu"
             >
               <Menu className="h-5 w-5" />

@@ -1,95 +1,163 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { getAllContent } from '@/lib/content';
+import { BookOpen, Lightbulb, Blocks } from 'lucide-react';
 
 export default function Home() {
+  const backgroundArticles = getAllContent('background').slice(0, 5);
+  const conceptsArticles = getAllContent('concepts').slice(0, 5);
+  const ethereumArticles = getAllContent('ethereum').slice(0, 5);
+
   return (
-    <div className="container py-12 md:py-24">
-      {/* Hero Section */}
-      <div className="mx-auto max-w-4xl text-center">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
-          Inevitable Ethereum
+    <div className="mx-auto max-w-[1200px] px-4 py-8">
+      {/* Wikipedia-style welcome banner */}
+      <div className="mb-8 text-center">
+        <h1 className="text-4xl font-serif font-normal mb-2">
+          Welcome to <span className="italic">Inevitable Ethereum</span>
         </h1>
-        <p className="text-lg text-muted-foreground mb-4">
-          Ethereum is like religion: you cannot make a logical argument and convince someone to believe,
-          you can only give them sacred truths and wait for them to experience enlightenment.
-        </p>
-        <p className="text-lg text-muted-foreground mb-8">
-          In May 2021, I had my epiphany when I heard Hayden Adams explain Uniswap.
-          In a single podcast episode, I went from "internet dollars for internet dollars sake" to
-          "the next inevitable, obvious step in thousands of years of human innovation."
-        </p>
-        <p className="text-xl font-semibold mb-12">
-          A giant leap forward.
+        <p className="text-[var(--text-secondary)]">
+          An educational resource dedicated to Ethereum, the World Computer
         </p>
       </div>
 
-      {/* Mission Statement */}
-      <div className="mx-auto max-w-3xl mb-16">
-        <p className="text-muted-foreground mb-4">
-          This is a project dedicated to Ethereum, the World Computer. None of us can force the conversion
-          moment on another person; it's just not how this works. But some day, every single person is going
-          to have their Hayden Adams-moment. This project is for that moment in every new convert's journey.
-        </p>
-        <p className="text-muted-foreground mb-4">
-          Or, more specifically, for the moments right after.
-        </p>
-        <p className="text-muted-foreground mb-4">
-          The goal: create the materials to take your spark of interest and grow it into an all consuming fire.
-          To give the builders and other zealots the information they need to understand the whole picture,
-          big and small.
-        </p>
-        <p className="text-muted-foreground mb-4">
-          To show you the future that humanity is working towards; that we've been working towards ever since
-          we climbed down from the trees and stood upright.
-        </p>
-        <p className="text-muted-foreground font-semibold">
-          To show you that Ethereum is not only a big deal... Ethereum is inevitable.
-        </p>
-      </div>
-
-      {/* Enter the Wiki */}
-      <div className="mx-auto max-w-4xl">
-        <h2 className="text-3xl font-bold text-center mb-12">Enter the Wiki</h2>
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {/* First Time Card */}
-          <Link
-            href="/ethereum/world-computer"
-            className="group relative overflow-hidden rounded-lg border p-8 hover:border-foreground/50 transition-colors"
-          >
-            <div className="text-center">
-              <h3 className="text-2xl font-semibold mb-4">First Time? Start Here</h3>
-              <p className="text-lg text-foreground/80 group-hover:text-foreground flex items-center justify-center">
-                Ethereum: the World Computer
-                <ArrowRight className="ml-2 h-5 w-5" />
+      {/* Main page grid - Wikipedia style */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Left column */}
+        <div className="space-y-6">
+          {/* Featured article */}
+          <section className="border border-[var(--border)] bg-[var(--surface)] p-4">
+            <h2 className="text-xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-3 flex items-center gap-2">
+              <BookOpen className="h-5 w-5" />
+              Featured article
+            </h2>
+            <div className="space-y-2">
+              <Link
+                href="/ethereum/world-computer"
+                className="text-lg font-semibold text-[var(--link)] hover:underline"
+              >
+                Ethereum: The World Computer
+              </Link>
+              <p className="text-sm text-[var(--text)]">
+                Ethereum is the World Computer - a globally shared computing platform built on trustless trust.
+                From the coordination miracle of humanity to the future of decentralized systems. Learn about the
+                EVM, blockchain, network, and the inevitable path forward.
               </p>
+              <Link
+                href="/ethereum/world-computer"
+                className="text-sm text-[var(--link)] hover:underline inline-block"
+              >
+                Read more →
+              </Link>
             </div>
-          </Link>
+          </section>
 
-          {/* Browse Card */}
-          <div className="relative overflow-hidden rounded-lg border p-8">
-            <div className="text-center">
-              <h3 className="text-2xl font-semibold mb-4">Know What You Want?</h3>
-              <div className="space-y-2">
-                <Link
-                  href="/background"
-                  className="block text-lg text-foreground/80 hover:text-foreground transition-colors"
-                >
-                  Background & Context
-                </Link>
-                <Link
-                  href="/concepts"
-                  className="block text-lg text-foreground/80 hover:text-foreground transition-colors"
-                >
-                  Technical Concepts
-                </Link>
-                <Link
-                  href="/ethereum"
-                  className="block text-lg text-foreground/80 hover:text-foreground transition-colors"
-                >
-                  Ethereum
-                </Link>
-              </div>
-            </div>
+          {/* Background section */}
+          <section className="border border-[var(--border)] bg-[var(--surface)] p-4">
+            <h2 className="text-xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-3">
+              Background & Context
+            </h2>
+            <ul className="space-y-1">
+              {backgroundArticles.map((article) => (
+                <li key={article.slug}>
+                  <Link
+                    href={`/background/${article.slug}`}
+                    className="text-[var(--link)] hover:underline"
+                  >
+                    {article.frontmatter.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/background"
+              className="text-sm text-[var(--link)] hover:underline inline-block mt-2"
+            >
+              View all →
+            </Link>
+          </section>
+        </div>
+
+        {/* Right column */}
+        <div className="space-y-6">
+          {/* Concepts section */}
+          <section className="border border-[var(--border)] bg-[var(--surface)] p-4">
+            <h2 className="text-xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-3 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5" />
+              Technical Concepts
+            </h2>
+            <ul className="space-y-1">
+              {conceptsArticles.map((article) => (
+                <li key={article.slug}>
+                  <Link
+                    href={`/concepts/${article.slug}`}
+                    className="text-[var(--link)] hover:underline"
+                  >
+                    {article.frontmatter.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/concepts"
+              className="text-sm text-[var(--link)] hover:underline inline-block mt-2"
+            >
+              View all →
+            </Link>
+          </section>
+
+          {/* Ethereum section */}
+          <section className="border border-[var(--border)] bg-[var(--surface)] p-4">
+            <h2 className="text-xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-3 flex items-center gap-2">
+              <Blocks className="h-5 w-5" />
+              Ethereum
+            </h2>
+            <ul className="space-y-1">
+              {ethereumArticles.map((article) => (
+                <li key={article.slug}>
+                  <Link
+                    href={`/ethereum/${article.slug}`}
+                    className="text-[var(--link)] hover:underline"
+                  >
+                    {article.frontmatter.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/ethereum"
+              className="text-sm text-[var(--link)] hover:underline inline-block mt-2"
+            >
+              View all →
+            </Link>
+          </section>
+        </div>
+      </div>
+
+      {/* About section */}
+      <div className="mt-8 border border-[var(--border)] bg-[var(--surface)] p-6">
+        <h2 className="text-xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-4">
+          About Inevitable Ethereum
+        </h2>
+        <div className="grid md:grid-cols-2 gap-6 text-sm">
+          <div>
+            <p className="mb-3 text-[var(--text)]">
+              Ethereum is like religion: you cannot make a logical argument and convince someone to believe,
+              you can only give them sacred truths and wait for them to experience enlightenment.
+            </p>
+            <p className="text-[var(--text)]">
+              This is a project dedicated to Ethereum, the World Computer. None of us can force the conversion
+              moment on another person; it's just not how this works. But some day, every single person is going
+              to have their moment of clarity.
+            </p>
+          </div>
+          <div>
+            <p className="mb-3 text-[var(--text)]">
+              The goal: create the materials to take your spark of interest and grow it into an all consuming fire.
+              To give the builders and other zealots the information they need to understand the whole picture,
+              big and small.
+            </p>
+            <p className="font-semibold text-[var(--text)]">
+              To show you that Ethereum is not only a big deal... Ethereum is inevitable.
+            </p>
           </div>
         </div>
       </div>

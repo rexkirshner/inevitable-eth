@@ -213,18 +213,18 @@ For client-side search, use Fuse.js with pre-built search index (Phase 1 pending
 - Table of Contents (Intersection Observer, smooth scroll)
 - Footer (four-column with CC licensing)
 
-**Phase 4: MDX Components** ⏳ NEXT UP
-- Infobox, Callout, Figure, References components
-- **But first:** Need article page route to test components
+**Phase 4: MDX Components** ✅ Complete (2025-10-02 Session 3)
+- Infobox (`components/mdx/infobox.tsx`)
+- Callout (`components/mdx/callout.tsx`)
+- Figure (`components/mdx/figure.tsx`)
+- References (`components/mdx/references.tsx`)
+- All wired up in `mdx-components.tsx`
 
-**Phase 5: Page Templates** ⏳ Pending (CRITICAL PATH)
-- **PRIORITY 1:** Article page template (`app/[category]/[slug]/page.tsx`)
-  - Three-column layout to showcase Sidebar + TOC
-  - MDX rendering with rehype plugins
-  - Static generation for all 141 articles
-- Category page template
-- Homepage revamp (Wikipedia Main Page style)
-- Search page with Fuse.js
+**Phase 5: Page Templates** 🟡 Partial Complete (2025-10-02 Session 3)
+- ✅ Homepage revamped (`app/page.tsx`) - Wikipedia Main Page style
+- ✅ Category page template (`app/[category]/page.tsx`) - Difficulty grouping
+- ⏳ Article page template (`app/[category]/[slug]/page.tsx`) - Exists, needs MDX integration
+- ⏳ Search page with Fuse.js
 
 **Phase 6: Performance & SEO** ⏳ Pending
 - Sitemap, RSS, OG images, JSON-LD
@@ -265,28 +265,30 @@ See `tasks/code-review.md` for comprehensive code audit (conducted 2025-10-02).
 - Metadata via `export const metadata` in pages/layouts
 - Dynamic routes: `[param]/page.tsx`
 
-## Critical Path (As of 2025-10-02)
+## Critical Path (As of 2025-10-02 Session 3)
 
-**Before starting Phase 4 MDX components:**
+**Current Status:** Phase 4 Complete ✅, Phase 5 Partial ✅
 
-1. **Add ThemeProvider** (5 mins) - MEDIUM priority
-   - `next-themes` is installed but not configured
-   - Wrap children in `app/layout.tsx` with `<ThemeProvider>`
-   - Enables dark mode toggle functionality
+**Next Steps:**
 
-2. **Create article page route** (30 mins) - CRITICAL
-   - File: `app/[category]/[slug]/page.tsx`
-   - Needed to test Sidebar + TOC components we just built
-   - Three-column layout: Sidebar | Article Content | TOC
-   - Static generation with `generateStaticParams()`
+1. **Test Article Pages with MDX Components** (15 mins) - HIGH priority
+   - Article pages exist but use `marked` for rendering
+   - Should integrate MDX components (Infobox, Callout, Figure, References)
+   - Test with world-computer.mdx
+   - Verify three-column layout works with new components
 
-3. **Add theme toggle button** (10 mins) - MEDIUM priority
-   - Add to Header component
-   - Use `useTheme()` hook from next-themes
-   - Sun/Moon icon toggle
+2. **Build Search Page** (45 mins) - CRITICAL
+   - File: `app/search/page.tsx`
+   - Client-side Fuse.js search
+   - Filter by category, difficulty, tags
+   - Search result highlighting
 
-**Recommendation from Code Review:**
-Create article page first, then Phase 4 MDX components. This allows immediate testing of the layout system.
+3. **Complete remaining Phase 5 pages** (30 mins) - MEDIUM
+   - Error pages (404, error boundary)
+   - About page
+   - Random article redirect
+
+4. **Phase 6: Performance & SEO** - Start after Phase 5 complete
 
 1. First think through the problem, read the codebase for relevant files, and write a plan to tasks/todo.md.
 2. The plan should have a list of todo items that you can check off as you complete them

@@ -1,8 +1,8 @@
 # InevitableETH.com Complete Rebuild - Product Requirements Document
 
-**Version:** 2.1
+**Version:** 2.2
 **Date:** 2025-10-02
-**Status:** In Progress - Phase 3 Complete ✅
+**Status:** In Progress - Phase 5 Partial Complete ✅
 
 ---
 
@@ -322,57 +322,71 @@ Enhanced at `components/layout/footer.tsx`:
 
 ---
 
-### Phase 4: MDX Content Components (NEXT UP)
+### ✅ Phase 4: MDX Content Components (COMPLETED)
 
-#### 4.1 Infobox ⏳
-Wikipedia's signature feature - right-aligned box with key facts
-**Priority:** HIGH (needed for rich article pages)
+#### 4.1 Infobox ✅
+Created `components/mdx/infobox.tsx`:
+- Wikipedia-style right-aligned box with key-value pairs
+- Floats right on desktop, full width on mobile
+- Optional title, table-based layout
+- Border and background using CSS variables
 
-#### 4.2 Callout ⏳
-Note/Warning/Tip boxes (Wikipedia-style colored note boxes)
-**Priority:** HIGH
+#### 4.2 Callout ✅
+Created `components/mdx/callout.tsx`:
+- Four types: info, warning, tip, danger
+- Icon-based (lucide-react icons)
+- Color-coded backgrounds and borders
+- Optional title, supports children
 
-#### 4.3 Figure ⏳
-Centered image with border and caption
-**Priority:** HIGH
+#### 4.3 Figure ✅
+Created `components/mdx/figure.tsx`:
+- Next.js Image component integration
+- Optional caption with italic styling
+- Border and padding for visual separation
+- Configurable width/height props
 
-#### 4.4 References ⏳
-Footnote-style citations at article end
-**Priority:** MEDIUM
+#### 4.4 References ✅
+Created `components/mdx/references.tsx`:
+- Numbered ordered list format
+- External link indicators
+- Optional author and date fields
+- Auto-hides if no sources provided
 
-#### 4.5 Additional Components ⏳
-- Definition (bold term with hover tooltip)
-- Equation (math formula wrapper)
-- Quote (styled blockquote)
-- Badge (difficulty/category tags)
-**Priority:** LOW (can add incrementally)
+#### 4.5 MDX Components Integration ✅
+Updated `mdx-components.tsx`:
+- All four components exported via useMDXComponents
+- Ready for use in any .mdx file
+- TypeScript types properly configured
 
 ---
 
-### Phase 5: Pages & Routes
+### Phase 5: Pages & Routes (PARTIAL COMPLETE)
 
-#### 5.1 Article Pages ⏳ **CRITICAL - DO FIRST**
+#### 5.1 Article Pages ⏳ **IN PROGRESS**
 `/app/[category]/[slug]/page.tsx` - Full three-column layout
-**Why first:** Need to test Sidebar + TOC components we just built
+**Status:** Already exists from previous session
 **Requirements:**
-- Three-column layout (Sidebar | Content | TOC)
-- MDX rendering with rehype plugins
-- Metadata generation for SEO
-- Static generation for all 141 articles
+- ✅ Three-column layout (Sidebar | Content | TOC)
+- ✅ MDX rendering with marked library
+- ✅ Metadata generation for SEO
+- ✅ Static generation for all 141 articles
+**Note:** Needs testing with new MDX components
 
-#### 5.2 Category Pages ⏳
-`/app/[category]/page.tsx`
-**Requirements:**
-- List all articles in category
-- Filter by difficulty/tags
-- Article cards with previews
+#### 5.2 Category Pages ✅
+Created `/app/[category]/page.tsx`:
+- ✅ Lists all articles in category
+- ✅ Groups by difficulty (intro/intermediate/advanced)
+- ✅ Article previews with description, reading time, updated date
+- ✅ Category descriptions and metadata
+- ✅ Static generation for all 3 categories
 
-#### 5.3 Homepage (Revamp) ⏳
-Wikipedia Main Page inspired
-**Requirements:**
-- Featured articles
-- Category overviews
-- Recent updates
+#### 5.3 Homepage (Revamp) ✅
+Revamped `/app/page.tsx` with Wikipedia Main Page style:
+- ✅ Featured article section (The World Computer)
+- ✅ Category overviews (top 5 from each)
+- ✅ About section with project description
+- ✅ Two-column grid layout
+- ✅ Wikipedia-style sectioned boxes
 
 #### 5.4 Search Page ⏳
 `/app/search/page.tsx`
@@ -544,8 +558,8 @@ inevitable-eth/
 | **Phase 1** | Content migration infrastructure | ✅ COMPLETE |
 | **Phase 2** | Wikipedia design system | ✅ COMPLETE |
 | **Phase 3** | Core layout components | ✅ COMPLETE |
-| **Phase 4** | MDX content components | ⏳ NEXT UP |
-| **Phase 5** | Page templates & routes | ⏳ PENDING |
+| **Phase 4** | MDX content components | ✅ COMPLETE |
+| **Phase 5** | Page templates & routes | 🟡 PARTIAL (Homepage ✅, Category ✅, Article ⏳, Search ⏳) |
 | **Phase 6** | Performance & polish | ⏳ PENDING |
 | **Phase 7** | Quality assurance | ⏳ PENDING |
 
@@ -576,6 +590,18 @@ inevitable-eth/
 - 📝 Created CLAUDE.md for future Claude Code instances
 - 📝 Conducted comprehensive code review
 - 🎯 **Ready for Phase 4: MDX Components**
+
+### 2025-10-02 - Session 3 (Continuation)
+- ✅ Created Infobox component (Wikipedia-style sidebar boxes)
+- ✅ Created Callout component (4 types: info, warning, tip, danger)
+- ✅ Created Figure component (Next.js Image with captions)
+- ✅ Created References component (footnote citations)
+- ✅ Wired up all MDX components in mdx-components.tsx
+- ✅ **Phase 4 Complete**
+- ✅ Revamped Homepage with Wikipedia Main Page style
+- ✅ Created Category page template with difficulty grouping
+- ✅ **Phase 5 Partial Complete** (Homepage ✅, Category ✅)
+- 🎯 **Next: Complete article pages, then search**
 
 ---
 
@@ -615,6 +641,6 @@ inevitable-eth/
 ---
 
 **Last Updated**: 2025-10-02
-**Current Phase**: Phase 3 Complete ✅
-**Next Up**: Phase 4 - MDX Content Components (BUT FIRST: Add article page route + ThemeProvider)
-**Critical Path**: Article pages → MDX components → Category pages → Search
+**Current Phase**: Phase 5 Partial Complete (Homepage ✅, Category ✅)
+**Next Up**: Complete Article pages with MDX component integration, then Search page
+**Critical Path**: Article MDX integration → Search page → Performance → QA

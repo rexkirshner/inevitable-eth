@@ -46,6 +46,19 @@
   }
 }
 
+.dark {
+  /* Wikipedia-inspired Dark Mode Palette (class-based) */
+  --background: #1a1a1a;
+  --surface: #222222;
+  --border: #404040;
+  --text: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --link: #4d9fff;
+  --link-visited: #a68dff;
+  --link-red: #ff6b6b;
+  --foreground: var(--text);
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
