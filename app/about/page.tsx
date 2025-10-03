@@ -1,10 +1,23 @@
 import Link from 'next/link';
 import { Github, ExternalLink } from 'lucide-react';
+import { getDefaultOgImage } from '@/lib/og-image';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About | Inevitable Ethereum',
-  description: 'Learn about Inevitable Ethereum - an educational resource dedicated to Ethereum, the World Computer, and the future of decentralized systems.',
+  description: 'Learn about Inevitable Ethereum - an educational resource dedicated to understanding Ethereum, finance history, and cryptography.',
+  openGraph: {
+    title: 'About Inevitable Ethereum',
+    description: 'An educational resource dedicated to understanding Ethereum, finance history, and cryptography',
+    images: [{ url: getDefaultOgImage() }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Inevitable Ethereum',
+    description: 'An educational resource dedicated to understanding Ethereum, finance history, and cryptography',
+    images: [getDefaultOgImage()],
+  },
 };
 
 export default function AboutPage() {

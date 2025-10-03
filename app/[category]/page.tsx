@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getAllContent, getAllCategories } from '@/lib/content';
+import { getDefaultOgImage } from '@/lib/og-image';
 
 interface CategoryPageProps {
   params: Promise<{
@@ -40,6 +41,18 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   return {
     title: `${title} | Inevitable Ethereum`,
     description,
+    openGraph: {
+      title: `${title} - Inevitable Ethereum`,
+      description,
+      images: [{ url: getDefaultOgImage() }],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} - Inevitable Ethereum`,
+      description,
+      images: [getDefaultOgImage()],
+    },
   };
 }
 

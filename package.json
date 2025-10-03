@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "prebuild": "npm run build-search-index",
     "build": "next build --turbopack",
+    "build:cloudflare": "cp next.config.cloudflare.ts next.config.ts && npm run build && git checkout next.config.ts",
     "start": "next start",
     "lint": "eslint",
     "migrate": "tsx scripts/migrate-html-to-mdx.ts",

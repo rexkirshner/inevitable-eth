@@ -63,9 +63,7 @@ async function optimizeImage(filePath: string, fileName: string) {
 
     // Generate responsive sizes
     for (const [sizeName, width] of Object.entries(SIZES)) {
-      // Only generate size if image is larger
-      if (metadata.width < width) continue;
-
+      // Generate all sizes - withoutEnlargement prevents upscaling
       const webpPath = `/images/optimized/${baseName}-${sizeName}.webp`;
       const avifPath = `/images/optimized/${baseName}-${sizeName}.avif`;
 

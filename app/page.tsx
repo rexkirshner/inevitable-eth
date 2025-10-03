@@ -1,6 +1,25 @@
 import Link from 'next/link';
 import { getAllContent } from '@/lib/content';
+import { getDefaultOgImage } from '@/lib/og-image';
 import { BookOpen, Lightbulb, Blocks } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Inevitable Ethereum - Educational Resource for the World Computer',
+  description: 'An educational resource dedicated to Ethereum, finance history, and cryptography. Learn about the World Computer and its inevitable future.',
+  openGraph: {
+    title: 'Inevitable Ethereum',
+    description: 'An educational resource dedicated to Ethereum, the World Computer',
+    images: [{ url: getDefaultOgImage() }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Inevitable Ethereum',
+    description: 'An educational resource dedicated to Ethereum, the World Computer',
+    images: [getDefaultOgImage()],
+  },
+};
 
 export default function Home() {
   const backgroundArticles = getAllContent('background').slice(0, 5);

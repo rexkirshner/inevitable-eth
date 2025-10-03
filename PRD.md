@@ -1,8 +1,8 @@
 # InevitableETH.com Complete Rebuild - Product Requirements Document
 
-**Version:** 4.0
+**Version:** 4.1
 **Date:** 2025-10-02
-**Status:** Phase 1-7 Complete ✅ | Production Ready 🚀
+**Status:** Phase 1-8 Complete ✅ | Deployment Ready 🚀
 **Strategy:** Ship polished v1 first, defer complex community features until validated
 
 ---
@@ -951,8 +951,9 @@ inevitable-eth/
 | **Phase 5** | Page templates & routes | ✅ COMPLETE | Done |
 | **Phase 6** | Performance & polish | ✅ COMPLETE | Done |
 | **Phase 7** | Quality assurance & optimization | ✅ COMPLETE | Done |
+| **Phase 8** | Cloudflare deployment & final polish | ✅ COMPLETE | Done |
 
-**Status**: Production ready with 153 static pages, 93+ Performance score, full security hardening
+**Status**: Deployment ready with 153 static pages, 498 optimized images, OG images, Cloudflare config
 
 ### v1 Launch Preparation (Optional)
 | Phase | Tasks | Status | Duration |
@@ -1051,6 +1052,29 @@ inevitable-eth/
 - ✅ Search index prebuild script
 - 🎯 **Phase 7 Complete - Production Ready!**
 
+### 2025-10-02 - Session 6 (Cloudflare Deployment & Final Polish)
+**Phase 8 Completion:**
+- ✅ **Cloudflare Pages Configuration**
+  - Created `next.config.cloudflare.ts` for static export
+  - Created `public/_headers` for CSP headers
+  - Added `build:cloudflare` npm script that temporarily swaps configs
+  - Fixed `robots.ts` and `sitemap.ts` with `dynamic = 'force-static'`
+- ✅ **Fixed Critical Image Optimization Bug**
+  - Root cause: `scripts/optimize-images.ts` line 67 skipped desktop variants for images < 1920px
+  - MDX renderer always tried to load all sizes → 404 errors on multiple pages
+  - Fixed by removing size check (withoutEnlargement prevents upscaling)
+  - Re-optimized all 498 images (6 variants each = ~3,000 files)
+- ✅ **OG Images for Social Media Sharing**
+  - Created `lib/og-image.ts` utility to extract first image from markdown
+  - Article pages use first image from content (or hero frontmatter)
+  - Other pages use default banner (`public/images/inevitable-eth-banner.png`)
+  - Added OpenGraph and Twitter Card metadata to all pages
+- ✅ **Deployment Testing**
+  - Static export build successful (153 pages)
+  - Verified `out/` directory structure
+  - Confirmed `_headers` file copied correctly
+- 🎯 **Phase 8 Complete - Deployment Ready for Cloudflare Pages!**
+
 ---
 
 ## Notes & Decisions
@@ -1088,12 +1112,13 @@ inevitable-eth/
 
 ---
 
-**Last Updated**: 2025-10-02 (v4.0 - Phase 7 Complete, Production Ready)
-**Current Phase**: Phases 1-7 Complete ✅ | Production Ready 🚀
-**Build Status**: 153 static pages generated successfully
+**Last Updated**: 2025-10-02 (v4.1 - Phase 8 Complete, Deployment Ready)
+**Current Phase**: Phases 1-8 Complete ✅ | Deployment Ready 🚀
+**Build Status**: 153 static pages | 498 images optimized | All images loading ✅
 **Performance**: LCP 2.6s | Performance 93-98 | A11y 96+ | SEO 100
-**Next Up**: Phase 7.5 (v1 Launch Prep) - Community features, analytics, final polish
-**v1 Launch Target**: Ready to deploy
+**Deployment**: Cloudflare Pages ready | Static export tested ✅
+**Next Up**: Phase 7.5 (v1 Launch Prep) - Community features, analytics, final polish (optional)
+**v1 Launch Target**: Ready to deploy now
 **Post-Launch**: 4-5 weeks of enhancements after v1 validated with real users
 
 ---

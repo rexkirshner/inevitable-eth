@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { getContentBySlug, getAllSlugsInCategory, getAllCategories, buildContentTree } from '@/lib/content';
 import { renderMarkdown } from '@/lib/mdx';
 import { sanitizeHtml } from '@/lib/sanitize';
+import { getArticleOgImage } from '@/lib/og-image';
 import { Sidebar } from '@/components/layout/sidebar';
 import type { Metadata } from 'next';
 
@@ -33,12 +34,25 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   const { category, slug } = await params;
 
   try {
-    const { frontmatter } = getContentBySlug(category, slug);
+    const { frontmatter, content } = getContentBySlug(category, slug);
+    const ogImage = getArticleOgImage(frontmatter.hero, content);
 
     return {
       title: `${frontmatter.title} | Inevitable Ethereum`,
       description: frontmatter.description,
       keywords: frontmatter.tags,
+      openGraph: {
+        title: frontmatter.title,
+        description: frontmatter.description,
+        images: [{ url: ogImage }],
+        type: 'article',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: frontmatter.title,
+        description: frontmatter.description,
+        images: [ogImage],
+      },
     };
   } catch {
     return {

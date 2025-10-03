@@ -18,8 +18,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev          # Start dev server with Turbopack on localhost:3000
 
 # Production
-npm run build        # Build for production with Turbopack
-npm run start        # Start production server
+npm run build               # Build for production with Turbopack
+npm run build:cloudflare    # Build for Cloudflare Pages (static export)
+npm run start               # Start production server
 
 # Code Quality
 npm run lint         # Run ESLint
@@ -249,6 +250,12 @@ For client-side search, use Fuse.js with pre-built search index (Phase 1 pending
 - ✅ Lighthouse audits (93-98 Performance, 96+ A11y, 100 SEO)
 - ✅ Production build (153 pages)
 
+**Phase 8: Cloudflare Deployment & Final Polish** ✅ Complete (2025-10-02 Session 6)
+- ✅ Cloudflare Pages static export configuration
+- ✅ Fixed image optimization bug (desktop variants 404s)
+- ✅ OG images for social media sharing
+- ✅ Deployment ready (153 pages, tested)
+
 See `PRD.md` for complete roadmap and success criteria.
 See `tasks/code-review.md` for comprehensive code audit (conducted 2025-10-02).
 
@@ -274,11 +281,12 @@ See `tasks/code-review.md` for comprehensive code audit (conducted 2025-10-02).
 
 **Security & Performance**:
 - **XSS Protection**: All markdown-rendered HTML sanitized with DOMPurify (`lib/sanitize.ts`)
-- **CSP Headers**: Comprehensive security headers in `next.config.ts`
+- **CSP Headers**: Security headers in `next.config.ts` (dev) and `public/_headers` (Cloudflare)
 - **Caching**: Module-level caching for buildContentTree() and getAllContent()
 - **Dynamic Imports**: TableOfContents and SearchClient lazy-loaded
 - **Search Debouncing**: 300ms delay prevents excessive re-renders
 - **Image Optimization**: Custom marked.js renderer generates responsive `<picture>` tags with WebP/AVIF sources
+- **OG Images**: Social media preview images via metadata (`lib/og-image.ts`)
 
 **Next.js 15 App Router**:
 - File-based routing in `app/` directory
@@ -286,45 +294,52 @@ See `tasks/code-review.md` for comprehensive code audit (conducted 2025-10-02).
 - Metadata via `export const metadata` in pages/layouts
 - Dynamic routes: `[param]/page.tsx`
 
-## Critical Path (As of 2025-10-02 Session 5)
+## Critical Path (As of 2025-10-02 Session 6)
 
-**Current Status:** Phases 1-7 Complete ✅ | Production Ready 🚀
+**Current Status:** Phases 1-8 Complete ✅ | Deployment Ready 🚀
 
-**Completed in Session 5 (Performance & Security Sprint):**
-- ✅ Security hardening with XSS protection (DOMPurify)
-- ✅ CSP headers (next.config.ts)
-- ✅ Performance optimizations:
-  - Content tree caching (module-level)
-  - getAllContent() caching (Map-based)
-  - Dynamic imports for TableOfContents and SearchClient
-  - Search debouncing (300ms)
-- ✅ Image optimization wired to MDX renderer
-  - LCP improved 90%: 27.3s → 2.6s
-  - Performance score: 72 → 93
-- ✅ Search index prebuild script
-- ✅ Production build successful (153 pages)
-- ✅ Lighthouse audits:
-  - Homepage: 93 Performance, 96 A11y, 100 Best Practices, 100 SEO
-  - Category: 98 Performance, 96 A11y, 100 Best Practices, 100 SEO
-  - Article: 93 Performance, 96 A11y, 96 Best Practices, 100 SEO
+**Completed in Session 6 (Cloudflare Deployment & Final Polish):**
+- ✅ Cloudflare Pages configuration
+  - Created `next.config.cloudflare.ts` for static export
+  - Created `public/_headers` for CSP headers
+  - Added `build:cloudflare` npm script
+  - Added `dynamic = 'force-static'` to robots.ts and sitemap.ts
+- ✅ Fixed critical image optimization bug
+  - Root cause: script skipped desktop variants for images < 1920px
+  - MDX renderer always tried to load all sizes → 404s
+  - Fixed in `scripts/optimize-images.ts` line 67
+  - Re-optimized all 498 images (6 variants each = ~3,000 files)
+- ✅ OG images for social media sharing
+  - Created `lib/og-image.ts` utility
+  - Article pages use first image from content
+  - Other pages use default banner
+  - Updated metadata in all pages
+- ✅ Deployment testing
+  - Static export build successful (153 pages)
+  - Verified `out/` directory structure
+  - Confirmed `_headers` file copied correctly
 
 **Build Status:**
 - ✅ 153 static pages generated
 - ✅ 140 articles indexed (52.36 KB search index)
+- ✅ 498 images optimized (mobile/tablet/desktop × WebP/AVIF)
 - ✅ Zero build errors
 - ✅ All 141 articles compile successfully
+- ✅ All images loading correctly (desktop variants fixed)
 
-**Key Files Modified:**
-- `lib/sanitize.ts` - XSS protection with DOMPurify
-- `next.config.ts` - CSP headers and security policies
-- `lib/content.ts` - Caching for buildContentTree() and getAllContent()
-- `lib/mdx.ts` - Custom image renderer with responsive picture tags
-- `app/[category]/[slug]/page.tsx` - Sanitized content, dynamic TOC import
-- `app/search/page.tsx` - Dynamic SearchClient import
-- `app/search/search-client.tsx` - Search debouncing (300ms)
-- `package.json` - Prebuild script for search index
+**Key Files Modified/Created:**
+- `next.config.cloudflare.ts` - NEW: Static export config for Cloudflare
+- `public/_headers` - NEW: CSP headers for Cloudflare Pages
+- `lib/og-image.ts` - NEW: OG image extraction utilities
+- `scripts/optimize-images.ts` - FIXED: Removed size check causing 404s
+- `app/[category]/[slug]/page.tsx` - Added OG image metadata
+- `app/page.tsx` - Added OG image metadata
+- `app/about/page.tsx` - Added OG image metadata
+- `app/search/page.tsx` - Added OG image metadata
+- `app/[category]/page.tsx` - Added OG image metadata
+- `package.json` - Added `build:cloudflare` script
 
-**Project is production-ready** - can deploy immediately
+**Project is deployment-ready for Cloudflare Pages**
 
 1. First think through the problem, read the codebase for relevant files, and write a plan to tasks/todo.md.
 2. The plan should have a list of todo items that you can check off as you complete them
