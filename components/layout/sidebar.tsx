@@ -18,10 +18,10 @@ interface ArticleItemProps {
 
 function ArticleItem({ article, categorySlug, level = 0 }: ArticleItemProps) {
   const pathname = usePathname();
-  const [isExpanded, setIsExpanded] = useState(false);
   const hasChildren = article.children && article.children.length > 0;
   const articleHref = `/${categorySlug}/${article.slug}`;
   const isActive = pathname === articleHref;
+  const [isExpanded, setIsExpanded] = useState(isActive && hasChildren);
 
   return (
     <li>
