@@ -89,6 +89,14 @@ export function Header() {
             </li>
             <li>
               <Link
+                href="/random"
+                className="text-[var(--text)] hover:text-[var(--link)] transition-colors"
+              >
+                Random Article
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/about"
                 className="text-[var(--text-secondary)] hover:text-[var(--link)] transition-colors"
               >

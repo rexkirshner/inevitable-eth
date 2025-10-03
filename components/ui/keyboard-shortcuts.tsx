@@ -137,6 +137,12 @@ export function useKeyboardShortcuts(
         return;
       }
 
+      // Ignore if any modifier keys are pressed (Cmd, Ctrl, Alt, Shift)
+      // This allows browser shortcuts like Cmd+R to work normally
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) {
+        return;
+      }
+
       switch (e.key) {
         case '/':
           e.preventDefault();

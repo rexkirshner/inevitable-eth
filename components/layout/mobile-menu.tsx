@@ -99,18 +99,18 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             </li>
             <li>
               <Link
-                href="/about"
-                className="block px-4 py-3 text-[var(--text-secondary)] hover:bg-[var(--surface)] hover:text-[var(--link)] rounded transition-colors"
-              >
-                About
-              </Link>
-            </li>
-            <li className="pt-4 border-t border-[var(--border)]">
-              <Link
                 href="/random"
                 className="block px-4 py-3 text-[var(--text)] hover:bg-[var(--surface)] hover:text-[var(--link)] rounded transition-colors"
               >
                 Random Article
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/about"
+                className="block px-4 py-3 text-[var(--text-secondary)] hover:bg-[var(--surface)] hover:text-[var(--link)] rounded transition-colors"
+              >
+                About
               </Link>
             </li>
           </ul>
