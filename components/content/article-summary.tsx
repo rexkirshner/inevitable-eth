@@ -1,10 +1,15 @@
 import { Info } from 'lucide-react';
 
 interface ArticleSummaryProps {
-  description: string;
+  description?: string;
 }
 
 export function ArticleSummary({ description }: ArticleSummaryProps) {
+  // Don't render if description is missing or is Wiki.js metadata
+  if (!description || description === 'published: true') {
+    return null;
+  }
+
   return (
     <aside className="mb-8 p-4 bg-[var(--surface)] border border-[var(--border)] rounded">
       <div className="flex items-start gap-3">

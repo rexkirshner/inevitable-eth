@@ -19,7 +19,7 @@ export const SourceSchema = z.object({
 export const FrontmatterSchema = z.object({
   // Required fields
   title: z.string().min(1, "Title is required"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
+  description: z.string().min(10, "Description must be at least 10 characters").optional(),
   category: CategoryEnum,
 
   // Categorization
