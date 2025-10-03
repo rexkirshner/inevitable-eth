@@ -4,10 +4,71 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronRight, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import type { CategoryTree } from '@/lib/content';
+import type { CategoryTree, ArticleNode } from '@/lib/content';
 
 interface SidebarProps {
   contentTree: CategoryTree[];
+}
+
+interface ArticleItemProps {
+  article: ArticleNode;
+  categorySlug: string;
+  level?: number;
+}
+
+function ArticleItem({ article, categorySlug, level = 0 }: ArticleItemProps) {
+  const pathname = usePathname();
+  const [isExpanded, setIsExpanded] = useState(true);
+  const hasChildren = article.children && article.children.length > 0;
+  const articleHref = `/${categorySlug}/${article.slug}`;
+  const isActive = pathname === articleHref;
+
+  return (
+    <li>
+      <div className="flex items-start">
+        {hasChildren && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="p-1 text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors"
+            aria-label={isExpanded ? 'Collapse' : 'Expand'}
+          >
+            {isExpanded ? (
+              <ChevronDown className="h-3 w-3" />
+            ) : (
+              <ChevronRight className="h-3 w-3" />
+            )}
+          </button>
+        )}
+        <Link
+          href={articleHref}
+          className={`
+            flex-1 px-3 py-1.5 text-sm rounded transition-colors
+            ${hasChildren ? '' : 'ml-5'}
+            ${isActive
+              ? 'bg-[var(--surface)] text-[var(--link)] font-medium'
+              : 'text-[var(--text)] hover:bg-[var(--surface)] hover:text-[var(--link)]'
+            }
+          `}
+          aria-current={isActive ? 'page' : undefined}
+        >
+          {article.title}
+        </Link>
+      </div>
+
+      {hasChildren && isExpanded && (
+        <ul className="ml-4 mt-1 space-y-0.5 border-l border-[var(--border)] pl-2">
+          {article.children!.map(child => (
+            <ArticleItem
+              key={child.slug}
+              article={child}
+              categorySlug={categorySlug}
+              level={level + 1}
+            />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
 }
 
 export function Sidebar({ contentTree }: SidebarProps) {
@@ -72,30 +133,15 @@ export function Sidebar({ contentTree }: SidebarProps) {
                 {isExpanded && (
                   <ul
                     id={`category-${category.slug}`}
-                    className="ml-6 mt-1 space-y-0.5 border-l border-[var(--border)] pl-3"
+                    className="ml-6 mt-1 space-y-0.5"
                   >
-                    {category.articles.map(article => {
-                      const articleHref = `/${category.slug}/${article.slug}`;
-                      const articleActive = isActive(articleHref);
-
-                      return (
-                        <li key={article.slug}>
-                          <Link
-                            href={articleHref}
-                            className={`
-                              block px-3 py-1.5 text-sm rounded transition-colors
-                              ${articleActive
-                                ? 'bg-[var(--surface)] text-[var(--link)] font-medium'
-                                : 'text-[var(--text)] hover:bg-[var(--surface)] hover:text-[var(--link)]'
-                              }
-                            `}
-                            aria-current={articleActive ? 'page' : undefined}
-                          >
-                            {article.title}
-                          </Link>
-                        </li>
-                      );
-                    })}
+                    {category.articles.map(article => (
+                      <ArticleItem
+                        key={article.slug}
+                        article={article}
+                        categorySlug={category.slug}
+                      />
+                    ))}
                   </ul>
                 )}
               </div>

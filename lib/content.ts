@@ -173,18 +173,73 @@ export function getRelatedArticles(category: string, slug: string, limit: number
 /**
  * Build a hierarchical content tree for navigation
  */
+export interface ArticleNode {
+  title: string;
+  slug: string;
+  difficulty: string;
+  parent?: string;
+  children?: ArticleNode[];
+}
+
 export interface CategoryTree {
   name: string;
   slug: string;
   count: number;
-  articles: Array<{
-    title: string;
-    slug: string;
-    difficulty: string;
-  }>;
+  articles: ArticleNode[];
 }
 
 let contentTreeCache: CategoryTree[] | null = null;
+
+function buildArticleHierarchy(articles: ContentMetadata[]): ArticleNode[] {
+  // Create a map of all articles by slug
+  const articleMap = new Map<string, ArticleNode>();
+
+  // First pass: create all nodes
+  for (const article of articles) {
+    articleMap.set(article.slug, {
+      title: article.frontmatter.title,
+      slug: article.slug,
+      difficulty: article.frontmatter.difficulty,
+      parent: article.frontmatter.parent,
+      children: [],
+    });
+  }
+
+  // Second pass: build parent-child relationships
+  const rootArticles: ArticleNode[] = [];
+
+  for (const node of articleMap.values()) {
+    if (node.parent) {
+      // This article has a parent, attach it as a child
+      const parentNode = articleMap.get(node.parent);
+      if (parentNode) {
+        if (!parentNode.children) {
+          parentNode.children = [];
+        }
+        parentNode.children.push(node);
+      } else {
+        // Parent not found, treat as root
+        rootArticles.push(node);
+      }
+    } else {
+      // No parent, this is a root article
+      rootArticles.push(node);
+    }
+  }
+
+  // Sort recursively
+  function sortArticles(articles: ArticleNode[]): ArticleNode[] {
+    const sorted = articles.sort((a, b) => a.title.localeCompare(b.title));
+    for (const article of sorted) {
+      if (article.children && article.children.length > 0) {
+        article.children = sortArticles(article.children);
+      }
+    }
+    return sorted;
+  }
+
+  return sortArticles(rootArticles);
+}
 
 export function buildContentTree(): CategoryTree[] {
   if (contentTreeCache) {
@@ -200,13 +255,7 @@ export function buildContentTree(): CategoryTree[] {
       name: category.charAt(0).toUpperCase() + category.slice(1),
       slug: category,
       count: articles.length,
-      articles: articles
-        .map(article => ({
-          title: article.frontmatter.title,
-          slug: article.slug,
-          difficulty: article.frontmatter.difficulty,
-        }))
-        .sort((a, b) => a.title.localeCompare(b.title)),
+      articles: buildArticleHierarchy(articles),
     };
   });
 

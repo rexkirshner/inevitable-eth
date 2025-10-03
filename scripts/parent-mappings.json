@@ -1,0 +1,692 @@
+[
+  {
+    "category": "background",
+    "slug": "dot-com",
+    "parent": null
+  },
+  {
+    "category": "background",
+    "slug": "aig",
+    "parent": "entities"
+  },
+  {
+    "category": "background",
+    "slug": "bear-stearns",
+    "parent": "entities"
+  },
+  {
+    "category": "background",
+    "slug": "federal-reserve",
+    "parent": "entities"
+  },
+  {
+    "category": "background",
+    "slug": "gse",
+    "parent": "entities"
+  },
+  {
+    "category": "background",
+    "slug": "lehman",
+    "parent": "entities"
+  },
+  {
+    "category": "background",
+    "slug": "merrill-lynch",
+    "parent": "entities"
+  },
+  {
+    "category": "background",
+    "slug": "entities",
+    "parent": null
+  },
+  {
+    "category": "background",
+    "slug": "gfc",
+    "parent": null
+  },
+  {
+    "category": "background",
+    "slug": "history-finance",
+    "parent": null
+  },
+  {
+    "category": "background",
+    "slug": "computer",
+    "parent": "mass-comm"
+  },
+  {
+    "category": "background",
+    "slug": "printing-press",
+    "parent": "mass-comm"
+  },
+  {
+    "category": "background",
+    "slug": "tomorrow-fi",
+    "parent": "mass-comm"
+  },
+  {
+    "category": "background",
+    "slug": "mass-comm",
+    "parent": null
+  },
+  {
+    "category": "background",
+    "slug": "afghanistan",
+    "parent": "sanctions"
+  },
+  {
+    "category": "background",
+    "slug": "sanctions",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "abstraction",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "api",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "arbitrage",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "array",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "bft",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "bls-signatures",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "bridge",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "commitment",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "credible-neutrality",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "crypto-economics",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "dcf",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "diffie-hellman",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "digital-signatures",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "elliptic-curve-cryptography",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "elliptic-curve-pairings",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "gas",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "hash",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "commit",
+    "parent": "kzg-commitment"
+  },
+  {
+    "category": "concepts",
+    "slug": "open",
+    "parent": "kzg-commitment"
+  },
+  {
+    "category": "concepts",
+    "slug": "verify",
+    "parent": "kzg-commitment"
+  },
+  {
+    "category": "concepts",
+    "slug": "kzg-commitment",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "liquidity",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "market-making",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "scaling",
+    "parent": "merkle-tree"
+  },
+  {
+    "category": "concepts",
+    "slug": "merkle-tree",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "example",
+    "parent": "mev"
+  },
+  {
+    "category": "concepts",
+    "slug": "mev",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "option",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "oracle",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "pcs-trusted-setup",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "perp",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "polynomial-commitment",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "erasure-code",
+    "parent": "polynomial-encoding"
+  },
+  {
+    "category": "concepts",
+    "slug": "polynomial-encoding",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "power-law",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "reserve-currency",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "settlement",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "stack",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "turing-complete",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "vector",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "verkle-tree",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "virtual-machine",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "working-capital",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "zk-proof",
+    "parent": null
+  },
+  {
+    "category": "ethereum",
+    "slug": "block",
+    "parent": "blockchain"
+  },
+  {
+    "category": "ethereum",
+    "slug": "erc-3475",
+    "parent": "token-standards"
+  },
+  {
+    "category": "ethereum",
+    "slug": "token-standards",
+    "parent": "blockchain"
+  },
+  {
+    "category": "ethereum",
+    "slug": "transaction",
+    "parent": "blockchain"
+  },
+  {
+    "category": "ethereum",
+    "slug": "blockchain",
+    "parent": null
+  },
+  {
+    "category": "ethereum",
+    "slug": "account",
+    "parent": "evm"
+  },
+  {
+    "category": "ethereum",
+    "slug": "property-rights",
+    "parent": "evm"
+  },
+  {
+    "category": "ethereum",
+    "slug": "state-machine",
+    "parent": "evm"
+  },
+  {
+    "category": "ethereum",
+    "slug": "evm",
+    "parent": null
+  },
+  {
+    "category": "ethereum",
+    "slug": "history",
+    "parent": null
+  },
+  {
+    "category": "ethereum",
+    "slug": "PoW-vs-PoS",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "attestation",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "block-proposal",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "casper-ffg",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "eip-1559",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "finality",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "lmd-ghost",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "pos",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "randao",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "state-transition",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "sync-committee",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "time",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "vdf",
+    "parent": "consensus"
+  },
+  {
+    "category": "ethereum",
+    "slug": "consensus",
+    "parent": "network"
+  },
+  {
+    "category": "ethereum",
+    "slug": "accessing-ethereum",
+    "parent": "node"
+  },
+  {
+    "category": "ethereum",
+    "slug": "node",
+    "parent": "network"
+  },
+  {
+    "category": "ethereum",
+    "slug": "network",
+    "parent": null
+  },
+  {
+    "category": "ethereum",
+    "slug": "account-abstraction",
+    "parent": "consensus-updates"
+  },
+  {
+    "category": "ethereum",
+    "slug": "dvt",
+    "parent": "consensus-updates"
+  },
+  {
+    "category": "ethereum",
+    "slug": "single-slot-finality",
+    "parent": "consensus-updates"
+  },
+  {
+    "category": "ethereum",
+    "slug": "vdf",
+    "parent": "consensus-updates"
+  },
+  {
+    "category": "ethereum",
+    "slug": "consensus-updates",
+    "parent": "upgrades"
+  },
+  {
+    "category": "ethereum",
+    "slug": "eof",
+    "parent": "execution-updates"
+  },
+  {
+    "category": "ethereum",
+    "slug": "light-clients",
+    "parent": "upgrades"
+  },
+  {
+    "category": "ethereum",
+    "slug": "services",
+    "parent": "eigenlayer"
+  },
+  {
+    "category": "ethereum",
+    "slug": "eigenlayer",
+    "parent": "middleware"
+  },
+  {
+    "category": "ethereum",
+    "slug": "trustless-bridge",
+    "parent": "middleware"
+  },
+  {
+    "category": "ethereum",
+    "slug": "middleware",
+    "parent": "upgrades"
+  },
+  {
+    "category": "ethereum",
+    "slug": "mev-boost",
+    "parent": "pbs"
+  },
+  {
+    "category": "ethereum",
+    "slug": "pbs",
+    "parent": "upgrades"
+  },
+  {
+    "category": "ethereum",
+    "slug": "danksharding-and-rollups",
+    "parent": "scaling"
+  },
+  {
+    "category": "ethereum",
+    "slug": "consensus-changes",
+    "parent": "data"
+  },
+  {
+    "category": "ethereum",
+    "slug": "data-availability-bottleneck",
+    "parent": "data"
+  },
+  {
+    "category": "ethereum",
+    "slug": "data-availability-sampling",
+    "parent": "p2p-network"
+  },
+  {
+    "category": "ethereum",
+    "slug": "randomly-sampled-committees",
+    "parent": "p2p-network"
+  },
+  {
+    "category": "ethereum",
+    "slug": "p2p-network",
+    "parent": "data"
+  },
+  {
+    "category": "ethereum",
+    "slug": "kzg-ceremony",
+    "parent": "proto-danksharding"
+  },
+  {
+    "category": "ethereum",
+    "slug": "proto-danksharding",
+    "parent": "data"
+  },
+  {
+    "category": "ethereum",
+    "slug": "data",
+    "parent": "scaling"
+  },
+  {
+    "category": "ethereum",
+    "slug": "optimistic-rollup",
+    "parent": "execution"
+  },
+  {
+    "category": "ethereum",
+    "slug": "plasma",
+    "parent": "execution"
+  },
+  {
+    "category": "ethereum",
+    "slug": "state-channel",
+    "parent": "execution"
+  },
+  {
+    "category": "ethereum",
+    "slug": "taxonomy",
+    "parent": "zk-rollup"
+  },
+  {
+    "category": "ethereum",
+    "slug": "zk-rollup",
+    "parent": "execution"
+  },
+  {
+    "category": "ethereum",
+    "slug": "execution",
+    "parent": "scaling"
+  },
+  {
+    "category": "ethereum",
+    "slug": "scaling",
+    "parent": "upgrades"
+  },
+  {
+    "category": "ethereum",
+    "slug": "state-expiry",
+    "parent": "statelessness"
+  },
+  {
+    "category": "ethereum",
+    "slug": "theory",
+    "parent": "statelessness"
+  },
+  {
+    "category": "ethereum",
+    "slug": "statelessness",
+    "parent": "upgrades"
+  },
+  {
+    "category": "ethereum",
+    "slug": "upgrades",
+    "parent": null
+  },
+  {
+    "category": "ethereum",
+    "slug": "a-better-way",
+    "parent": "de-fi"
+  },
+  {
+    "category": "ethereum",
+    "slug": "internet-economy",
+    "parent": "de-fi"
+  },
+  {
+    "category": "ethereum",
+    "slug": "magic-money",
+    "parent": "de-fi"
+  },
+  {
+    "category": "ethereum",
+    "slug": "ve-tokens",
+    "parent": "programmable-money"
+  },
+  {
+    "category": "ethereum",
+    "slug": "programmable-money",
+    "parent": "de-fi"
+  },
+  {
+    "category": "ethereum",
+    "slug": "stablecoins",
+    "parent": "de-fi"
+  },
+  {
+    "category": "ethereum",
+    "slug": "de-fi",
+    "parent": "world-computer"
+  },
+  {
+    "category": "ethereum",
+    "slug": "decentralization",
+    "parent": "world-computer"
+  },
+  {
+    "category": "ethereum",
+    "slug": "trustless-trust",
+    "parent": "endgame"
+  },
+  {
+    "category": "ethereum",
+    "slug": "governance",
+    "parent": "world-computer"
+  },
+  {
+    "category": "ethereum",
+    "slug": "internet-settlement",
+    "parent": "world-computer"
+  },
+  {
+    "category": "ethereum",
+    "slug": "dopex",
+    "parent": "projects"
+  },
+  {
+    "category": "ethereum",
+    "slug": "olympus",
+    "parent": "projects"
+  },
+  {
+    "category": "ethereum",
+    "slug": "onyx",
+    "parent": "projects"
+  },
+  {
+    "category": "ethereum",
+    "slug": "overview",
+    "parent": "zkevm"
+  },
+  {
+    "category": "ethereum",
+    "slug": "synthetix",
+    "parent": "projects"
+  },
+  {
+    "category": "ethereum",
+    "slug": "regulation",
+    "parent": "world-computer"
+  },
+  {
+    "category": "ethereum",
+    "slug": "world-computer",
+    "parent": null
+  }
+]

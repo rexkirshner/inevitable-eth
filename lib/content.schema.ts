@@ -26,6 +26,7 @@ export const FrontmatterSchema = z.object({
   subcategory: z.array(z.string()).default([]).optional(),
   tags: z.array(z.string()).default([]),
   difficulty: DifficultyEnum.default("intro"),
+  parent: z.string().optional(), // Slug of parent article for hierarchical navigation
 
   // Metadata
   updated: z.string().regex(/^\d{4}-\d{2}-\d{2}/, "Date must be in YYYY-MM-DD format"),
