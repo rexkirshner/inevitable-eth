@@ -84,8 +84,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const renderedContent = await renderMarkdown(content);
   const sanitizedContent = sanitizeHtml(renderedContent);
 
-  // JSON-LD structured data
-  const jsonLd = {
+  // JSON-LD structured data for Article
+  const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: frontmatter.title,
@@ -107,11 +107,27 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     inLanguage: 'en-US',
   };
 
+  // JSON-LD structured data for BreadcrumbList
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: crumb.label,
+      item: `https://inevitableeth.com${crumb.href}`,
+    })),
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <ReadingProgress />
       <div className="flex min-h-screen">
