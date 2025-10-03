@@ -75,42 +75,42 @@ function extractDescription(content: string): string | null {
   return description;
 }
 
-async function fixDescriptions() {
+async function reExtractBrokenDescriptions() {
   const contentDir = path.join(process.cwd(), 'content');
   const mdxFiles = getAllMdxFiles(contentDir);
 
   let fixedCount = 0;
-  let noContentCount = 0;
 
   for (const filePath of mdxFiles) {
     let content = fs.readFileSync(filePath, 'utf-8');
 
-    // Check if file has "published: true" as description
-    if (content.includes('description: "published: true"')) {
-      const extractedDesc = extractDescription(content);
+    // Extract current description
+    const descMatch = content.match(/description:\s*"([^"]*)"/);
 
-      if (extractedDesc) {
-        // Replace with extracted description
-        content = content.replace(
-          'description: "published: true"',
-          `description: "${extractedDesc.replace(/"/g, '\\"')}"`
-        );
-        fs.writeFileSync(filePath, content, 'utf-8');
-        fixedCount++;
-        console.log(`✅ Fixed: ${path.relative(contentDir, filePath)}`);
-        console.log(`   → ${extractedDesc.substring(0, 80)}${extractedDesc.length > 80 ? '...' : ''}`);
-      } else {
-        // No content found, remove description field entirely
-        content = content.replace(/description: "published: true"\n/, '');
-        fs.writeFileSync(filePath, content, 'utf-8');
-        noContentCount++;
-        console.log(`⚠️  No content: ${path.relative(contentDir, filePath)} - removed description`);
+    if (descMatch) {
+      const currentDesc = descMatch[1];
+
+      // Check if description has broken syntax (empty commas, empty parens)
+      if (currentDesc.includes(', ,') || currentDesc.includes('()') || currentDesc.includes(' , ')) {
+        const extractedDesc = extractDescription(content);
+
+        if (extractedDesc && extractedDesc !== currentDesc) {
+          // Replace with extracted description
+          content = content.replace(
+            /description:\s*"[^"]*"/,
+            `description: "${extractedDesc.replace(/"/g, '\\"')}"`
+          );
+          fs.writeFileSync(filePath, content, 'utf-8');
+          fixedCount++;
+          console.log(`✅ Fixed: ${path.relative(contentDir, filePath)}`);
+          console.log(`   OLD: ${currentDesc.substring(0, 80)}`);
+          console.log(`   NEW: ${extractedDesc.substring(0, 80)}`);
+        }
       }
     }
   }
 
-  console.log(`\n✨ Fixed ${fixedCount} articles with extracted descriptions`);
-  console.log(`⚠️  ${noContentCount} articles had no extractable content (description removed)`);
+  console.log(`\n✨ Re-extracted ${fixedCount} broken descriptions`);
 }
 
-fixDescriptions().catch(console.error);
+reExtractBrokenDescriptions().catch(console.error);
