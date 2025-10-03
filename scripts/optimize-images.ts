@@ -34,7 +34,7 @@ async function optimizeImage(filePath: string, fileName: string) {
   const ext = path.extname(fileName).toLowerCase();
 
   // Skip non-image files (PDFs, etc.)
-  if (!['.jpg', '.jpeg', '.png', '.webp'].includes(ext)) {
+  if (!['.jpg', '.jpeg', '.png', '.webp', '.avif'].includes(ext)) {
     console.log(`  ⏭️  Skipping ${fileName} (not an image)`);
     return;
   }
@@ -119,7 +119,7 @@ async function main() {
   // Get all images
   const files = fs.readdirSync(IMAGE_DIR).filter(file => {
     const ext = path.extname(file).toLowerCase();
-    return ['.jpg', '.jpeg', '.png', '.webp'].includes(ext);
+    return ['.jpg', '.jpeg', '.png', '.webp', '.avif'].includes(ext);
   });
 
   console.log(`Found ${files.length} images to optimize\n`);

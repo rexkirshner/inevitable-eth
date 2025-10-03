@@ -161,7 +161,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               )}
             </div>
             <a
-              href={`https://github.com/haymsalomon/inevitable-eth/blob/main/${category}/${slug}.mdx`}
+              href={`https://github.com/rexkirshner/inevitable-eth/blob/main/content/${category}/${slug}.mdx`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs hover:text-[var(--link)] hover:underline transition-colors flex items-center gap-1"

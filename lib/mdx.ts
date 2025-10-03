@@ -26,7 +26,7 @@ renderer.heading = ({ tokens, depth }) => {
 renderer.image = ({ href, title, text }) => {
   // Extract filename from src
   const filename = href.split('/').pop() || '';
-  const baseName = filename.replace(/\.(jpg|jpeg|png|webp)$/i, '');
+  const baseName = filename.replace(/\.(jpg|jpeg|png|webp|avif)$/i, '');
 
   // Build picture element with optimized sources
   return `<picture>
