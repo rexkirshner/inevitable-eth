@@ -662,12 +662,12 @@
   {
     "category": "ethereum",
     "slug": "olympus",
-    "parent": "projects"
+    "parent": "de-fi"
   },
   {
     "category": "ethereum",
     "slug": "onyx",
-    "parent": "projects"
+    "parent": "world-computer"
   },
   {
     "category": "ethereum",
@@ -677,7 +677,7 @@
   {
     "category": "ethereum",
     "slug": "synthetix",
-    "parent": "projects"
+    "parent": "de-fi"
   },
   {
     "category": "ethereum",
