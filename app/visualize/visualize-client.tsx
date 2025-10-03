@@ -1,258 +1,177 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
-import ReactFlow, {
-  Node,
-  Edge,
-  Background,
-  Controls,
-  MiniMap,
-  useNodesState,
-  useEdgesState,
-  Panel,
-} from 'reactflow';
-import 'reactflow/dist/style.css';
+import { useEffect, useRef } from 'react';
+import * as d3 from 'd3';
 import type { ContentMetadata } from '@/lib/content';
 
 interface VisualizeClientProps {
   articles: (ContentMetadata & { category: 'background' | 'concepts' | 'ethereum' })[];
 }
 
-// Category colors
-const CATEGORY_COLORS = {
-  background: '#8B4513', // Brown
-  concepts: '#4169E1',   // Royal Blue
-  ethereum: '#627EEA',   // Ethereum Purple
-  root: '#2F855A',       // Green
-};
+interface TreeNode {
+  name: string;
+  url?: string;
+  children?: TreeNode[];
+}
 
 export default function VisualizeClient({ articles }: VisualizeClientProps) {
-  // Transform articles into graph data
-  const { initialNodes, initialEdges } = useMemo(() => {
-    const nodes: Node[] = [];
-    const edges: Edge[] = [];
-    const nodeMap = new Map<string, number>();
+  const svgRef = useRef<SVGSVGElement>(null);
 
-    // Create root nodes for each category
-    nodes.push({
-      id: 'background',
-      type: 'default',
-      data: { label: 'Background' },
-      position: { x: 0, y: 0 },
-      style: {
-        background: CATEGORY_COLORS.background,
-        color: 'white',
-        fontSize: '16px',
-        fontWeight: 'bold',
-        padding: '12px',
-        borderRadius: '8px',
-        width: 150,
-      },
-    });
+  useEffect(() => {
+    if (!svgRef.current) return;
 
-    nodes.push({
-      id: 'concepts',
-      type: 'default',
-      data: { label: 'Concepts' },
-      position: { x: 400, y: 0 },
-      style: {
-        background: CATEGORY_COLORS.concepts,
-        color: 'white',
-        fontSize: '16px',
-        fontWeight: 'bold',
-        padding: '12px',
-        borderRadius: '8px',
-        width: 150,
-      },
-    });
+    // Build hierarchical tree structure
+    const buildTree = (): TreeNode => {
+      const root: TreeNode = {
+        name: 'Inevitable Ethereum',
+        children: [],
+      };
 
-    nodes.push({
-      id: 'ethereum',
-      type: 'default',
-      data: { label: 'Ethereum' },
-      position: { x: 800, y: 0 },
-      style: {
-        background: CATEGORY_COLORS.ethereum,
-        color: 'white',
-        fontSize: '16px',
-        fontWeight: 'bold',
-        padding: '12px',
-        borderRadius: '8px',
-        width: 150,
-      },
-    });
+      // Group by category
+      const categories = ['background', 'concepts', 'ethereum'] as const;
 
-    // Group articles by category and parent
-    const articlesByCategory = {
-      background: articles.filter(a => a.category === 'background'),
-      concepts: articles.filter(a => a.category === 'concepts'),
-      ethereum: articles.filter(a => a.category === 'ethereum'),
+      categories.forEach(category => {
+        const categoryArticles = articles.filter(a => a.category === category);
+        const categoryNode: TreeNode = {
+          name: category.charAt(0).toUpperCase() + category.slice(1),
+          children: [],
+        };
+
+        // Build parent-child relationships
+        const nodeMap = new Map<string, TreeNode>();
+
+        // First pass: create all nodes
+        categoryArticles.forEach(article => {
+          const node: TreeNode = {
+            name: article.frontmatter.title,
+            url: `/${category}/${article.slug}`,
+            children: [],
+          };
+          nodeMap.set(article.slug, node);
+        });
+
+        // Second pass: build hierarchy
+        categoryArticles.forEach(article => {
+          const node = nodeMap.get(article.slug)!;
+          if (article.frontmatter.parent) {
+            const parent = nodeMap.get(article.frontmatter.parent);
+            if (parent) {
+              parent.children!.push(node);
+            } else {
+              categoryNode.children!.push(node);
+            }
+          } else {
+            categoryNode.children!.push(node);
+          }
+        });
+
+        root.children!.push(categoryNode);
+      });
+
+      return root;
     };
 
-    // Layout articles in radial pattern around category nodes
-    Object.entries(articlesByCategory).forEach(([category, categoryArticles], catIndex) => {
-      const categoryX = catIndex * 400;
-      const categoryY = 0;
+    const treeData = buildTree();
 
-      // Get articles without parents (top-level in category)
-      const topLevel = categoryArticles.filter(a => !a.frontmatter.parent);
-      const withParents = categoryArticles.filter(a => a.frontmatter.parent);
+    // Clear previous visualization
+    d3.select(svgRef.current).selectAll('*').remove();
 
-      // Layout top-level articles in a circle around category
-      const radius = 200;
-      topLevel.forEach((article, index) => {
-        const angle = (index / topLevel.length) * 2 * Math.PI;
-        const x = categoryX + Math.cos(angle) * radius;
-        const y = categoryY + Math.sin(angle) * radius + 200;
+    // Set dimensions
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const radius = Math.min(width, height) / 2 - 120;
 
-        const nodeId = `${category}/${article.slug}`;
-        nodes.push({
-          id: nodeId,
-          type: 'default',
-          data: {
-            label: article.frontmatter.title,
-            url: `/${category}/${article.slug}`,
-          },
-          position: { x, y },
-          style: {
-            background: 'white',
-            border: `2px solid ${CATEGORY_COLORS[category as keyof typeof CATEGORY_COLORS]}`,
-            fontSize: '12px',
-            padding: '8px',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            width: 120,
-          },
-        });
+    // Create SVG
+    const svg = d3.select(svgRef.current)
+      .attr('width', width)
+      .attr('height', height)
+      .append('g')
+      .attr('transform', `translate(${width / 2},${height / 2})`);
 
-        nodeMap.set(`${category}:${article.slug}`, nodes.length - 1);
+    // Create radial tree layout
+    const tree = d3.tree<TreeNode>()
+      .size([2 * Math.PI, radius])
+      .separation((a, b) => (a.parent === b.parent ? 1 : 2) / a.depth);
 
-        // Connect to category node
-        edges.push({
-          id: `${category}-${nodeId}`,
-          source: category,
-          target: nodeId,
-          type: 'smoothstep',
-          animated: false,
-          style: { stroke: CATEGORY_COLORS[category as keyof typeof CATEGORY_COLORS], strokeWidth: 1 },
-        });
+    const root = d3.hierarchy(treeData);
+    tree(root);
+
+    // Draw links (connections between nodes)
+    svg.append('g')
+      .attr('fill', 'none')
+      .attr('stroke', '#555')
+      .attr('stroke-opacity', 0.4)
+      .selectAll('path')
+      .data(root.links())
+      .join('path')
+      .attr('stroke-width', d => {
+        // Thicker lines closer to root
+        return Math.max(1, 4 - d.source.depth);
+      })
+      .attr('d', d3.linkRadial<any, d3.HierarchyPointNode<TreeNode>>()
+        .angle(d => d.x)
+        .radius(d => d.y));
+
+    // Draw nodes
+    const node = svg.append('g')
+      .selectAll('g')
+      .data(root.descendants())
+      .join('g')
+      .attr('transform', d => {
+        const angle = d.x;
+        const r = d.y;
+        return `rotate(${(angle * 180 / Math.PI - 90)}) translate(${r},0)`;
       });
 
-      // Layout child articles around their parents
-      withParents.forEach((article) => {
-        const parentNodeId = `${category}/${article.frontmatter.parent}`;
-        const parentNodeIndex = nodeMap.get(`${category}:${article.frontmatter.parent}`);
-
-        if (parentNodeIndex !== undefined) {
-          const parentNode = nodes[parentNodeIndex];
-
-          // Count how many children this parent has
-          const siblings = withParents.filter(a => a.frontmatter.parent === article.frontmatter.parent);
-          const siblingIndex = siblings.indexOf(article);
-
-          // Position children in a small arc below parent
-          const childRadius = 80;
-          const arcStart = -Math.PI / 4;
-          const arcEnd = Math.PI / 4;
-          const angle = arcStart + (siblingIndex / Math.max(siblings.length - 1, 1)) * (arcEnd - arcStart);
-
-          const x = parentNode.position.x + Math.cos(angle) * childRadius;
-          const y = parentNode.position.y + Math.sin(angle) * childRadius + 100;
-
-          const nodeId = `${category}/${article.slug}`;
-          nodes.push({
-            id: nodeId,
-            type: 'default',
-            data: {
-              label: article.frontmatter.title,
-              url: `/${category}/${article.slug}`,
-            },
-            position: { x, y },
-            style: {
-              background: 'white',
-              border: `2px solid ${CATEGORY_COLORS[category as keyof typeof CATEGORY_COLORS]}`,
-              fontSize: '11px',
-              padding: '6px',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              width: 100,
-            },
-          });
-
-          nodeMap.set(`${category}:${article.slug}`, nodes.length - 1);
-
-          // Connect to parent
-          edges.push({
-            id: `${parentNodeId}-${nodeId}`,
-            source: parentNodeId,
-            target: nodeId,
-            type: 'smoothstep',
-            animated: false,
-            style: { stroke: '#94a3b8', strokeWidth: 1 },
-          });
+    // Add clickable circles for leaf nodes
+    node.filter(d => d.data.url)
+      .append('circle')
+      .attr('r', 4)
+      .attr('fill', '#333')
+      .style('cursor', 'pointer')
+      .on('click', (event, d) => {
+        if (d.data.url) {
+          window.location.href = d.data.url;
         }
       });
-    });
 
-    return { initialNodes: nodes, initialEdges: edges };
+    // Add text labels
+    node.append('text')
+      .attr('dy', '0.31em')
+      .attr('x', d => d.x < Math.PI ? 6 : -6)
+      .attr('text-anchor', d => d.x < Math.PI ? 'start' : 'end')
+      .attr('transform', d => d.x >= Math.PI ? 'rotate(180)' : null)
+      .text(d => d.data.name)
+      .style('font-size', d => {
+        // Larger font for higher levels
+        if (d.depth === 0) return '16px';
+        if (d.depth === 1) return '14px';
+        if (d.depth === 2) return '12px';
+        return '10px';
+      })
+      .style('font-weight', d => d.depth <= 1 ? 'bold' : 'normal')
+      .style('fill', '#333')
+      .style('cursor', d => d.data.url ? 'pointer' : 'default')
+      .on('click', (event, d) => {
+        if (d.data.url) {
+          window.location.href = d.data.url;
+        }
+      });
+
+    // Add zoom behavior
+    const zoom = d3.zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.5, 3])
+      .on('zoom', (event) => {
+        svg.attr('transform', `translate(${width / 2},${height / 2}) ${event.transform}`);
+      });
+
+    d3.select(svgRef.current).call(zoom as any);
+
   }, [articles]);
 
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
-
-  // Handle node click - navigate to article
-  const onNodeClick = useCallback((_: any, node: Node) => {
-    if (node.data.url) {
-      window.location.href = node.data.url;
-    }
-  }, []);
-
   return (
-    <div className="h-screen w-full">
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onNodeClick={onNodeClick}
-        fitView
-        attributionPosition="bottom-left"
-      >
-        <Background />
-        <Controls />
-        <MiniMap
-          nodeColor={(node) => {
-            if (node.id === 'background') return CATEGORY_COLORS.background;
-            if (node.id === 'concepts') return CATEGORY_COLORS.concepts;
-            if (node.id === 'ethereum') return CATEGORY_COLORS.ethereum;
-            return '#e2e8f0';
-          }}
-          maskColor="rgba(0, 0, 0, 0.1)"
-        />
-        <Panel position="top-left" className="bg-white p-4 rounded-lg shadow-lg">
-          <h1 className="text-xl font-serif font-bold mb-2">Page Visualization</h1>
-          <p className="text-sm text-gray-600 mb-3">
-            Interactive map of all {articles.length} articles
-          </p>
-          <div className="space-y-1 text-xs">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded" style={{ background: CATEGORY_COLORS.background }}></div>
-              <span>Background ({articles.filter(a => a.category === 'background').length})</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded" style={{ background: CATEGORY_COLORS.concepts }}></div>
-              <span>Concepts ({articles.filter(a => a.category === 'concepts').length})</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded" style={{ background: CATEGORY_COLORS.ethereum }}></div>
-              <span>Ethereum ({articles.filter(a => a.category === 'ethereum').length})</span>
-            </div>
-          </div>
-          <p className="text-xs text-gray-500 mt-3">
-            Click any node to navigate to that article
-          </p>
-        </Panel>
-      </ReactFlow>
+    <div className="w-full h-screen bg-white">
+      <svg ref={svgRef} className="w-full h-full" />
     </div>
   );
 }
