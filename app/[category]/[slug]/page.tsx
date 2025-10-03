@@ -9,6 +9,7 @@ import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { ArticleNavigation } from '@/components/content/article-navigation';
 import { RelatedArticles } from '@/components/content/related-articles';
 import { ArticleSummary } from '@/components/content/article-summary';
+import { ArticleKeyboardShortcuts } from '@/components/content/article-keyboard-shortcuts';
 import type { Metadata } from 'next';
 
 const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
@@ -130,6 +131,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <ReadingProgress />
+      <ArticleKeyboardShortcuts
+        prevUrl={prev ? `/${category}/${prev.slug}` : undefined}
+        nextUrl={next ? `/${category}/${next.slug}` : undefined}
+      />
       <div className="flex min-h-screen">
       {/* Left Sidebar */}
       <Sidebar contentTree={contentTree} />
