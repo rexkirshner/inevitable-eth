@@ -421,3 +421,13 @@ export function getRelatedTags(tag: string, limit: number = 5): TagInfo[] {
 
   return relatedTags;
 }
+
+/**
+ * Get child articles for a given article
+ */
+export function getChildArticles(category: string, slug: string): ContentMetadata[] {
+  const allContent = getAllContent(category);
+  return allContent
+    .filter(article => article.frontmatter.parent === slug)
+    .sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+}

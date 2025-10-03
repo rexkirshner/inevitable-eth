@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { getContentBySlug, getAllSlugsInCategory, getAllCategories, buildContentTree, generateBreadcrumbs, getPrevNextArticles, getRelatedContent } from '@/lib/content';
+import { getContentBySlug, getAllSlugsInCategory, getAllCategories, buildContentTree, generateBreadcrumbs, getPrevNextArticles, getRelatedContent, getChildArticles } from '@/lib/content';
 import { renderMarkdown } from '@/lib/mdx';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { getArticleOgImage } from '@/lib/og-image';
@@ -86,8 +86,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const breadcrumbs = generateBreadcrumbs(category, slug);
   const { prev, next } = getPrevNextArticles(category, slug);
   const relatedArticles = getRelatedContent(category, slug, 3);
+  const childArticles = getChildArticles(category, slug);
   const renderedContent = await renderMarkdown(content);
   const sanitizedContent = sanitizeHtml(renderedContent);
+
+  // Check if content is minimal (just title, no real content)
+  const hasMinimalContent = content.trim().split('\n').filter(line => line.trim() && !line.startsWith('#')).length < 3;
 
   // JSON-LD structured data for Article
   const articleJsonLd = {
@@ -227,6 +231,41 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <article className="prose">
           <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
         </article>
+
+        {/* Child Articles (if minimal content) */}
+        {hasMinimalContent && childArticles.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-normal mb-4 pb-2 border-b border-[var(--border)]" style={{ fontFamily: '"Linux Libertine", Georgia, Times, serif' }}>
+              Articles in this section
+            </h2>
+            <div className="grid gap-4 mt-6">
+              {childArticles.map(child => (
+                <a
+                  key={child.slug}
+                  href={`/${child.category}/${child.slug}`}
+                  className="block p-4 bg-[var(--surface)] hover:bg-[var(--border)] rounded transition-colors"
+                >
+                  <h3 className="text-lg font-medium text-[var(--link)] mb-1">
+                    {child.frontmatter.title}
+                  </h3>
+                  <p className="text-sm text-[var(--text-secondary)] line-clamp-2">
+                    {child.frontmatter.description}
+                  </p>
+                  <div className="flex items-center gap-3 mt-2 text-xs text-[var(--text-secondary)]">
+                    {child.frontmatter.difficulty && (
+                      <span className="px-2 py-1 bg-[var(--background)] rounded">
+                        {child.frontmatter.difficulty}
+                      </span>
+                    )}
+                    {child.frontmatter.readingTime && (
+                      <span>{child.frontmatter.readingTime} min read</span>
+                    )}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Related Articles */}
         <RelatedArticles articles={relatedArticles} />
