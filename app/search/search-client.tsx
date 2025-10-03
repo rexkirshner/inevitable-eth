@@ -24,6 +24,7 @@ export default function SearchClient() {
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   // Load search index on mount
   useEffect(() => {
@@ -71,14 +72,24 @@ export default function SearchClient() {
     return fuse.search(debouncedQuery);
   }, [debouncedQuery, fuse, articles]);
 
+  // Get all unique tags
+  const allTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    articles.forEach(article => {
+      article.tags.forEach(tag => tagSet.add(tag));
+    });
+    return Array.from(tagSet).sort();
+  }, [articles]);
+
   // Apply filters
   const filteredResults = useMemo(() => {
     return results.filter(({ item }) => {
       const categoryMatch = selectedCategory === 'all' || item.category === selectedCategory;
       const difficultyMatch = selectedDifficulty === 'all' || item.difficulty === selectedDifficulty;
-      return categoryMatch && difficultyMatch;
+      const tagMatch = selectedTags.length === 0 || selectedTags.some(tag => item.tags.includes(tag));
+      return categoryMatch && difficultyMatch && tagMatch;
     });
-  }, [results, selectedCategory, selectedDifficulty]);
+  }, [results, selectedCategory, selectedDifficulty, selectedTags]);
 
   return (
     <div className="mx-auto max-w-[1000px] px-4 py-8">
@@ -158,7 +169,78 @@ export default function SearchClient() {
             <option value="advanced">Advanced</option>
           </select>
         </div>
+
+        {/* Tag Filter */}
+        <div className="flex-grow">
+          <label className="block text-sm font-medium text-[var(--text)] mb-1">
+            Topics
+          </label>
+          <select
+            multiple
+            value={selectedTags}
+            onChange={(e) => {
+              const selected = Array.from(e.target.selectedOptions, option => option.value);
+              setSelectedTags(selected);
+            }}
+            className="px-3 py-2 border border-[var(--border)] bg-[var(--background)] text-[var(--text)] rounded focus:outline-none focus:ring-2 focus:ring-[var(--link)] min-h-[100px]"
+            size={5}
+          >
+            {allTags.map(tag => (
+              <option key={tag} value={tag}>
+                {tag}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-[var(--text-secondary)] mt-1">
+            Hold Cmd/Ctrl to select multiple topics
+          </p>
+        </div>
       </div>
+
+      {/* Active Filters Display */}
+      {(selectedCategory !== 'all' || selectedDifficulty !== 'all' || selectedTags.length > 0) && (
+        <div className="mb-4 flex flex-wrap gap-2 items-center">
+          <span className="text-sm text-[var(--text-secondary)]">Active filters:</span>
+          {selectedCategory !== 'all' && (
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className="px-2 py-1 bg-[var(--surface)] border border-[var(--border)] rounded text-xs hover:bg-[var(--background)] flex items-center gap-1"
+            >
+              <span className="capitalize">{selectedCategory}</span>
+              <X className="h-3 w-3" />
+            </button>
+          )}
+          {selectedDifficulty !== 'all' && (
+            <button
+              onClick={() => setSelectedDifficulty('all')}
+              className="px-2 py-1 bg-[var(--surface)] border border-[var(--border)] rounded text-xs hover:bg-[var(--background)] flex items-center gap-1"
+            >
+              <span className="capitalize">{selectedDifficulty}</span>
+              <X className="h-3 w-3" />
+            </button>
+          )}
+          {selectedTags.map(tag => (
+            <button
+              key={tag}
+              onClick={() => setSelectedTags(selectedTags.filter(t => t !== tag))}
+              className="px-2 py-1 bg-[var(--surface)] border border-[var(--border)] rounded text-xs hover:bg-[var(--background)] flex items-center gap-1"
+            >
+              <span>{tag}</span>
+              <X className="h-3 w-3" />
+            </button>
+          ))}
+          <button
+            onClick={() => {
+              setSelectedCategory('all');
+              setSelectedDifficulty('all');
+              setSelectedTags([]);
+            }}
+            className="px-2 py-1 text-xs text-[var(--link)] hover:underline"
+          >
+            Clear all
+          </button>
+        </div>
+      )}
 
       {/* Results Count */}
       <div className="mb-4 text-sm text-[var(--text-secondary)]">
