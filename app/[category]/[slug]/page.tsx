@@ -12,6 +12,7 @@ import { ArticleSummary } from '@/components/content/article-summary';
 import { ArticleKeyboardShortcuts } from '@/components/content/article-keyboard-shortcuts';
 import { ArticleShareButton } from '@/components/content/article-share-button';
 import { FontSizeAdjuster } from '@/components/content/font-size-adjuster';
+import { ArticleBookmarkButton } from '@/components/content/article-bookmark-button';
 import type { Metadata } from 'next';
 
 const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
@@ -169,6 +170,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               )}
             </div>
             <div className="flex items-center gap-2">
+              <ArticleBookmarkButton
+                category={category}
+                slug={slug}
+                title={frontmatter.title}
+              />
               <ArticleShareButton
                 title={frontmatter.title}
                 description={frontmatter.description}
