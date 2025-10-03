@@ -45,11 +45,18 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 ### Available Scripts
 
 ```bash
-npm run dev          # Start development server with Turbopack
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run migrate      # Migrate HTML content to MDX (one-time)
+npm run dev                 # Start development server with Turbopack
+npm run build               # Build for production with Turbopack
+npm run build:cloudflare    # Build for Cloudflare Pages (static export)
+npm run start               # Start production server
+npm run lint                # Run ESLint
+
+# Content & Scripts
+npm run migrate             # Migrate HTML content to MDX (one-time, complete)
+npm run check-links         # Check for broken internal links
+npm run optimize-images     # Optimize all images (Sharp + WebP/AVIF)
+npm run validate-images     # Validate image references and variants
+npm run build-search-index  # Build optimized search index (auto-runs in prebuild)
 ```
 
 ---
@@ -182,18 +189,95 @@ npm run export
 
 ---
 
+## ✨ Features
+
+### Navigation & Discovery
+- **Smart Sidebar**: Collapsible category tree with article counts and active state tracking
+- **Table of Contents**: Auto-generated with Intersection Observer and smooth scroll
+- **Breadcrumbs**: Wikipedia-style navigation with rich snippet support (BreadcrumbList JSON-LD)
+- **Prev/Next Navigation**: Sequential article browsing
+- **Related Articles**: Tag-based recommendations (3 per article)
+- **Search**: Client-side fuzzy search with Fuse.js
+- **Random Article**: Serendipitous discovery at `/random`
+
+### Content & Reading Experience
+- **Enhanced Code Blocks**: Copy button, language badges, syntax highlighting
+- **Keyboard Shortcuts**: Power user navigation (/, ?, n, p, r, Esc)
+- **Reading Progress**: Scroll-based indicator with smooth animation
+- **Article Summaries**: Info boxes with descriptions
+- **Font Size Adjuster**: 3 sizes with localStorage persistence for accessibility
+- **Article Bookmarking**: Save articles for later with localStorage
+- **Share Button**: Web Share API with copy fallback
+- **Scroll-to-Top**: Appears after scrolling 400px
+
+### Content Types
+- **Infoboxes**: Wikipedia-style sidebar boxes
+- **Callouts**: Warning, info, tip boxes
+- **Figures**: Images with captions
+- **References**: Footnote/citation system
+- **Mathematical Notation**: KaTeX support
+- **Responsive Images**: 6 variants per image (mobile/tablet/desktop × WebP/AVIF)
+
+### SEO & Performance
+- **Static Generation**: All 154 pages pre-rendered at build time
+- **Image Optimization**: Sharp-powered responsive images with blur placeholders
+- **RSS Feed**: All 141 articles with 1-hour ISR caching
+- **Open Graph**: Social media preview images for all pages
+- **JSON-LD**: Structured data for articles and breadcrumbs
+- **Lighthouse Scores**: 93-98 Performance, 96+ Accessibility, 100 SEO
+- **LCP**: 2.6s (90% improvement from 27.3s)
+
+### Accessibility
+- **Dark Mode**: Light/dark theme with system preference detection
+- **Semantic HTML**: Proper heading hierarchy, ARIA labels
+- **Keyboard Navigation**: Full keyboard support throughout
+- **Skip to Content**: Accessibility link for screen readers
+- **Focus Management**: Proper focus indicators and tab order
+- **WCAG AA Compliant**: All interactive elements accessible
+
+### Developer Experience
+- **TypeScript**: Full type safety with Zod runtime validation
+- **MDX**: Flexible content with React component support
+- **Hot Reload**: Turbopack-powered instant updates
+- **Image Validation**: Script to check missing/broken images
+- **Link Checker**: CI-ready broken link detection
+- **Environment Variables**: Configurable GitHub URLs and site settings
+- **Cloudflare Ready**: Static export for Cloudflare Pages
+
+---
+
 ## 📋 Development Status
 
-**Phase 1: Content Migration** ✅ Complete
-- 141 articles migrated from Wiki.js to MDX
-- 624 images migrated and optimized
-- Content utilities and validation implemented
+**Status**: ✅ Production Ready v1 (Phases 1-8 Complete + Session 8 Polish)
 
-**Phase 2: Design System** ⏳ In Progress
-- Wikipedia-style color palette
-- Typography and layout system
+**Phase 1-8** ✅ Complete
+- ✅ Content migration (141 articles, 624+ images)
+- ✅ Design system (Wikipedia-inspired, light/dark mode)
+- ✅ Layout components (Header, Sidebar, TOC, Footer)
+- ✅ MDX components (Infobox, Callout, Figure, References, Code Blocks)
+- ✅ Page templates (Home, Category, Article, Search, About, Random, 404, Error)
+- ✅ Performance & SEO (Sitemap, Robots, JSON-LD, OG images, CSP headers)
+- ✅ QA & Optimization (Link checker, security hardening, Lighthouse 93-98/100)
+- ✅ Cloudflare deployment ready
 
-**Phase 3-7**: See [PRD.md](./PRD.md) for full roadmap
+**Session 7 (8 Features)** ✅ Complete
+- Breadcrumbs, Prev/Next navigation, Related articles, Article summaries
+- Reading progress, BreadcrumbList JSON-LD, RSS feed, Edit on GitHub links
+
+**Session 8 (12 Features)** ✅ Complete
+- Mobile menu, Enhanced code blocks (copy button), Keyboard shortcuts
+- Share button, Font size adjuster, Article bookmarking, Scroll-to-top
+- Image validation script, GitHub URLs to env vars, RSS ISR optimization
+
+**Current State**:
+- 154 static pages generated
+- 498 images optimized (6 variants each: mobile/tablet/desktop × WebP/AVIF)
+- Comprehensive code review: A- overall
+- Roadmap brainstormed: 40+ future features
+
+**Next**: Phase 9+ (Enhanced Discovery, Learning Tools, Community, Content Enhancement) - See [roadmap-brainstorm.md](./tasks/roadmap-brainstorm.md)
+
+**Full Roadmap**: See [PRD.md](./PRD.md) for complete product requirements
 
 ---
 
