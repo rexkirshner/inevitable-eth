@@ -303,3 +303,72 @@ export function searchArticles(query: string, filters?: {
 
   return articles;
 }
+
+// Tag utilities
+export interface TagInfo {
+  tag: string;
+  count: number;
+  articles: ContentMetadata[];
+}
+
+export function getAllTags(): TagInfo[] {
+  const allArticles = getAllContent();
+  const tagMap = new Map<string, ContentMetadata[]>();
+
+  // Collect all tags and their articles
+  for (const article of allArticles) {
+    for (const tag of article.frontmatter.tags) {
+      if (!tagMap.has(tag)) {
+        tagMap.set(tag, []);
+      }
+      tagMap.get(tag)!.push(article);
+    }
+  }
+
+  // Convert to array and sort by count (descending)
+  const tags: TagInfo[] = Array.from(tagMap.entries()).map(([tag, articles]) => ({
+    tag,
+    count: articles.length,
+    articles: articles.sort((a, b) =>
+      new Date(b.frontmatter.updated).getTime() - new Date(a.frontmatter.updated).getTime()
+    ),
+  }));
+
+  return tags.sort((a, b) => b.count - a.count);
+}
+
+export function getArticlesByTag(tag: string): ContentMetadata[] {
+  const allArticles = getAllContent();
+  return allArticles
+    .filter(article => article.frontmatter.tags.includes(tag))
+    .sort((a, b) =>
+      new Date(b.frontmatter.updated).getTime() - new Date(a.frontmatter.updated).getTime()
+    );
+}
+
+export function getRelatedTags(tag: string, limit: number = 5): TagInfo[] {
+  const articlesWithTag = getArticlesByTag(tag);
+  const relatedTagMap = new Map<string, number>();
+
+  // Count co-occurring tags
+  for (const article of articlesWithTag) {
+    for (const relatedTag of article.frontmatter.tags) {
+      if (relatedTag !== tag) {
+        relatedTagMap.set(relatedTag, (relatedTagMap.get(relatedTag) || 0) + 1);
+      }
+    }
+  }
+
+  // Convert to TagInfo array and get full articles for each tag
+  const allTags = getAllTags();
+  const relatedTags: TagInfo[] = Array.from(relatedTagMap.entries())
+    .map(([relatedTag, count]) => {
+      const tagInfo = allTags.find(t => t.tag === relatedTag);
+      return tagInfo ? { ...tagInfo, coOccurrenceCount: count } : null;
+    })
+    .filter((t): t is TagInfo & { coOccurrenceCount: number } => t !== null)
+    .sort((a, b) => b.coOccurrenceCount - a.coOccurrenceCount)
+    .slice(0, limit);
+
+  return relatedTags;
+}

@@ -81,6 +81,14 @@ export function Header() {
             </li>
             <li>
               <Link
+                href="/tags"
+                className="text-[var(--text)] hover:text-[var(--link)] transition-colors"
+              >
+                Topics
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/about"
                 className="text-[var(--text-secondary)] hover:text-[var(--link)] transition-colors"
               >
