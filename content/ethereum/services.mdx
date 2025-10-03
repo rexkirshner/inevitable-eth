@@ -16,7 +16,7 @@ related: []
 
 ## The World Computer
 
-Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)). 
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)). 
 
 These nodes are real computers in the real world, communicating directly from peer to peer. 
 
@@ -24,7 +24,7 @@ The purpose of the greater Ethereum apparatus is to offer a single shared comput
 
 The EVM provides the context for transactions (computation); everything you "do" on-chain happens within the EVM.
 
-Each node runs a local version of the EVM, which is then held perfectly in sync with every other copy of the EVM through a process called [Proof of Stake](https://inevitableeth.com/home/ethereum/network/consensus/pos) (PoS).
+Each node runs a local version of the EVM, which is then held perfectly in sync with every other copy of the EVM through a process called [Proof of Stake](https://inevitableeth.com/home/ethereum/pos) (PoS).
 
 Any individual EVM is a window into the shared state of the World Computer.
 
@@ -36,7 +36,7 @@ There are a lot of ways to think about PoS, but let's take a step back and think
 
 Taken all together, Ethereum is decentralized and untrusted, but if you look under the hood you'll find that every step is predicated on a centralized entity (validator).
 
-When it comes down to it, [proposing](/ethereum/network/consensus/block-proposal) or [attesting](/ethereum/network/consensus/attestation) to a [block](/ethereum/blockchain/block) is an action that an individual actor needs to take.
+When it comes down to it, [proposing](/ethereum/block-proposal) or [attesting](/ethereum/attestation) to a [block](/ethereum/block) is an action that an individual actor needs to take.
 
 PoS is the system that takes the implicit trust assumptions we need to make in each actor and transforms it into an economic-rationality assumption.
 
@@ -68,7 +68,7 @@ Sreeram identified the issue, but he didn't stop there. He created EigenLayer to
 
 ## EigenLayer
 
-[Deep Dive: EigenLayer](/ethereum/upgrades/middleware/eigenlayer)
+[Deep Dive: EigenLayer](/ethereum/eigenlayer)
 
 EigenLayer allows a validator to place their 32 ETH under additional slashing conditions in exchange for providing a centralized service.
 
@@ -78,7 +78,7 @@ Using EigenLayer, a centralized service can become trustless by executing agains
 
 We live in a world cluttered by PoS systems; each one less secure than they could be.
 
-EigenLayer brings us a step closer to the endgame, when [ETH is the pristine collateral of trustless trust](/ethereum/world-computer/endgame/trustless-trust).
+EigenLayer brings us a step closer to the endgame, when [ETH is the pristine collateral of trustless trust](/ethereum/trustless-trust).
 
 The purpose of ETH: to imbue trustlessness.
 
@@ -88,7 +88,7 @@ At this point you must be asking yourself: what kinds of centralized services ar
 
 I've got a few ideas to share (some from Sreeram himself), but this is the beginning of a new category.
 
-[Rollups](/ethereum/upgrades/scaling/execution), [bridges](/concepts/bridge) and [oracles](/concepts/oracle) are all services that require a centralized entity to take action on behalf of its users.
+[Rollups](/ethereum/execution), [bridges](/concepts/bridge) and [oracles](/concepts/oracle) are all services that require a centralized entity to take action on behalf of its users.
 
 Rather than securing each service with its own token, all can use ETH.
 

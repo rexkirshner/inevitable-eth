@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Fuse from 'fuse.js';
 import { Search as SearchIcon, X } from 'lucide-react';
@@ -8,32 +8,54 @@ import { Search as SearchIcon, X } from 'lucide-react';
 interface ArticleForSearch {
   category: string;
   slug: string;
-  frontmatter: {
-    title: string;
-    description: string;
-    tags: string[];
-    difficulty?: string;
-    readingTime?: number;
-    updated: string;
-  };
+  title: string;
+  description: string;
+  tags: string[];
+  difficulty?: string;
+  readingTime?: number;
+  updated: string;
+  headings?: string[];
 }
 
-interface SearchClientProps {
-  articles: ArticleForSearch[];
-}
-
-export default function SearchClient({ articles }: SearchClientProps) {
+export default function SearchClient() {
+  const [articles, setArticles] = useState<ArticleForSearch[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [query, setQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
+
+  // Load search index on mount
+  useEffect(() => {
+    fetch('/search-index.json')
+      .then(res => res.json())
+      .then(data => {
+        setArticles(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error('Error loading search index:', err);
+        setIsLoading(false);
+      });
+  }, []);
+
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query]);
 
   // Configure Fuse.js
   const fuse = useMemo(() => {
     return new Fuse(articles, {
       keys: [
-        { name: 'frontmatter.title', weight: 2 },
-        { name: 'frontmatter.description', weight: 1.5 },
-        { name: 'frontmatter.tags', weight: 1 },
+        { name: 'title', weight: 2 },
+        { name: 'description', weight: 1.5 },
+        { name: 'tags', weight: 1 },
+        { name: 'headings', weight: 0.8 },
       ],
       threshold: 0.3,
       includeScore: true,
@@ -43,32 +65,39 @@ export default function SearchClient({ articles }: SearchClientProps) {
 
   // Perform search
   const results = useMemo(() => {
-    if (!query.trim()) {
+    if (!debouncedQuery.trim()) {
       return articles.map(article => ({ item: article, score: 0 }));
     }
-    return fuse.search(query);
-  }, [query, fuse, articles]);
+    return fuse.search(debouncedQuery);
+  }, [debouncedQuery, fuse, articles]);
 
   // Apply filters
   const filteredResults = useMemo(() => {
     return results.filter(({ item }) => {
       const categoryMatch = selectedCategory === 'all' || item.category === selectedCategory;
-      const difficultyMatch = selectedDifficulty === 'all' || item.frontmatter.difficulty === selectedDifficulty;
+      const difficultyMatch = selectedDifficulty === 'all' || item.difficulty === selectedDifficulty;
       return categoryMatch && difficultyMatch;
     });
   }, [results, selectedCategory, selectedDifficulty]);
 
   return (
     <div className="mx-auto max-w-[1000px] px-4 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-4">
-          Search Articles
-        </h1>
-        <p className="text-[var(--text-secondary)]">
-          Search through {articles.length} articles about Ethereum, blockchain, and cryptography
-        </p>
-      </div>
+      {/* Loading State */}
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-[var(--text-secondary)]">Loading search index...</div>
+        </div>
+      ) : (
+        <>
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-4">
+              Search Articles
+            </h1>
+            <p className="text-[var(--text-secondary)]">
+              Search through {articles.length} articles about Ethereum, blockchain, and cryptography
+            </p>
+          </div>
 
       {/* Search Input */}
       <div className="mb-6">
@@ -156,12 +185,12 @@ export default function SearchClient({ articles }: SearchClientProps) {
                 className="block"
               >
                 <h2 className="text-xl font-semibold text-[var(--link)] hover:underline mb-2">
-                  {item.frontmatter.title}
+                  {item.title}
                 </h2>
 
-                {item.frontmatter.description && (
+                {item.description && (
                   <p className="text-[var(--text)] mb-3">
-                    {item.frontmatter.description}
+                    {item.description}
                   </p>
                 )}
 
@@ -169,22 +198,22 @@ export default function SearchClient({ articles }: SearchClientProps) {
                   <span className="px-2 py-1 bg-[var(--background)] rounded capitalize">
                     {item.category}
                   </span>
-                  {item.frontmatter.difficulty && (
+                  {item.difficulty && (
                     <span className="px-2 py-1 bg-[var(--background)] rounded capitalize">
-                      {item.frontmatter.difficulty}
+                      {item.difficulty}
                     </span>
                   )}
-                  {item.frontmatter.readingTime && (
-                    <span>{item.frontmatter.readingTime} min read</span>
+                  {item.readingTime && (
+                    <span>{item.readingTime} min read</span>
                   )}
-                  {item.frontmatter.updated && (
-                    <span>Updated {item.frontmatter.updated}</span>
+                  {item.updated && (
+                    <span>Updated {item.updated}</span>
                   )}
                 </div>
 
-                {item.frontmatter.tags.length > 0 && (
+                {item.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-3">
-                    {item.frontmatter.tags.slice(0, 5).map(tag => (
+                    {item.tags.slice(0, 5).map(tag => (
                       <span
                         key={tag}
                         className="text-xs px-2 py-0.5 bg-[var(--background)] text-[var(--text-secondary)] rounded"
@@ -199,6 +228,8 @@ export default function SearchClient({ articles }: SearchClientProps) {
           ))
         )}
       </div>
+        </>
+      )}
     </div>
   );
 }

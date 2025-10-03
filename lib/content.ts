@@ -52,7 +52,15 @@ export function getContentBySlug(category: string, slug: string): {
   };
 }
 
+const contentCache = new Map<string, ContentMetadata[]>();
+
 export function getAllContent(category?: string): ContentMetadata[] {
+  const cacheKey = category || 'all';
+
+  if (contentCache.has(cacheKey)) {
+    return contentCache.get(cacheKey)!;
+  }
+
   const categories = category ? [category] : getAllCategories();
   const allContent: ContentMetadata[] = [];
 
@@ -73,6 +81,7 @@ export function getAllContent(category?: string): ContentMetadata[] {
     }
   }
 
+  contentCache.set(cacheKey, allContent);
   return allContent;
 }
 
@@ -175,10 +184,16 @@ export interface CategoryTree {
   }>;
 }
 
+let contentTreeCache: CategoryTree[] | null = null;
+
 export function buildContentTree(): CategoryTree[] {
+  if (contentTreeCache) {
+    return contentTreeCache;
+  }
+
   const categories = getAllCategories();
 
-  return categories.map(category => {
+  contentTreeCache = categories.map(category => {
     const articles = getAllContent(category);
 
     return {
@@ -194,6 +209,8 @@ export function buildContentTree(): CategoryTree[] {
         .sort((a, b) => a.title.localeCompare(b.title)),
     };
   });
+
+  return contentTreeCache;
 }
 
 /**

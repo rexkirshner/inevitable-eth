@@ -18,29 +18,29 @@ related: []
 
 ### Time in Ethereum
 
-[Deep Dive: Time in Ethereum](https://inevitableeth.com/home/ethereum/network/consensus/time)
+[Deep Dive: Time in Ethereum](https://inevitableeth.com/home/ethereum/time)
 
 Every 12 seconds, Ethereum opens a new slot, expecting a new block. 
 
-Within a block there are thousands [transactions](https://inevitableeth.com/home/ethereum/blockchain/block), but they execute atomically: either all together or none at all.
+Within a block there are thousands [transactions](https://inevitableeth.com/home/ethereum/block), but they execute atomically: either all together or none at all.
 
 An epoch is made up of 32 slots.
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
 Today, the World Computer is... just ok. Execution is expensive and there isn't that much storage space. Yes, you can do (almost) anything, it's just going to be expensive and slow.
 
-[The solution: rollups](/ethereum/upgrades/scaling/execution). Independent blockchains that use Ethereum as a [settlement](/concepts/settlement) layer.
+[The solution: rollups](/ethereum/execution). Independent blockchains that use Ethereum as a [settlement](/concepts/settlement) layer.
 
 ## The Data Availability Bottleneck
 
 ![](/images/data-availability-sampling-2.jpeg)
 
-[Deep Dive: Data Availability Bottleneck](/ethereum/upgrades/scaling/data/data-availability-bottleneck)
+[Deep Dive: Data Availability Bottleneck](/ethereum/data-availability-bottleneck)
 
 Rollups are fantastic; we're barely in the opening inning and we've already seen just how fast and cheap we can get execution. 
 
@@ -85,7 +85,7 @@ We are going to apply two separate strategies. 
 
 ### Randomly Sampled Committees
 
-[Deep Dive: Randomly Sampled Committees](/ethereum/upgrades/scaling/data/p2p-network/randomly-sampled-committees)
+[Deep Dive: Randomly Sampled Committees](/ethereum/randomly-sampled-committees)
 
 First, randomly sampled committees. 
 
@@ -93,7 +93,7 @@ The validator set will be broken into committees, each responsible for ensuring 
 
 ### Data Availability Sampling
 
-[Deep Dive: Data Availability Sampling](/ethereum/upgrades/scaling/data/p2p-network/data-availability-sampling)
+[Deep Dive: Data Availability Sampling](/ethereum/data-availability-sampling)
 
 Second, we will apply data availability sampling. 
 
@@ -180,4 +180,3 @@ Something super DANK!
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1585042835459387392)
 
-Source Material - [PDF](/twitter-pdf-2022-10-25_p2p_network.pdf)

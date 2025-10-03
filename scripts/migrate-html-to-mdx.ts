@@ -12,7 +12,7 @@ const turndownService = new TurndownService({
 // Custom rule for Wiki.js internal links
 turndownService.addRule('wikilinks', {
   filter: (node) => {
-    return node.nodeName === 'A' && node.getAttribute('href')?.startsWith('/');
+    return node.nodeName === 'A' && (node.getAttribute('href')?.startsWith('/') ?? false);
   },
   replacement: (content, node) => {
     const href = (node as HTMLElement).getAttribute('href');

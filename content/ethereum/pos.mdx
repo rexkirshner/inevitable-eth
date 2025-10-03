@@ -16,13 +16,13 @@ related: []
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
-This distributed network of EVMs is held in sync via a [consensus mechanism](https://inevitableeth.com/home/ethereum/network/consensus). A consensus mechanism is a system by which a leader (block proposer) updates the state of their EVM and the rest of the network trustlessly follows.
+This distributed network of EVMs is held in sync via a [consensus mechanism](https://inevitableeth.com/home/ethereum/consensus). A consensus mechanism is a system by which a leader (block proposer) updates the state of their EVM and the rest of the network trustlessly follows.
 
-The leader then packages all these changes into a [block](/ethereum/blockchain/block); the rest of the network uses the block to sync their EVM with the proposer's.
+The leader then packages all these changes into a [block](/ethereum/block); the rest of the network uses the block to sync their EVM with the proposer's.
 
 ## The Merge
 
@@ -38,7 +38,7 @@ The answer is an unhesitating, emphatic YES!
 
 But don't take my word for it, Vitalik has already explained why:
 
-[Deep Dive: PoS vs PoW](/ethereum/network/consensus/PoW-vs-PoS)
+[Deep Dive: PoS vs PoW](/ethereum/PoW-vs-PoS)
 
 ## Nodes in the Network
 
@@ -72,11 +72,11 @@ Slashing is the mechanism that gives PoS its security. 
 
 ## Epoch Cycle
 
-[Deep Dive: Time in Ethereum](https://inevitableeth.com/home/ethereum/network/consensus/time)
+[Deep Dive: Time in Ethereum](https://inevitableeth.com/home/ethereum/time)
 
 Every 12 seconds, Ethereum opens a new slot, expecting a new block. 
 
-Within a block there are thousands [transactions](/ethereum/blockchain/block), but they execute atomically: either all together or none at all.
+Within a block there are thousands [transactions](/ethereum/block), but they execute atomically: either all together or none at all.
 
 An epoch is made up of 32 slots.
 
@@ -84,7 +84,7 @@ An epoch is made up of 32 slots.
 
 ![](/images/randao-1.jpeg)
 
-[Deep Dive: RANDAO](https://inevitableeth.com/home/ethereum/network/consensus/randao)
+[Deep Dive: RANDAO](https://inevitableeth.com/home/ethereum/randao)
 
 Every epoch, Ethereum shuffles the validator set into 32 committees (one per slot) and each committee into 64 subnets. 
 
@@ -94,7 +94,7 @@ The security of the World Computer requires credible randomness during this shuf
 
 ![](/images/block-proposal-1.jpeg)
 
-[Deep Dive: Proposal](/ethereum/network/consensus/block-proposal)
+[Deep Dive: Proposal](/ethereum/block-proposal)
 
 The first member of each committee is designated the block proposer and earns the right to progress the EVM. 
 
@@ -104,7 +104,7 @@ The proposer's stake is at risk if s/he proposes an invalid block.
 
 ### Updating the EVM
 
-[Deep Dive: State Transition Function](https://inevitableeth.com/home/ethereum/network/consensus/state-transition)
+[Deep Dive: State Transition Function](https://inevitableeth.com/home/ethereum/state-transition)
 
 ![](/images/state-transition-1.jpeg)
 
@@ -116,7 +116,7 @@ The state transition function is the actual process of updating the EVM (and pro
 
 ![](/images/attestation-1.jpeg)
 
-[Deep Dive: Attestation](/ethereum/network/consensus/attestation)
+[Deep Dive: Attestation](/ethereum/attestation)
 
 The validators in the committee corresponding with each slot have an additional duty: they must verify the block. 
 
@@ -148,7 +148,7 @@ Conceptually, it's part of the same slot cycle.
 
 ![](/images/lmd-ghost-1.png)
 
-[Deep Dive: LMD-GHOST](https://inevitableeth.com/home/ethereum/network/consensus/lmd-ghost)
+[Deep Dive: LMD-GHOST](https://inevitableeth.com/home/ethereum/lmd-ghost)
 
 Imagine the impending block proposer didn't receive a copy of the last block; he creates a new block based on the previous state and sends it out to the network. Now our blockchain has turned into a block-fork. 
 
@@ -158,7 +158,7 @@ LMD-GHOST is the rule we use to resolve these situations.
 
 ![](/images/casper-ffg-1.jpeg)
 
-[Deep Dive: Casper FFG](https://inevitableeth.com/home/ethereum/network/consensus/casper-ffg)
+[Deep Dive: Casper FFG](https://inevitableeth.com/home/ethereum/casper-ffg)
 
 At the end of every epoch, all 32 committees (and therefore every validator) has either proposed or attested; therefore the entire network has voted and made their stake eligible for slashing. 
 
@@ -176,7 +176,7 @@ These rules are defined by Casper FFG.
 
 ![](/images/sync-committee-banner.jpeg)
 
-[Deep Dive: Sync Committee](/ethereum/network/consensus/sync-committee)
+[Deep Dive: Sync Committee](/ethereum/sync-committee)
 
 At this point we've nearly finished out Ethereum PoS specifications; as you can see it is complicated. In fact, it is so complicated that many computers with limited resources and/or bandwidth cannot possibly execute it.
 
@@ -194,4 +194,3 @@ This provides the blockchain-level scaffolding needed to support light clients.
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1579594609855934465)
 
-Source Material - [PDF](/twitter-pdf-2022-10-10_pos.pdf)

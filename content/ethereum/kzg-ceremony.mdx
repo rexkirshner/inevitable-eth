@@ -18,7 +18,7 @@ related: []
 
 ## The World Computer
 
-Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)) coordinating using [Proof of Stake](https://inevitableeth.com/home/ethereum/network/consensus/pos) (PoS) to keep the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM) in sync.
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)) coordinating using [Proof of Stake](https://inevitableeth.com/home/ethereum/pos) (PoS) to keep the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM) in sync.
 
 The EVM is the shared computing platform, the blockchain its history and ETH its lifeblood.
 
@@ -48,13 +48,13 @@ In fact, this concept is so well understood that we've created a cute little phr
 
 ![](/images/scaling-1.jpeg)
 
-[Deep Dive: Scaling Ethereum Execution](/ethereum/upgrades/scaling)
+[Deep Dive: Scaling Ethereum Execution](/ethereum/scaling)
 
 Fortunately, the gigabrains of Ethereum have come up with a solution, one that rejects the very framing of the scalability trilemma. 
 
 It starts with taking a huge step back: what is the purpose of Ethereum?
 
-Yes, the EVM is [Turing-complete](/concepts/turing-complete) [virtual machine](/concepts/virtual-machine) and therefore capable of generalized [computation](/background/mass-comm/computer). We can think about turbo-charging the EVM until it can perform at the same level as a centralized platform (think [AWS](https://aws.amazon.com/)), but we already have high performance computing.
+Yes, the EVM is [Turing-complete](/concepts/turing-complete) [virtual machine](/concepts/virtual-machine) and therefore capable of generalized [computation](/background/computer). We can think about turbo-charging the EVM until it can perform at the same level as a centralized platform (think [AWS](https://aws.amazon.com/)), but we already have high performance computing.
 
 And centralized computing will always be faster and easier than decentralized computing.
 
@@ -68,7 +68,7 @@ The purpose of Ethereum is trustless [settlement](/concepts/settlement), not tru
 
 ![](/images/scaling-execution.jpeg)
 
-[Deep Dive: Rollups](/ethereum/upgrades/scaling)
+[Deep Dive: Rollups](/ethereum/scaling)
 
 Here's the idea: instead of asking Ethereum to do all the computation, we ask a much more specialized (much more centralized) entity to actually run the computation and simply post a record back to Etheruem.
 
@@ -80,11 +80,11 @@ Rollups can support MANY more transactions MUCH faster, but because they post ba
 
 The rollup paradigm scales the execution throughput of Ethereum by orders of magnitude, but we still have a problem. Rollups still need to post copies of the data and results to Ethereum.
 
-If we don't scale the [data availability](/ethereum/upgrades/scaling/data/data-availability-bottleneck) of Ethereum mainnet, then execution scaling becomes a solution to the problem we don't have.
+If we don't scale the [data availability](/ethereum/data-availability-bottleneck) of Ethereum mainnet, then execution scaling becomes a solution to the problem we don't have.
 
 ### Danksharding
 
-[Deep Dive: Danksharding](/ethereum/upgrades/scaling/data)
+[Deep Dive: Danksharding](/ethereum/data)
 
 Fortunately, we have a solution: Danksharding (named after [Dankrad Feist](https://twitter.com/dankrad)).
 
@@ -99,7 +99,7 @@ Here's an analogy: imagine Ethereum is a train company and rollup data is cargo.
 
 #### Proto-Danksharding
 
-[Deep Dive: Proto-Danksharding](https://inevitableeth.com/home/ethereum/upgrades/scaling/data/proto-danksharding)
+[Deep Dive: Proto-Danksharding](https://inevitableeth.com/home/ethereum/proto-danksharding)
 
 Danksharding is a huge upgrade and needs to be approached in phases.
 
@@ -129,7 +129,7 @@ A KZG commitment has the special property that it can be “opened” (used to p
 
 Let's say I have 100 pieces of data, and you only know the 42nd. I could create a KZG commitment to my data and share it publicly. You could use the commitment to verify piece 42, but the scheme would not leak any additional information.
 
-KZG commitments are critical to the Danksharding scheme, as they are the mechanism by which the [network will sample the data](/ethereum/upgrades/scaling/data/p2p-network/data-availability-sampling). For more information, see the [Danksharding deep dive](/ethereum/upgrades/scaling/data).
+KZG commitments are critical to the Danksharding scheme, as they are the mechanism by which the [network will sample the data](/ethereum/data-availability-sampling). For more information, see the [Danksharding deep dive](/ethereum/data).
 
 Although KZG commitments are some of the most advanced math out there, they are totally digestible to anyone with high school algebra. For our purposes, we don't even need to go that far. Here's all you need to know:
 

@@ -30,7 +30,7 @@ After settlement, the obligations of all the parties have been discharged and th
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
@@ -60,7 +60,7 @@ Fortunately, we have solutions: rollups!
 
 ## Increasing Transactions per Second
 
-[Deep Dive: Scaling Ethereum Execution](/ethereum/upgrades/scaling/execution)
+[Deep Dive: Scaling Ethereum Execution](/ethereum/execution)
 
 Rollups are independent blockchains that anchor to the World Computer. 
 
@@ -77,7 +77,7 @@ Execution is a different animal. We care much less about decentralization, we ju
 
 ## Inside the Chain
 
-[Deep Dive: Blockchain Computer State](/ethereum/evm/state-machine)
+[Deep Dive: Blockchain Computer State](/ethereum/state-machine)
 
 Rollups execute all of their transactions on a separate (high performance) blockchain. Once every \[interval\], the bundle up all the transactions they've executed and post a record back on to mainnet.
 
@@ -148,4 +148,3 @@ And so, we need add more space for rollup data!
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1571524423639007232)
 
-Source Material - [PDF](/twitter-pdf-2022-09-18_data_availability_problem.pdf)

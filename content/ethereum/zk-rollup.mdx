@@ -40,7 +40,7 @@ Unfortunately, the World Computer is SLOW...
 
 ### State Channels
 
-[Deep Dive: State Channels](https://inevitableeth.com/home/ethereum/upgrades/scaling/execution/state-channel)
+[Deep Dive: State Channels](https://inevitableeth.com/home/ethereum/state-channel)
 
 First came State Channels, which allow users to lock funds in a smart contract on Ethereum and transact freely off-chain.
 
@@ -54,13 +54,13 @@ While state channels are powerful they are limited:
 
 ### Plasma
 
-[Deep Dive: Plasma](/ethereum/upgrades/scaling/execution/plasma)
+[Deep Dive: Plasma](/ethereum/plasma)
 
 Plasma were created in order to address (some of) these issues.
 
 Plasma chains are independent blockchains that anchor themselves to Ethereum mainnet.
 
-Just like Ethereum, a plasma chain has its own [virtual machine](/concepts/virtual-machine) [state](/ethereum/evm/state-machine) (the status/balance of every user & smart contract).
+Just like Ethereum, a plasma chain has its own [virtual machine](/concepts/virtual-machine) [state](/ethereum/state-machine) (the status/balance of every user & smart contract).
 
 This state can be represented as a [Merkle tree](/concepts/merkle-tree) - a data structure that allows a huge amount of data to be compressed into a single line (Merkle root).
 
@@ -80,7 +80,7 @@ Plasma doesn't post the plasma data to mainnet, it only posts the state root. If
 
 ### Optimistic Rollups
 
-[Deep Dive: Optimistic Rollups](/ethereum/upgrades/scaling/execution/optimistic-rollup)
+[Deep Dive: Optimistic Rollups](/ethereum/optimistic-rollup)
 
 And so, the solution is to post the transaction data along with the state root.
 
@@ -152,7 +152,7 @@ The introduction of the ZK-proof brings mathematically certainty that the batch 
 
 ## ZK-EVM
 
-[Deep Dive: ZK-EVM Taxonomy](/ethereum/upgrades/scaling/execution/zk-rollup/taxonomy)
+[Deep Dive: ZK-EVM Taxonomy](/ethereum/taxonomy)
 
 Projects that can process all possible EVM transactions are call ZK-EVMs.
 
@@ -176,4 +176,3 @@ From state channels (a single use, purpose) to ZK-rollups (persistent state, gen
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1569334975614582784)
 
-Source Material - [PDF](/twitter-pdf-2022-09-12_zk_rollups.pdf)

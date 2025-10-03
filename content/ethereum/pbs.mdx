@@ -16,11 +16,11 @@ related: []
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
-Anyone can access the World Computer by submitting a [transaction](/ethereum/blockchain/block) to the network.
+Anyone can access the World Computer by submitting a [transaction](/ethereum/block) to the network.
 
 Holistically, an Ethereum transaction is an instruction for the World Computer. Transactions are irreversible and atomic (they execute completely or they fail).
 
@@ -40,7 +40,7 @@ From this setup comes the existential risk of crypto: MEV.
 
 ![](/images/pbs-2.jpeg)
 
-[Deep Dive: MEV](/concepts/mev/example)
+[Deep Dive: MEV](/concepts/example)
 
 In November 2020, [Stephane Gosselin](https://twitter.com/thegostep) posted "[Flashbots: Frontrunning the MEV crisis](https://ethresear.ch/t/flashbots-frontrunning-the-mev-crisis/8251)" and introduced the community to Maximum Extractable Value (MEV).
 
@@ -67,7 +67,7 @@ But what if you didn't need these indirect levers? 
 
 What if you could just build the block yourself?
 
-An Ethereum node is a computer responsible for operating the World Computer and progressing the blockchain. ([Under Proof of Stake](/ethereum/network/consensus/pos)) the blockchain progresses when a block proposer (selected randomly) submits a new block to the network
+An Ethereum node is a computer responsible for operating the World Computer and progressing the blockchain. ([Under Proof of Stake](/ethereum/pos)) the blockchain progresses when a block proposer (selected randomly) submits a new block to the network
 
 First they need to build that block.
 
@@ -115,7 +115,7 @@ From credible neutrality comes global dominance.
 
 ![](/images/pbs-6.jpeg)
 
-[Deep Dive: Ethereum Block](/ethereum/blockchain/block)
+[Deep Dive: Ethereum Block](/ethereum/block)
 
 This is what an Ethereum block looks like. At the highest level, it can be thought of as having 3 sections: admin, consensus and execution.
 
@@ -155,7 +155,7 @@ Bundles are atomic.
 
 ![](/images/mev-boost-1.jpeg)
 
-[Deep Dive: mev-boost](/ethereum/upgrades/pbs/mev-boost)
+[Deep Dive: mev-boost](/ethereum/mev-boost)
 
 They say “v2 is always what the founder originally had in mind.” 
 
@@ -181,9 +181,9 @@ Block builders place headers and bids, validators pick the best one, everything 
 
 The concept of proposer-builder separation came from the work around MEV, but we've already come to realize that a trustless implementation will have application outside of MEV.
 
-As of today, the most important implication of protocol-enshrined PBS is that it enables [Danksharding](/ethereum/upgrades/scaling/data). 
+As of today, the most important implication of protocol-enshrined PBS is that it enables [Danksharding](/ethereum/data). 
 
-Danksharding is an upgrade that is still in the very early stages, but once deployed will increase the [data capacity](/ethereum/upgrades/scaling/data/data-availability-bottleneck) ([especially for rollups](/ethereum/upgrades/scaling/execution)) of Ethereum by orders of magnitude.
+Danksharding is an upgrade that is still in the very early stages, but once deployed will increase the [data capacity](/ethereum/data-availability-bottleneck) ([especially for rollups](/ethereum/execution)) of Ethereum by orders of magnitude.
 
 ## Ethereum Endgame
 
@@ -199,4 +199,3 @@ We are charting a course towards a decentralized Ethereum that has centralized b
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1570557757190983680)
 
-Source Material - [PDF](/twitter-pdf-2022-09-15_pbs.pdf)

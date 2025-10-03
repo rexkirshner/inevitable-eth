@@ -16,7 +16,7 @@ related: []
 
 ## The World Computer
 
-Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)). 
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)). 
 
 These nodes are real computers in the real world, communicating directly from peer to peer. 
 
@@ -36,13 +36,13 @@ So... how to scale Ethereum?
 
 ## Scaling Ethereum
 
-[Deep Dive: Scaling Ethereum](/ethereum/upgrades/scaling) 
+[Deep Dive: Scaling Ethereum](/ethereum/scaling) 
 
 Key insight: it's not important that execution is credibly neutral, just that settlement is.
 
 Put another way, if we can post a (verifiable) record of every transaction & result onto Ethereum, then execution (actual computational work) can be done outside of the EVM.
 
-The endgame solution of this design are called [Zero-Knowledge Rollups](/ethereum/upgrades/scaling/execution/zk-rollup).
+The endgame solution of this design are called [Zero-Knowledge Rollups](/ethereum/zk-rollup).
 
 Tl;dr rollups are performance optimized chains that process transactions off-chain. Periodically they post a ZK-proof and a copy of every transaction to Ethereum.
 

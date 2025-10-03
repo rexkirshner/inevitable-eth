@@ -30,7 +30,7 @@ A Merkle proof can be used to efficiently prove that a single piece of data exis
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
@@ -104,7 +104,7 @@ This is especially true as the tree grows; proof size increases with tree/datase
 
 And this is ultimately the problem we find ourselves up against. 
 
-Ethereum uses Merkle trees to store the [state](/ethereum/evm/state-machine) of the [EVM](/ethereum/evm). Every account, balance, asset, protocol, etc is stored inside of Merkle tree, updated with every [block](/ethereum/blockchain/block), [every 12 seconds](/ethereum/network/consensus/time). 
+Ethereum uses Merkle trees to store the [state](/ethereum/state-machine) of the [EVM](/ethereum/evm). Every account, balance, asset, protocol, etc is stored inside of Merkle tree, updated with every [block](/ethereum/block), [every 12 seconds](/ethereum/time). 
 
 Today, the tree (technically multiple) is MASSIVE, but we are still in Ethereum's infancy. 
 
@@ -130,4 +130,3 @@ We haven't spent all this time just figuring out what was wrong with Merkle Tree
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1586391080727064577)
 
-Source Material - [PDF](/twitter-pdf-2022-10-29_merkle_tree_scaling.pdf)

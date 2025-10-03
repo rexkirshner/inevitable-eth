@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Home, Search, ArrowLeft } from 'lucide-react';
 
@@ -12,7 +14,7 @@ export default function NotFound() {
           Page Not Found
         </h2>
         <p className="text-[var(--text-secondary)]">
-          The page you're looking for doesn't exist or has been moved.
+          The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </p>
       </div>
 
@@ -67,7 +69,7 @@ export default function NotFound() {
               Proof of Stake
             </h4>
             <p className="text-sm text-[var(--text-secondary)]">
-              Ethereum's consensus mechanism
+              Ethereum&apos;s consensus mechanism
             </p>
           </Link>
 

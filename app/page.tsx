@@ -145,7 +145,7 @@ export default function Home() {
             </p>
             <p className="text-[var(--text)]">
               This is a project dedicated to Ethereum, the World Computer. None of us can force the conversion
-              moment on another person; it's just not how this works. But some day, every single person is going
+              moment on another person; it&apos;s just not how this works. But some day, every single person is going
               to have their moment of clarity.
             </p>
           </div>

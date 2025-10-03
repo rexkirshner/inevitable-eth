@@ -12,19 +12,19 @@ related: []
 
 ![](/images/consensus-banner.png)
 
-*This is a high-level discussion of consensus system, including PoW and PoS.* [*You can find a deep dive of Ethereum's implementation of PoS here*](/ethereum/network/consensus/pos)*.* 
+*This is a high-level discussion of consensus system, including PoW and PoS.* [*You can find a deep dive of Ethereum's implementation of PoS here*](/ethereum/pos)*.* 
 
 # Consensus Systems
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
 ## Staying in Sync
 
-The World Computer progresses in units known as [blocks](/ethereum/blockchain/block) (containing [transactions](/ethereum/blockchain/transaction), or actions, within the EVM). 
+The World Computer progresses in units known as [blocks](/ethereum/block) (containing [transactions](/ethereum/transaction), or actions, within the EVM). 
 
 A block producer will create a block and send it to the network. As nodes receive new blocks they feed them into their copy of the EVM, syncing it to the leader.
 
@@ -148,4 +148,3 @@ I'll leave this for an overview of the pros and cons (lifted from the Ethereum w
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1578471242331365376)
 
-Source Material - [PDF](/twitter-pdf-2022-10-08_consensus.pdf)

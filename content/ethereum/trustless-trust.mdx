@@ -16,7 +16,7 @@ related: []
 
 ## The World Computer
 
-Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)) coordinating using [Proof of Stake](https://inevitableeth.com/home/ethereum/network/consensus/pos) (PoS) to keep the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM) in sync.
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)) coordinating using [Proof of Stake](https://inevitableeth.com/home/ethereum/pos) (PoS) to keep the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM) in sync.
 
 The EVM is the shared computing platform, the blockchain its history and ETH its lifeblood.
 
@@ -30,7 +30,7 @@ Without credible neutrality, we might as well be using FB-dollaroos in Farmville
 
 ![](/images/access-ethereum-1.jpeg)
 
-[Deep Dive: Accessing Ethereum](/ethereum/network/node/accessing-ethereum)
+[Deep Dive: Accessing Ethereum](/ethereum/accessing-ethereum)
 
 Today, Ethereum is decently decentralized and super not scalable... by design. Raising the minimum requirements of a node increases scalability at the cost of decentralization.
 
@@ -60,9 +60,9 @@ In order to get there we need to develop two big concepts: statelessness and the
 
 ### Stateless Ethereum
 
-[Deep Dive: The Road to Stateless Ethereum](/ethereum/upgrades/statelessness)
+[Deep Dive: The Road to Stateless Ethereum](/ethereum/statelessness)
 
-Today, the [internal state](/ethereum/evm/state-machine) of Ethereum requires ~500 GB to store locally.
+Today, the [internal state](/ethereum/state-machine) of Ethereum requires ~500 GB to store locally.
 
 A stateless Ethereum will allow anyone to access its state without actually storing it, instead allowing users to directly and independently prove they are securely interacting with it.
 
@@ -72,7 +72,7 @@ Light clients need statelessness, but statelessness isn't enough.
 
 ![](/images/light-client-1.jpeg)
 
-[Deep Dive: Portal Network](/ethereum/upgrades/light-clients)
+[Deep Dive: Portal Network](/ethereum/light-clients)
 
 In order to directly interact with Ethereum, users need data to verify the cryptographic proofs. 
 
@@ -90,7 +90,7 @@ All possible with minimal hardware and a mediocre internet connection.
 
 ![](/images/trustless-trust-2.png)
 
-[Deep Dive: Internet Native Settlement](/ethereum/world-computer/internet-settlement)
+[Deep Dive: Internet Native Settlement](/ethereum/internet-settlement)
 
 Light clients are really, really big. Ever thought about why De-Fi/NFTs are like the only things being built? It's because accessing the EVM is so hard that once you're within you need to stay there. 
 
@@ -98,7 +98,7 @@ A world where trustless access is trivial has infinite possibility.
 
 And really that's what this is all about: trust, or more specifically, the ability to interact and coordinate without relying on trust at all.
 
-Ethereum provides the way for the internet to [trustlessly express ownership](/ethereum/evm/property-rights), light clients will allow trustless interaction.
+Ethereum provides the way for the internet to [trustlessly express ownership](/ethereum/property-rights), light clients will allow trustless interaction.
 
 Trustless is a strange concept; it's the idea that if you can independently verify everything about a system, there is no need for trust in the first place.
 
@@ -106,7 +106,7 @@ The entire project is about creating this trustless trust.
 
 ## The Collateral of Trustless Trust
 
-[Deep Dive: Proof of Stake](/ethereum/network/consensus/pos)
+[Deep Dive: Proof of Stake](/ethereum/pos)
 
 Trusting in Ethereum ultimately means trusting the Ethereum node operators... and node operators are real people with human motivations.
 
@@ -128,11 +128,11 @@ ETH is the currency of trustless trust.
 
 ## The Middleware Goldrush
 
-[Deep Dive: Ethereum Middleware](/ethereum/upgrades/middleware)
+[Deep Dive: Ethereum Middleware](/ethereum/middleware)
 
 The path forward is already clear, the Middleware Gold Rush is inevitable.
 
-Just like the [California Gold Rush of 1849 began when James Marshall found gold at Sutter's Mill](https://en.wikipedia.org/wiki/California_Gold_Rush), the Ethereum Middleware Gold Rush will begin when [Sreeram Kannan](https://twitter.com/sreeramkannan) launches [EigenLayer](/ethereum/upgrades/middleware/eigenlayer) on mainnet.
+Just like the [California Gold Rush of 1849 began when James Marshall found gold at Sutter's Mill](https://en.wikipedia.org/wiki/California_Gold_Rush), the Ethereum Middleware Gold Rush will begin when [Sreeram Kannan](https://twitter.com/sreeramkannan) launches [EigenLayer](/ethereum/eigenlayer) on mainnet.
 
 Tl;dr EigenLayer allows a node to re-stake its staked ETH in order to use its excess computational capacity to provide trustless services.
 
@@ -176,7 +176,7 @@ In a light client, re-staked world, trustless secure logistics becomes trivial.
 
 ![](/images/scaling-1.jpeg)
 
-[Deep Dive: Scaling Ethereum Execution](/ethereum/upgrades/scaling)
+[Deep Dive: Scaling Ethereum Execution](/ethereum/scaling)
 
 This is the endgame for Ethereum. 
 
@@ -186,7 +186,7 @@ Need some more convincing? Let's go back to the old way we used to talk about Et
 
 ### Scaling Transaction Throughput
 
-[Deep Dive: Rollups](/ethereum/upgrades/scaling/execution)
+[Deep Dive: Rollups](/ethereum/execution)
 
 Previously, the most important way we talked about scaling Ethereum was by increasing the number of transactions we could execute through the EVM.
 
@@ -196,7 +196,7 @@ Settlement is the point where ownership is decided, and so the rollup paradigm w
 
 ### Scaling Data Availability
 
-[Deep Dive: Danksharding](/ethereum/upgrades/scaling/data)
+[Deep Dive: Danksharding](/ethereum/data)
 
 Danksharding will introduce data blobs that DRASTICALLY increase the capacity for these receipts (and therefore Ethereum's throughput).
 
@@ -234,4 +234,3 @@ Trustless Trust
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1590809909733441536)
 
-Source Material - [PDF](/twitter-pdf-2022-11-10_trustless_trust.pdf)

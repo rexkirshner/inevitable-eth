@@ -18,7 +18,7 @@ related: []
 
 ### Time on Ethereum (Slots & Epochs)
 
-[Deep Dive: ETH Time](/ethereum/network/consensus/time)
+[Deep Dive: ETH Time](/ethereum/time)
 
 Epochs are made of 32 slots
 
@@ -28,13 +28,13 @@ Epochs are made of 32 slots
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
-This distributed network of EVMs is held in sync via a [consensus mechanism](/ethereum/network/consensus). A consensus mechanism is a system by which a leader (block proposer) updates the state of their EVM and the rest of the network trustlessly follows.
+This distributed network of EVMs is held in sync via a [consensus mechanism](/ethereum/consensus). A consensus mechanism is a system by which a leader (block proposer) updates the state of their EVM and the rest of the network trustlessly follows.
 
-Ethereum uses [Proof of Stake](/ethereum/network/consensus/pos) (PoS) as its consensus system.
+Ethereum uses [Proof of Stake](/ethereum/pos) (PoS) as its consensus system.
 
 ## Economic Security
 
@@ -52,7 +52,7 @@ This is the mechanism by which the ETH stake projects economic security.
 
 ### Voting Methods
 
-Deep Dive: Voting Rules ([LMD-GHOST](/ethereum/network/consensus/lmd-ghost) and [Casper FFG](/ethereum/network/consensus/casper-ffg))
+Deep Dive: Voting Rules ([LMD-GHOST](/ethereum/lmd-ghost) and [Casper FFG](/ethereum/casper-ffg))
 
 Most obviously, this dynamic applies to the block proposer; if they submit an invalid block, the network will consider them a malicious actor and remove them from the network.
 
@@ -134,4 +134,3 @@ And so, once every epoch, Ethereum becomes secured by the entire value of all st
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1578540111930699778)
 
-Source Material - [PDF](/twitter-pdf-2022-10-08_attestation.pdf)

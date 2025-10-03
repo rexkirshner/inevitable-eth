@@ -16,7 +16,7 @@ related: []
 
 ## The World Computer
 
-Ethereum is a distributed computing platform. A network of 1,000s of computers ([nodes](/ethereum/network/node)) coordinating using [Proof of Stake](/ethereum/network/consensus/pos) (PoS) to keep the [Ethereum Virtual Machine](/ethereum/evm) (EVM) in sync.
+Ethereum is a distributed computing platform. A network of 1,000s of computers ([nodes](/ethereum/node)) coordinating using [Proof of Stake](/ethereum/pos) (PoS) to keep the [Ethereum Virtual Machine](/ethereum/evm) (EVM) in sync.
 
 The EVM is the shared computing platform, the [blockchain](/ethereum/blockchain) its history and ETH its lifeblood. 
 
@@ -24,7 +24,7 @@ Ethereum is still very young. It is slow, expensive and still evolving. 
 
 But even though we are early, the Ethereum endgame has already come into focus:
 
-[ETH will be the pristine currency of trustless trust](/ethereum/world-computer/endgame/trustless-trust).
+[ETH will be the pristine currency of trustless trust](/ethereum/trustless-trust).
 
 Trustless trust is predicated on a decentralized Ethereum. The more nodes that are controlled by a single entity, the easier it becomes to attack the network.
 
@@ -42,7 +42,7 @@ No government, company or foe can bend the rules to cause you trouble.
 
 On the first order, the EVM provides credible neutrality simply by being a perfectly neutral system. 
 
-Just like the laws of physics are built into our world, unbreakable [property rights are built into Ethereum](/ethereum/world-computer/internet-settlement).
+Just like the laws of physics are built into our world, unbreakable [property rights are built into Ethereum](/ethereum/internet-settlement).
 
 Put simply, it's impossible to execute an unfair transaction.
 
@@ -137,7 +137,7 @@ At this point it's time to draw this thread to a conclusion; we'll need to talk 
 But let's walk very quickly through some of the reasons to think this will all work out.
 
 *   First, it's important to think about what that red-square-chart-of-death is actually showing. It's saying "x% of blocks came from block builders/relays that say they will comply with the OFAC shitlist," not "of all the transactions that are pending, x% were censored."
-*   Second, think about how transactions work; [specifically the market dynamics behind the priority fee/tip](/ethereum/network/consensus/eip-1559). Let's say Alice REALLY needs to push a transaction through ASAP. All she needs to do is increase the fee until a it creates a block more lucrative than one that's "censored."
+*   Second, think about how transactions work; [specifically the market dynamics behind the priority fee/tip](/ethereum/eip-1559). Let's say Alice REALLY needs to push a transaction through ASAP. All she needs to do is increase the fee until a it creates a block more lucrative than one that's "censored."
 *   Third, let's say Alice wont increase her fee, but she can wait. If 75% of blocks are censored, she can only get her txn in in one in every 4 blocks. So, instead of waiting for 12 secs, she must wait 48. Censorship increases to 99%? She just needs to wait ~20 mins.
 *   Finally, there are mitigations that can be built directly into the protocol. The most promising solution (IMO) is implementing the [Forward Inclusion List (aka crList)](https://notes.ethereum.org/@fradamt/H1ZqdtrBF). Tl;dr the proposer can tack on txns after the selecting a prebuilt block.
 

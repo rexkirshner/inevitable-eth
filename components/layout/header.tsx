@@ -5,8 +5,8 @@ import { ThemeToggle } from './theme-toggle';
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--background)] shadow-sm">
+      {/* Top bar - Wikipedia style */}
       <div className="mx-auto max-w-[1440px] px-4">
-        {/* Top bar - Wikipedia style */}
         <div className="flex h-14 items-center justify-between">
           {/* Logo */}
           <Link
@@ -40,9 +40,11 @@ export function Header() {
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Navigation bar */}
-        <nav className="hidden md:flex border-t border-[var(--border)] bg-[var(--surface)] -mx-4 px-4">
+      {/* Navigation bar - full width background */}
+      <nav className="hidden md:block w-full border-t border-[var(--border)] bg-[var(--surface)]">
+        <div className="mx-auto max-w-[1440px] px-4">
           <ul className="flex items-center gap-6 h-10 text-sm">
             <li>
               <Link
@@ -77,8 +79,8 @@ export function Header() {
               </Link>
             </li>
           </ul>
-        </nav>
-      </div>
+        </div>
+      </nav>
     </header>
   );
 }

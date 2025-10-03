@@ -24,11 +24,11 @@ After settlement, the obligations of all the parties have been discharged and th
 
 ## The World Computer
 
-Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)).
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)).
 
 The [Ethereum Virtual Machine](/ethereum/evm) (EVM) provides the [virtual computer](/concepts/virtual-machine), the [blockchain](/ethereum/blockchain) recording its history.
 
-Each node runs a local version of the EVM, which is then held perfectly in sync with every other copy of the EVM through a process called [Proof of Stake](/ethereum/network/consensus) (PoS).
+Each node runs a local version of the EVM, which is then held perfectly in sync with every other copy of the EVM through a process called [Proof of Stake](/ethereum/consensus) (PoS).
 
 Any individual EVM is a window into the shared state of the World Computer.
 
@@ -40,9 +40,9 @@ Here lies a fundamental trade-off: higher minimum requirements = less decentrali
 
 ![](/images/scaling-1.jpeg)
 
-[Deep Dive: Scaling Ethereum Execution](/ethereum/upgrades/scaling)
+[Deep Dive: Scaling Ethereum Execution](/ethereum/scaling)
 
-Enter Ethereum's [rollup](/ethereum/upgrades/scaling/execution)\-centric roadmap:
+Enter Ethereum's [rollup](/ethereum/execution)\-centric roadmap:
 
 *   computation will migrate from the EVM to rollups
 *   rollups will settle to Ethereum (post the final copy of ownership to mainnet)
@@ -50,14 +50,14 @@ Enter Ethereum's [rollup](/ethereum/upgrades/scaling/execution)\-centric roadmap
 
 From this point, I'll assume you are familiar with rollups:
 
-*   [Optimistic rollups](/ethereum/upgrades/scaling/execution/optimistic-rollup) automatically accept batches, but leave a challenge period for fraud proofs
-*   [ZK-rollups](/ethereum/upgrades/scaling/execution/zk-rollup) submit validity proofs along with batches
+*   [Optimistic rollups](/ethereum/optimistic-rollup) automatically accept batches, but leave a challenge period for fraud proofs
+*   [ZK-rollups](/ethereum/zk-rollup) submit validity proofs along with batches
 
 ## Data Availability Scaling
 
 ![](/images/randomly-sampled-committees-2.jpeg)
 
-[Deep Dive: The Data Availability Bottleneck](/ethereum/upgrades/scaling/data/data-availability-bottleneck)
+[Deep Dive: The Data Availability Bottleneck](/ethereum/data-availability-bottleneck)
 
 Rollups are an elegant solution to Ethereum computational bottleneck, but that is only part of the problem.
 
@@ -75,13 +75,13 @@ Herein lies the solution to the data availability bottleneck: create dedicated s
 
 ![](/images/danksharding-1.png)
 
-[Deep Dive: Danksharding](/ethereum/upgrades/scaling/data)
+[Deep Dive: Danksharding](/ethereum/data)
 
 Long term, we have a solution: Danksharding.
 
 Tl;dr Ethereum will gain "blobs" (large data chunks inaccessible by the EVM). Ethereum will guarantee the availability all blob data for a long but limited amount of time.
 
-Post-Danksharding, when a blob is posted to Ethereum it will be immediately archived by services like [Etherscan](https://etherscan.io/) or the [Portal Network](/ethereum/upgrades/light-clients).
+Post-Danksharding, when a blob is posted to Ethereum it will be immediately archived by services like [Etherscan](https://etherscan.io/) or the [Portal Network](/ethereum/light-clients).
 
 Then after ~1 month, blobs will expire. Only a cryptographic signature will remain on the blockchain/within the EVM in perpetuity.
 
@@ -113,7 +113,7 @@ All with cryptographic, trustless certainty.
 
 ## Rollups in a post-Danksharding World
 
-So let's talk specifically about how this would be implemented. Once again, if you don't have a good understanding of how rollups work, [please see this article](/ethereum/upgrades/scaling/execution).
+So let's talk specifically about how this would be implemented. Once again, if you don't have a good understanding of how rollups work, [please see this article](/ethereum/execution).
 
 Let's imagine an optimistic and zk rollup in a post-Danksharding world.
 
@@ -151,7 +151,7 @@ The big takeaways:
 *   Danksharding will create blobs, data external to but provable by the EVM
 *   Rollups will use the same paradigms we have today, but will rely on KZG commitments
 
-If you found this interesting, then you might want to participate in building the core Ethereum protocol by [contributing](https://ceremony.ethereum.org/) to the [KZG-summoning ceremony](https://inevitableeth.com/en/home/ethereum/upgrades/scaling/data/proto-danksharding/kzg-ceremony)!
+If you found this interesting, then you might want to participate in building the core Ethereum protocol by [contributing](https://ceremony.ethereum.org/) to the [KZG-summoning ceremony](https://inevitableeth.com/en/home/ethereum/proto-danksharding/kzg-ceremony)!
 
 You've got ~2 months, but don't forget. Help secure the World Computer!
 

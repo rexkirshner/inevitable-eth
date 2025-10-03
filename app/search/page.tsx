@@ -1,13 +1,11 @@
-import { getAllContent } from '@/lib/content';
-import SearchClient from './search-client';
+import dynamic from 'next/dynamic';
+
+const SearchClient = dynamic(() => import('./search-client'), {
+  loading: () => <div className="p-8 text-center">Loading search...</div>
+});
 
 export default function SearchPage() {
-  // Get all articles server-side (without content for smaller payload)
-  const allArticles = getAllContent().map(article => ({
-    category: article.category,
-    slug: article.slug,
-    frontmatter: article.frontmatter,
-  }));
-
-  return <SearchClient articles={allArticles} />;
+  // Articles will be loaded from the optimized search index client-side
+  // This reduces initial page load significantly
+  return <SearchClient />;
 }

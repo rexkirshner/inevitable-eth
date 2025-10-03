@@ -12,7 +12,7 @@ related: []
 
 ![](/images/kzg-verify-1.jpeg)
 
-*This is part 3 of a 3 part series on KZG Commitments. Here are links to* [*part 1*](https://inevitableeth.com/home/concepts/kzg-commitment/commit)*,* [*part 2*](/concepts/kzg-commitment/open) *and the* [*summary article*](https://inevitableeth.com/home/concepts/kzg-commitment)*.*
+*This is part 3 of a 3 part series on KZG Commitments. Here are links to* [*part 1*](https://inevitableeth.com/home/concepts/commit)*,* [*part 2*](/concepts/open) *and the* [*summary article*](https://inevitableeth.com/home/concepts/kzg-commitment)*.*
 
 # KZG Commitments Part 2: Open
 
@@ -40,7 +40,7 @@ Let's say I am thinking of 10 words. I write them each down on different pieces 
 
 ![](/images/kzg-verify-2.jpeg)
 
-[Deep Dive: KZG Commitments Part 1 - Commit](https://inevitableeth.com/home/concepts/kzg-commitment/commit)
+[Deep Dive: KZG Commitments Part 1 - Commit](https://inevitableeth.com/home/concepts/commit)
 
 First, we generate a polynomial from our data using a mathematical process called a Lagrange Interpolation. 
 
@@ -54,7 +54,7 @@ A change to even a single bit will result in a brand new polynomial (and therefo
 
 ![](/images/kzg-verify-3.png)
 
-[Deep Dive: KZG Commitments Part 2 - Open](/concepts/kzg-commitment/open)
+[Deep Dive: KZG Commitments Part 2 - Open](/concepts/open)
 
 The verifier (the party challenging the prover) knows at least one piece of data in the committed data set, and so requests a proof around data point z. The prover calculates \[h(S)\] and f(z), returning the values to the verifier.
 
@@ -133,4 +133,3 @@ We've successfully verified both the original commitment and the specific data p
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1583542847759753217)
 
-Source Material - [PDF](/twitter-pdf-2022-10-21_kzg_verify.pdf)

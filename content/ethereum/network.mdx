@@ -26,11 +26,11 @@ The network is the group of real world computers (nodes) that run the software t
 
 ![](/images/node-banner.jpeg)
 
-[Deep Dive: Nodes](https://inevitableeth.com/home/ethereum/network/node)
+[Deep Dive: Nodes](https://inevitableeth.com/home/ethereum/node)
 
 You can think of a node in two ways: a real-world computer or the group of software needed to access, validate and otherwise run the World Computer. 
 
-Nodes are both the physical machines running the Ethereum and the real-world [access points to the World Computer](/ethereum/network/node/accessing-ethereum). Users access Ethereum by sending transactions directly to nodes.
+Nodes are both the physical machines running the Ethereum and the real-world [access points to the World Computer](/ethereum/accessing-ethereum). Users access Ethereum by sending transactions directly to nodes.
 
 Under the hood, a node is actually two independent pieces of software: a consensus client and an execution client.
 
@@ -43,7 +43,7 @@ Think like this:
 
 ![](/images/network-1.png)
 
-As The World Computer executes [transactions](/ethereum/blockchain/transaction), it records the changes in the EVM and reports it as a [block](/ethereum/blockchain/block). 
+As The World Computer executes [transactions](/ethereum/transaction), it records the changes in the EVM and reports it as a [block](/ethereum/block). 
 
 Each node is executing this process locally, coordinating with the network and progressing in lockstep. 
 
@@ -59,7 +59,7 @@ All must progress together, one block at a time
 
 ## Keeping the Network in Sync
 
-[Deep Dive: Consensus Systems](/ethereum/network/consensus)
+[Deep Dive: Consensus Systems](/ethereum/consensus)
 
 Consensus is the process by which all the nodes coordinate, stay in sync and create economic security.
 
@@ -79,7 +79,7 @@ Then everyone begins the next puzzle.
 
 Read about Ethash to learn more about these puzzles. Just know that they are difficult to solve but easy to verify. 
 
-[There are many reasons why Proof of Stake is a superior system](/ethereum/network/consensus/PoW-vs-PoS). Perhaps most importantly, the way this system works is winner take all. 
+[There are many reasons why Proof of Stake is a superior system](/ethereum/PoW-vs-PoS). Perhaps most importantly, the way this system works is winner take all. 
 
 Only the first miner with the correct solution is rewarded. Every other node discards their work and starts on the next one. 
 
@@ -91,7 +91,7 @@ Not only is everyone else’s effort trashed, it’s responsible for all that en
 
 ![](/images/network-4.png)
 
-[Deep Dive: Ethereum Proof of Stake](/ethereum/network/consensus/pos)
+[Deep Dive: Ethereum Proof of Stake](/ethereum/pos)
 
 PoS begins with a commitment by every node (validator): “I will play by the rules.” 
 
@@ -101,9 +101,9 @@ Something at stake.
 
 In PoS, a validator is chosen at random, becoming the block producer.
 
-The [block producer chooses transactions from the mempool (or elsewhere), constructs a block and sends it to the network](/ethereum/network/consensus/block-proposal). 
+The [block producer chooses transactions from the mempool (or elsewhere), constructs a block and sends it to the network](/ethereum/block-proposal). 
 
-Validators [attest to the validity of the new block](/ethereum/network/consensus/attestation), adding it to the blockchain.
+Validators [attest to the validity of the new block](/ethereum/attestation), adding it to the blockchain.
 
 Proposals are rewarded with a lot of $ETH, attestations with a little.
 
@@ -128,4 +128,3 @@ The future is in the applications you build on top of it!
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1554500348231880704)
 
-Source Material - [PDF](/twitter-pdf-2022-08-02_network.pdf)

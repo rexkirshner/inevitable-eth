@@ -90,7 +90,7 @@ The World Computer is made of up 3 parts: 
 
 At the core of Ethereum is the EVM, the computing platform of the World Computer. 
 
-Technically speaking, is a [Turing-complete](/concepts/turing-complete) distributed [state machine](/ethereum/evm/state-machine) - but don't worry about this specific classification.
+Technically speaking, is a [Turing-complete](/concepts/turing-complete) distributed [state machine](/ethereum/state-machine) - but don't worry about this specific classification.
 
 The purpose of the greater Ethereum apparatus is to offer a single shared computing platform in a manner that is secure, decentralized and permanently open for ALL. 
 
@@ -102,9 +102,9 @@ Anyone with an internet connection (and [gas](/concepts/gas) money) can interact
 
 The blockchain acts as the memory & storage of The World Computer.
 
-A [block](/ethereum/blockchain/block) is made up of 3 key components: 
+A [block](/ethereum/block) is made up of 3 key components: 
 
-*   A record of the [transactions](/ethereum/blockchain/transaction) executed at the time the block was created
+*   A record of the [transactions](/ethereum/transaction) executed at the time the block was created
 *   A [signature](/concepts/digital-signatures), unique to each specific block
 *   A reference to the previous block's signature
 
@@ -128,19 +128,19 @@ The Ethereum network is made up of a group of people and institutions who decide
 
 ![](/images/node-banner.jpeg)
 
-[Deep Dive: Ethereum Nodes](/ethereum/network/node)
+[Deep Dive: Ethereum Nodes](/ethereum/node)
 
 A node is a real computer in the world that runs the specific software that makes Ethereum possible. A single node runs two pieces of software: a consensus client and an execution client (responsible for operating the EVM).
 
 Although each node's copy is independent, every EVM is sync; the state of any local copy IS the state of the globally shared EVM.
 
-The method by which all these independent and untrusted computers keep their local copy of the EVM in sync is called a [consensus system](/ethereum/network/consensus).
+The method by which all these independent and untrusted computers keep their local copy of the EVM in sync is called a [consensus system](/ethereum/consensus).
 
 #### Proof of Stake
 
 ![](/images/merge-banner.jpeg)
 
-[Deep Dive: Proof of Stake](/ethereum/network/consensus/pos)
+[Deep Dive: Proof of Stake](/ethereum/pos)
 
 Ethereum was launched in 2015 using Proof of Work as it's consensus system. In September 2022, Ethereum successfully complete the Merge, and switched to Proof of Stake.
 
@@ -173,11 +173,11 @@ Credible neutrality comes from decentralization.
 
 ## The Ethereum Ecosystem: De-Fi
 
-[Deep Dive: Decentralized-Finance](/ethereum/world-computer/de-fi)
+[Deep Dive: Decentralized-Finance](/ethereum/de-fi)
 
-Ethereum offers all the same features and capabilities of a normal ([virtual](/concepts/virtual-machine)) computer, but with one critical difference: [internet native property rights](/ethereum/evm/property-rights).
+Ethereum offers all the same features and capabilities of a normal ([virtual](/concepts/virtual-machine)) computer, but with one critical difference: [internet native property rights](/ethereum/property-rights).
 
-From internet native property rights comes [internet native settlement](/ethereum/world-computer/internet-settlement). 
+From internet native property rights comes [internet native settlement](/ethereum/internet-settlement). 
 
 Ownership, exchange, commerce - all available to anyone, at any time, for any reason. 
 
@@ -187,7 +187,7 @@ The reason to develop on the World Computer is to build applications that requir
 
 And so, the first category of applications has taken this concept and run with it. 
 
-[Programmable Money](/ethereum/world-computer/de-fi/programmable-money). Decentralized Finance.
+[Programmable Money](/ethereum/programmable-money). Decentralized Finance.
 
 De-Fi is the first category of applications, but it is certainly not the last. 
 
@@ -201,7 +201,7 @@ The internet was born less than 30 years ago; many of you reading this can't rem
 
 In less than a generation, the human race has fundamentally changed the way it coordinates.
 
-No one can tell you what the future holds, but the internet is [not the first time technology changed the way humans coordinate](/background/mass-comm/printing-press), and it will not be the last. 
+No one can tell you what the future holds, but the internet is [not the first time technology changed the way humans coordinate](/background/printing-press), and it will not be the last. 
 
 [We can look to the past for understanding... and for guidance.](/background/dot-com)
 
@@ -235,7 +235,7 @@ Put simply, pick (at most) two
 *   decentralization
 *   security.
 
-The trilemma only makes sense if you think of Ethereum as a typical [computer](/background/mass-comm/computer), with a CPU and memory and the like.
+The trilemma only makes sense if you think of Ethereum as a typical [computer](/background/computer), with a CPU and memory and the like.
 
 But Ethereum is very specifically not typical computer... it is THE World Computer.
 
@@ -247,15 +247,15 @@ We need to think "how many transaction can Ethereum settle."
 
 ![](/images/scaling-1.jpeg)
 
-[Deep Dive: Scaling Ethereum Execution](/ethereum/upgrades/scaling)
+[Deep Dive: Scaling Ethereum Execution](/ethereum/scaling)
 
 This is the idea behind Ethereum transaction scaling. Move execution off-chain while retaining settlement on-chain.
 
-[Rollups](/ethereum/upgrades/scaling/execution) will offer a spectrum of centralization/trust assumptions and performance trade-offs, but all will post a record back to Ethereum.
+[Rollups](/ethereum/execution) will offer a spectrum of centralization/trust assumptions and performance trade-offs, but all will post a record back to Ethereum.
 
 Each rollup is an independent blockchain that posts a (compressed) copy of every transaction it processes back to Ethereum.
 
-As rollups improve execution, they will need to post an increasing amount transaction records; [Danksharding](/ethereum/upgrades/scaling/data) will VASTLY increase capacity for these records.
+As rollups improve execution, they will need to post an increasing amount transaction records; [Danksharding](/ethereum/data) will VASTLY increase capacity for these records.
 
 The rollup-centric roadmap provides an answer for the execution side of the equation, but it does not address the decentralization.
 
@@ -267,7 +267,7 @@ We need a different set of upgrades improve network decentralization.
 
 ![](/images/access-ethereum-1.jpeg)
 
-[Deep Dive: Accessing Ethereum](/ethereum/network/node/accessing-ethereum)
+[Deep Dive: Accessing Ethereum](/ethereum/accessing-ethereum)
 
 Currently, there are 2 ways to access Ethereum: operate your own node or use a Node-as-a-Service provider (like [Alchemy](https://www.alchemy.com/) or [Infura](https://www.infura.io/)).
 
@@ -285,7 +285,7 @@ Before we can support light clients, we first need to upgrade Ethereum to be sta
 
 #### Statelessness
 
-[Deep Dive: The Road to Stateless Ethereum](/ethereum/upgrades/statelessness)
+[Deep Dive: The Road to Stateless Ethereum](/ethereum/statelessness)
 
 Statelessness is a nuanced topic worth reading more about, but the idea can be summarized as "using cryptography to trustlessly access the EVM without having to store it locally."
 
@@ -295,7 +295,7 @@ But statelessness is not enough to support light clients - the EVM is not the on
 
 ![](/images/light-client-1.jpeg)
 
-[Deep Dive: The Portal Network](/ethereum/upgrades/light-clients)
+[Deep Dive: The Portal Network](/ethereum/light-clients)
 
 Light clients also need trustless access to consensus (PoS), the mempool, etc.
 
@@ -307,7 +307,7 @@ Light clients will query the Portal Network for proofs, mempools anything a its 
 
 ## Generalizing Decentralized Trustlessness
 
-[Deep Dive: Trustless Trust](/ethereum/world-computer/endgame/trustless-trust)
+[Deep Dive: Trustless Trust](/ethereum/trustless-trust)
 
 Yes, there is (a lot) of work to do before we are ready for light clients, but once we are there we've reached the Ethereum endgame.
 
@@ -325,7 +325,7 @@ And really that's what this is all about: trust, or more specifically, the abili
 
 Ethereum provides the way for the internet to trustlessly express ownership, light clients will allow trustless interaction.
 
-And [EigenLayer](/ethereum/upgrades/middleware/eigenlayer) will allow ETH to extend its untrusted-trust property onto ANY application that requires a centralized (or otherwise trusted) actor.
+And [EigenLayer](/ethereum/eigenlayer) will allow ETH to extend its untrusted-trust property onto ANY application that requires a centralized (or otherwise trusted) actor.
 
 You've heard of ETH as ultra sound money? That's only part of the story.
 
@@ -357,7 +357,5 @@ Ethereum is inevitable.
 
 *   Ethereum: The Big Picture
     *   Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1566078593150492675)
-    *   Source Material - [PDF](/twitter-pdf-2022-09-03_big_picture.pdf)
 *   Ethereum: The Complete Story
     *   Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1592309373732151296)
-    *   Source Material - [PDF](/twitter-pdf-2022-11-15_the_complte_story.pdf)

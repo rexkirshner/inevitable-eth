@@ -16,19 +16,19 @@ related: []
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
 Ethereum has been charting a course towards a rollup-centric future for [~2 years now](https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698). 
 
-Tl;dr Ethereum will scale by [offloading execution to performance-optimized blockchains](/ethereum/upgrades/scaling/execution), while [settlement](/concepts/settlement) and economic security will remain with mainnet.
+Tl;dr Ethereum will scale by [offloading execution to performance-optimized blockchains](/ethereum/execution), while [settlement](/concepts/settlement) and economic security will remain with mainnet.
 
 ## Data Availability
 
 ![](/images/randomly-sampled-committees-2.jpeg)
 
-[Deep Dive: Data Availability Scaling](/ethereum/upgrades/scaling/data/data-availability-bottleneck)
+[Deep Dive: Data Availability Scaling](/ethereum/data-availability-bottleneck)
 
 The rollup-centric paradigm is based around quickly and cheaply executing transactions in a more centralized environment, and then posting a (compressed) record back to Ethereum.
 
@@ -46,7 +46,7 @@ Before we continue we need to be clear on what kind of data we are talking about
 
 Any data within the EVM needs to be communicated across the entire network. 
 
-ALL nodes needs a copy of EVERY EVM [state change](/ethereum/evm/state-machine).
+ALL nodes needs a copy of EVERY EVM [state change](/ethereum/state-machine).
 
 Rollups exists OUTSIDE of the EVM; they are independent blockchains. Yes, they post a copy of the transaction to Ethereum but that's just to ensure immutability.
 
@@ -99,7 +99,7 @@ What if it contains a transaction to mint 100,000,000,000 USDC?
 
 Fortunately, the solution is simple: we shuffle the validator set before we assign the data chunks. 
 
-Using a [random seed](/ethereum/network/consensus/randao), we assign each validator to a committee arbitrarily. A malicious node operator has no way to control which committees his validators are assigned to.
+Using a [random seed](/ethereum/randao), we assign each validator to a committee arbitrarily. A malicious node operator has no way to control which committees his validators are assigned to.
 
 With enough validators, it's totally possible that an attacker might get lucky and gain temporary control over a single control over a committee. However, this situation is only mathematically realistic if they control >1/3 of all validators (compromising Ethereum PoS).
 

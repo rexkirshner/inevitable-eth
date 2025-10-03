@@ -1,9 +1,12 @@
 import { notFound } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { getContentBySlug, getAllSlugsInCategory, getAllCategories, buildContentTree } from '@/lib/content';
 import { renderMarkdown } from '@/lib/mdx';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { Sidebar } from '@/components/layout/sidebar';
-import { TableOfContents } from '@/components/layout/table-of-contents';
 import type { Metadata } from 'next';
+
+const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
 
 interface ArticlePageProps {
   params: Promise<{
@@ -57,6 +60,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const { frontmatter, content } = article;
   const contentTree = buildContentTree();
   const renderedContent = await renderMarkdown(content);
+  const sanitizedContent = sanitizeHtml(renderedContent);
 
   // JSON-LD structured data
   const jsonLd = {
@@ -131,7 +135,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Article Content */}
         <article className="prose">
-          <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
+          <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
         </article>
       </main>
 

@@ -18,7 +18,7 @@ related: []
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
@@ -75,7 +75,7 @@ Epochs are made of 32 slots. 1 slot = 12 secs, so 1 epoch = 6 mins 24 secs.
 
 At the beginning of each slot, the entire validator group is randomly split into 32 committees corresponding to the 32 slots of the upcoming epoch.
 
-This randomness is non-trivial; we need [RANDAO](/ethereum/network/consensus/randao).
+This randomness is non-trivial; we need [RANDAO](/ethereum/randao).
 
 Each slot brings a new committee forward. The first member is the block proposer; the rest are attesters. The block proposer has 4 seconds to send a block to the committee. 
 
@@ -103,9 +103,9 @@ As an aside, this whole process is the reason 32 ETH is the minimum amount of ET
 
 ## Transitioning Between Epochs
 
-[Deep Dive: Ethereum State Transition Function](/ethereum/network/consensus/state-transition)
+[Deep Dive: Ethereum State Transition Function](/ethereum/state-transition)
 
-[Deep Dive: Casper FFG](/ethereum/network/consensus/casper-ffg)
+[Deep Dive: Casper FFG](/ethereum/casper-ffg)
 
 After 32 slots, an epoch ends. 
 
@@ -143,4 +143,3 @@ Finalization = ETH security
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1577863907976220672)
 
-Source Material - [PDF](/twitter-pdf-2022-10-06_time.pdf)

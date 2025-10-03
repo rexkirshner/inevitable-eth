@@ -16,29 +16,29 @@ related: []
 
 ## The World Computer
 
-Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)). These nodes are real computers in the real world, communicating directly from peer to peer. 
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)). These nodes are real computers in the real world, communicating directly from peer to peer. 
 
 The purpose of the greater Ethereum apparatus is to offer a single shared computing platform - the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM).
 
-These nodes must stay perfectly in sync, processing the same [transactions](https://inevitableeth.com/home/ethereum/blockchain/transaction) and doing the same actions that every other node is doing.
+These nodes must stay perfectly in sync, processing the same [transactions](https://inevitableeth.com/home/ethereum/transaction) and doing the same actions that every other node is doing.
 
-The way Ethereum coordinates and stays in sync is through a process called [Proof of Stake](https://inevitableeth.com/home/ethereum/network/consensus/pos) (PoS).
+The way Ethereum coordinates and stays in sync is through a process called [Proof of Stake](https://inevitableeth.com/home/ethereum/pos) (PoS).
 
 ## Ethereum Time
 
-[Deep Dive: Time in Ethereum](/ethereum/network/consensus/time)
+[Deep Dive: Time in Ethereum](/ethereum/time)
 
 Before we continue, it's important to understand time on the World Computer.
 
-*   [Blocks](/ethereum/blockchain/block) (bundles of transactions) execute atomically: all together or not at all
+*   [Blocks](/ethereum/block) (bundles of transactions) execute atomically: all together or not at all
 *   Every 12 seconds, Ethereum produces a block, filling a slot.
 *   32 slots = 1 epoch
 
 ## Finality
 
-[Deep Dive: Finality](/ethereum/network/consensus/finality)
+[Deep Dive: Finality](/ethereum/finality)
 
-Every 12 seconds, a randomly selected validator [proposes](/ethereum/network/consensus/block-proposal) a new block to the network.
+Every 12 seconds, a randomly selected validator [proposes](/ethereum/block-proposal) a new block to the network.
 
 Here's the question: when does that block become irreversible? 
 
@@ -60,7 +60,7 @@ pBFT is based on 2 rounds of voting. After the second round, mathematical finali
 
 At the beginning of each epoch, the entire validator set is shuffled into 32 committees - one for each slot.
 
-Over the next 32 slots, each committee will [vote](/ethereum/network/consensus/attestation) on the block proposed in its corresponding slot.
+Over the next 32 slots, each committee will [vote](/ethereum/attestation) on the block proposed in its corresponding slot.
 
 By the end of the epoch, every validator has voted 1 time.
 

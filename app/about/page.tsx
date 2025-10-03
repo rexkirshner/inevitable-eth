@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Github, ExternalLink, Twitter } from 'lucide-react';
+import { Github, ExternalLink } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -23,8 +23,8 @@ export default function AboutPage() {
           </p>
           <p className="text-[var(--text)] mb-4">
             In May 2021, I had my epiphany when I heard Hayden Adams explain Uniswap.
-            In a single podcast episode, I went from "internet dollars for internet dollars sake" to
-            "the next inevitable, obvious step in thousands of years of human innovation."
+            In a single podcast episode, I went from &ldquo;internet dollars for internet dollars sake&rdquo; to
+            &ldquo;the next inevitable, obvious step in thousands of years of human innovation.&rdquo;
           </p>
           <p className="text-[var(--text)] font-semibold">
             A giant leap forward.
@@ -35,8 +35,8 @@ export default function AboutPage() {
           <h2 className="text-2xl font-serif font-normal mb-4">The Mission</h2>
           <p className="text-[var(--text)] mb-4">
             This is a project dedicated to Ethereum, the World Computer. None of us can force the conversion
-            moment on another person; it's just not how this works. But some day, every single person is going
-            to have their Hayden Adams-moment. This project is for that moment in every new convert's journey.
+            moment on another person; it&apos;s just not how this works. But some day, every single person is going
+            to have their Hayden Adams-moment. This project is for that moment in every new convert&apos;s journey.
           </p>
           <p className="text-[var(--text)] mb-4">
             Or, more specifically, for the moments right after.
@@ -47,7 +47,7 @@ export default function AboutPage() {
             big and small.
           </p>
           <p className="text-[var(--text)] mb-4">
-            To show you the future that humanity is working towards; that we've been working towards ever since
+            To show you the future that humanity is working towards; that we&apos;ve been working towards ever since
             we climbed down from the trees and stood upright.
           </p>
           <p className="text-[var(--text)] font-semibold">
@@ -87,7 +87,7 @@ export default function AboutPage() {
             >
               <h3 className="font-semibold text-[var(--link)] mb-2">Ethereum</h3>
               <p className="text-sm text-[var(--text-secondary)]">
-                Deep dive into Ethereum's architecture, consensus, and ecosystem
+                Deep dive into Ethereum&apos;s architecture, consensus, and ecosystem
               </p>
             </Link>
           </div>

@@ -20,7 +20,7 @@ related: []
 
 ### Ethereum State Machine
 
-A [state machine](https://inevitableeth.com/home/ethereum/evm/state-machine) is a mathematical model of computation with two major components: 
+A [state machine](https://inevitableeth.com/home/ethereum/state-machine) is a mathematical model of computation with two major components: 
 
 *   the state, the configuration of the system at a moment in time
 *   a transaction, the set of instructions to change the state
@@ -35,7 +35,7 @@ A Merkle proof can be used to efficiently prove that a single piece of data exis
 
 ## The World Computer
 
-Ethereum is the [World Computer](/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](/ethereum/network/node)). 
+Ethereum is the [World Computer](/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](/ethereum/node)). 
 
 The nodes provide the hardware, the [Ethereum Virtual Machine](/ethereum/evm) (EVM) provides the virtual computer and the blockchain records Ethereum's history.
 
@@ -59,7 +59,7 @@ Forget decentralization, goodbye Ethereum.
 
 ![](/images/state-size-1.jpeg)
 
-[Deep Dive: State Management Theory](/ethereum/upgrades/statelessness/theory)
+[Deep Dive: State Management Theory](/ethereum/theory)
 
 Fortunately, the gigabrains of Ethereum have been thinking about this problem for a while now. Before we talk solutions, it's helpful to think about the theory.
 
@@ -79,7 +79,7 @@ However, in order to generate these proofs, we still require block builders to h
 
 ![](/images/pbs-1.jpeg)
 
-[Deep Dive: Proposer-Builder Separation](/ethereum/upgrades/pbs)
+[Deep Dive: Proposer-Builder Separation](/ethereum/pbs)
 
 Today, verifying nodes ARE block producers, so weak statelessness doesn't give us much. Fortunately, we have Proposer-Builder Separation (PBS) in the pipeline. 
 
@@ -97,7 +97,7 @@ And besides, if you look into implementing strong statelessness, you begin to re
 
 ![](/images/merkle-scaling-1.jpeg)
 
-[Deep Dive: Merkle Proof Scaling](/concepts/merkle-tree/scaling)
+[Deep Dive: Merkle Proof Scaling](/concepts/scaling)
 
 Which brings us to the fundamental trade-off of any form of statelessness. 
 
@@ -135,7 +135,7 @@ Interestingly, this is another upgrade that seemed almost impossible on its own,
 
 ![](/images/state-expiry-1.png)
 
-[Deep Dive: Ethereum State Expiry](/ethereum/upgrades/statelessness/state-expiry)
+[Deep Dive: Ethereum State Expiry](/ethereum/state-expiry)
 
 The upgrade: state expiry! 
 
@@ -170,4 +170,3 @@ And so not only has the EVM state size problem been solved, but the World Comput
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1588752629118554112)
 
-Source Material - [PDF](/twitter-pdf-2022-11-04_stateless_ethereum.pdf)

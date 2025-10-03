@@ -18,7 +18,7 @@ related: []
 
 ### Ethereum State Machine
 
-A [state machine](/ethereum/evm/state-machine) is a mathematical model of computation with two major components: 
+A [state machine](/ethereum/state-machine) is a mathematical model of computation with two major components: 
 
 *   the state, the configuration of the system at a moment in time
 *   a transaction, the set of instructions to change the state
@@ -27,7 +27,7 @@ The state transition machine model provides a simple framework for breaking down
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
@@ -103,11 +103,11 @@ Weak Statelessness allows all verifying nodes to be completely stateless. Nodes 
 
 Today, verifying nodes ARE block producers, so we aren't gaining much... for now. 
 
-But that's just for now. we already have mev-boost, a prototype of [Proposer-Builder Separation](/ethereum/upgrades/pbs) (PBS). 
+But that's just for now. we already have mev-boost, a prototype of [Proposer-Builder Separation](/ethereum/pbs) (PBS). 
 
 The idea: block builders become a specialized entity, who provide prebuilt blocks to proposing nodes/validators.
 
-PBS was born from MEV research, but the paradigm has become important for many of the upgrades to Ethereum (eg [Danksharding](/ethereum/upgrades/scaling/data)).
+PBS was born from MEV research, but the paradigm has become important for many of the upgrades to Ethereum (eg [Danksharding](/ethereum/data)).
 
 With PBS, we can implement weak statelessness without sacrificing decentralization by constraining the requirement to (possibly centralized) block builders.
 
@@ -137,4 +137,3 @@ And so, in conclusion, the solutions to Ethereum state size management are a spe
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1587983584471633921)
 
-Source Material - [PDF](/twitter-pdf-2022-11-03_state_size.pdf)

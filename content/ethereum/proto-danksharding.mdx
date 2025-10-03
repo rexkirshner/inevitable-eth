@@ -18,7 +18,7 @@ related: []
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
@@ -44,7 +44,7 @@ Here's how it'll be done:
 
 ## The Merge
 
-The first major upgrade has already happened: Ethereum will be switching its [consensus system](/ethereum/network/consensus) from Proof of Work to [Proof of Stake](/ethereum/network/consensus/pos).
+The first major upgrade has already happened: Ethereum will be switching its [consensus system](/ethereum/consensus) from Proof of Work to [Proof of Stake](/ethereum/pos).
 
 Instead of being secured by the computing power of the computers (minders) supporting it, The World Computer is secured by the economic value of ETH.
 
@@ -60,7 +60,7 @@ One computer, supported by >10k nodes.
 
 ## Scaling Execution
 
-[Deep Dive: Scaling Execution](/ethereum/upgrades/scaling/execution)
+[Deep Dive: Scaling Execution](/ethereum/execution)
 
 The problem: as Ethereum/the EVM becomes more simple, its capabilities/speed stop improving. 
 
@@ -76,9 +76,9 @@ But this is just the beginning! Ethereum is currently general purpose, now its t
 
 ## Data Availability
 
-[Deep Dive: Data Availability Bottleneck](/ethereum/upgrades/scaling/data/data-availability-bottleneck)
+[Deep Dive: Data Availability Bottleneck](/ethereum/data-availability-bottleneck)
 
-The EVM is the virtual computing environment in which all of Etherum exists and all [transactions](/ethereum/blockchain/transaction) happen.
+The EVM is the virtual computing environment in which all of Etherum exists and all [transactions](/ethereum/transaction) happen.
 
 After compressing a bundle of transactions, a rollup loads it into the EVM and commits it to the Ethereum blockchain.
 
@@ -96,7 +96,7 @@ Which brings us to [EIP-4844: Proto-Danksharding](https://eips.ethereum.org/EIPS
 
 The technicals are out of scope of this thread, but we are going to talk big picture. EIP-4844 brings important changes to Ethereum's base layer that fundamentally reorients the system towards the rollup-centric future.
 
-Today, rollups post into a field called "calldata," storage which persists on-chain forever. [You can see this data within a transaction](/ethereum/blockchain/transaction). 
+Today, rollups post into a field called "calldata," storage which persists on-chain forever. [You can see this data within a transaction](/ethereum/transaction). 
 
 Under EIP-4844 rollups will be able to post bundles under a new transaction type. 
 
@@ -131,4 +131,3 @@ The solution: 
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1559402384526258176)
 
-Source Material - [PDF](/twitter-pdf-2022-08-16_proto-danksharding.pdf)

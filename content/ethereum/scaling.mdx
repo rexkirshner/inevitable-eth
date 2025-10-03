@@ -24,7 +24,7 @@ After settlement, the obligations of all the parties have been discharged and th
 
 ## The World Computer
 
-Ethereum is the [World Computer](/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](/ethereum/network/node)). 
+Ethereum is the [World Computer](/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](/ethereum/node)). 
 
 The nodes provide the hardware, the [Ethereum Virtual Machine](/ethereum/evm) (EVM) provides the [virtual computer](/concepts/virtual-machine) and the [blockchain](/ethereum/blockchain) records Ethereum's history.
 
@@ -36,7 +36,7 @@ Without credible neutrality, we might as well be using FB-dollaroos in Farmville
 
 ## The Settlement Layer of the Internet
 
-[Deep Dive: Internet-Native Settlement](/ethereum/world-computer/internet-settlement)
+[Deep Dive: Internet-Native Settlement](/ethereum/internet-settlement)
 
 Today, the World Computer is slow and expensive to use. 
 
@@ -48,7 +48,7 @@ And here is where the phrase "World Computer" might actually be more confusing t
 
 Today, Ethereum is a complete computing platform, but this is not its final state. What we are really building is like a huge, completely unalterable public notice board.
 
-The core at the center of Ethereum is the EVM, specifically that the EVM has [native property rights](/ethereum/evm/property-rights).
+The core at the center of Ethereum is the EVM, specifically that the EVM has [native property rights](/ethereum/property-rights).
 
 Ethereum will be the global settlement layer and applications (centralized or not) will compute elsewhere and simply post proof back to Ethereum.
 
@@ -56,13 +56,13 @@ Ethereum will be the global settlement layer and applications (centralized or no
 
 ![](/images/scaling-execution.jpeg)
 
-[Deep Dive: Scaling Execution](/ethereum/upgrades/scaling/execution)
+[Deep Dive: Scaling Execution](/ethereum/execution)
 
 Let's say Alice enters into a computationally difficult transaction. Both parties want to settle to Ethereum, so that ultimate ownership exists and is transferred on Ethereum mainnet.
 
 But the computation itself? Well that can be done by basically anyone.
 
-This is the core idea behind Execution [transaction](/ethereum/blockchain/transaction) scaling: move execution off-chain, retain settlement on-chain.
+This is the core idea behind Execution [transaction](/ethereum/transaction) scaling: move execution off-chain, retain settlement on-chain.
 
 Moving execution off-chain is easy, we can use performance-tuned blockchain (or even [AWS](https://aws.amazon.com/)). 
 
@@ -80,7 +80,7 @@ Rollups ARE the path forward to >100k transactions per second, but they are not 
 
 ![](/images/data-availability-sampling-2.jpeg)
 
-[Deep Dive: Data Availability Bottleneck](/ethereum/upgrades/scaling/data/data-availability-bottleneck)
+[Deep Dive: Data Availability Bottleneck](/ethereum/data-availability-bottleneck)
 
 Let's break Ethereum transaction costs into two buckets: execution and data storage.
 
@@ -96,7 +96,7 @@ As rollups make execution cheaper, data storage becomes a bigger problem.
 
 ![](/images/danksharding-1.png)
 
-[Deep Dive: Danksharding](/ethereum/upgrades/scaling/data)
+[Deep Dive: Danksharding](/ethereum/data)
 
 Fortunately, we have a solution: Danksharding (named after [Dankrad Feist](https://twitter.com/dankrad)).
 
@@ -111,7 +111,7 @@ Here's an analogy: imagine Ethereum is a train company and rollup data is cargo.
 
 ### Proto-Danksharding
 
-[Deep Dive: Proto-Danksharding](/ethereum/upgrades/scaling/data/proto-danksharding)
+[Deep Dive: Proto-Danksharding](/ethereum/proto-danksharding)
 
 Danksharding is a huge upgrade and needs to be approached in phases.
 
@@ -121,7 +121,7 @@ Phases 1 is Proto-Danksharding (named for [protolambda](https://twitter.com/prot
 
 ![](/images/pbs-1.jpeg)
 
-[Deep Dive: Proposer-Builder Separation](/ethereum/upgrades/pbs)
+[Deep Dive: Proposer-Builder Separation](/ethereum/pbs)
 
 Phase 2 is enshrined PBS, an upgrade that was first developed from [MEV](/concepts/mev) research. 
 
@@ -133,7 +133,7 @@ Fortunately, we can limit this to block building (and maintain decentralization)
 
 Phase 3: Danksharding.
 
-To achieve full Danksharding, first we need to implement a [data sampling scheme that will distribute blobs across the network](/ethereum/upgrades/scaling/data/p2p-network). 
+To achieve full Danksharding, first we need to implement a [data sampling scheme that will distribute blobs across the network](/ethereum/p2p-network). 
 
 The purpose is to ensure that no node has to download every single blob while still guaranteeing all data is available.
 
@@ -166,4 +166,3 @@ Everything gets faster, cheaper and better from here!
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1591614638138875905)
 
-Source Material - [PDF](/twitter-pdf-2022-11-12_scaling.pdf)

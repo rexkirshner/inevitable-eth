@@ -24,11 +24,11 @@ After settlement, the obligations of all the parties have been discharged and th
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
-As of mid-September 2022, Ethereum has switched its [consensus mechanism](/ethereum/network/consensus) to [Proof of Stake](/ethereum/network/consensus/pos) (PoS).
+As of mid-September 2022, Ethereum has switched its [consensus mechanism](/ethereum/consensus) to [Proof of Stake](/ethereum/pos) (PoS).
 
 Tl;dr node operators stake ETH in order to gain the role of validator, earn rewards and secure Ethereum. This stake can be deducted from in cases of malicious behavior.
 
@@ -38,7 +38,7 @@ And so, we must look for ([credibly neutral](/concepts/credible-neutrality)) way
 
 ## Scaling Execution via Rollups
 
-[Deep Dive: Scaling Execution](/ethereum/upgrades/scaling/execution)
+[Deep Dive: Scaling Execution](/ethereum/execution)
 
 After years of research and development, the Ethereum community has found the best path forward: rollups.
 
@@ -56,9 +56,9 @@ As of today, we have a plan: Danksharding. But we are still so far away from imp
 
 We'll begin with blobs.
 
-Imagine the blockchain like a database that contains all the [transactions](/ethereum/blockchain/transaction) that have ever happened on the World Computer. 
+Imagine the blockchain like a database that contains all the [transactions](/ethereum/transaction) that have ever happened on the World Computer. 
 
-It is critical that this information is always directly available to any node; this is the [internal state](/ethereum/evm/state-machine) of Ethereum.
+It is critical that this information is always directly available to any node; this is the [internal state](/ethereum/state-machine) of Ethereum.
 
 Rollups, on the other hand, are completely outside of Ethereum. Yes, they settle (post a reconstructable copy of all transactions) on the World Computer, but that's just a copy.
 
@@ -70,7 +70,7 @@ So this is our design space: data blobs that exist outside of the EVM.
 
 ### Distributed Data
 
-[Deep Dive: Danksharding P2P Network](/ethereum/upgrades/scaling/data/p2p-network)
+[Deep Dive: Danksharding P2P Network](/ethereum/p2p-network)
 
 Today, tomorrow and forever it will be 100% necessary for every node to download every block. 
 
@@ -87,7 +87,7 @@ Good news and bad news:
 
 ## EIP-4844: Proto-Danksharding
 
-[Deep Dive: EIP-4844 Proto-Danksharding](/ethereum/upgrades/scaling/data/proto-danksharding)
+[Deep Dive: EIP-4844 Proto-Danksharding](/ethereum/proto-danksharding)
 
 EIP-4844 will deliver the following changes to Ethereum consensus: 
 
@@ -101,7 +101,7 @@ But there is still a lot of work that needs to be done, and a lot of designs tha
 
 ## Implementing the Math
 
-The biggest obstacle we still need to overcome is the actual implementation of the [erasure coding](/concepts/polynomial-encoding/erasure-code) and the [data availability sampling](/ethereum/upgrades/scaling/data/p2p-network/data-availability-sampling) that is foundational to our P2P network design. 
+The biggest obstacle we still need to overcome is the actual implementation of the [erasure coding](/concepts/erasure-code) and the [data availability sampling](/ethereum/data-availability-sampling) that is foundational to our P2P network design. 
 
 It doesn't matter how complete the architecture without the actual process of sampling.
 
@@ -109,7 +109,7 @@ We also still need to formalize the implementation of the [KZG commitment scheme
 
 ## Protocol-Enshrined PBS
 
-[Deep Dive: Protocol-Enshrined PBS](/ethereum/upgrades/pbs)
+[Deep Dive: Protocol-Enshrined PBS](/ethereum/pbs)
 
 Full Danksharding is dependent on another, independent Ethereum upgrade: enshrined-PBS.
 
@@ -132,7 +132,7 @@ But, in the worst case, the validator can just build their own. It's just both t
 
 ## Fork-Choice Rule
 
-[Deep Dive: LMD-GHOST](/ethereum/network/consensus/lmd-ghost)  
+[Deep Dive: LMD-GHOST](/ethereum/lmd-ghost)  
 Another important aspect of Ethereum PoS that needs to change is the fork-choice rule.
 
 Today, LMD-GHOST only looks at blocks. Under Danksharding, the protocol will also need to consider blobs (although some/all of this logic may be released with EIP-4844).
@@ -151,4 +151,3 @@ But if you've made it this far, you get the big picture.
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1585298274478542848)
 
-Source Material - [PDF](/twitter-pdf-2022-10-26_danksharding_consensus_updates.pdf)

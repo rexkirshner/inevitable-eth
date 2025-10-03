@@ -28,27 +28,27 @@ All with cryptographic, mathematical certainty.
 
 ## The World Computer
 
-Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)). 
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)). 
 
 The nodes provide the hardware, the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM) provides the [virtual computer](https://inevitableeth.com/home/concepts/virtual-machine) and the [blockchain](https://inevitableeth.com/home/ethereum/blockchain) records Ethereum's history.
 
 ## Ethereum Scaling
 
-[Deep Dive: Ethereum Scaling](/ethereum/upgrades/scaling/execution)
+[Deep Dive: Ethereum Scaling](/ethereum/execution)
 
 In order to scale without sacrificing decentralization, Ethereum is developing based on a rollup-centric roadmap.
 
-Tl;dr [transactions](/ethereum/blockchain/transaction) will be moved off-chain to high performance (likely centralized) rollups, while [settlement](/concepts/settlement) will remain on Ethereum mainnet.
+Tl;dr [transactions](/ethereum/transaction) will be moved off-chain to high performance (likely centralized) rollups, while [settlement](/concepts/settlement) will remain on Ethereum mainnet.
 
-One of the more exciting applications of ZK-proofs are [ZK-rollups](/ethereum/upgrades/scaling/execution/zk-rollup), enabling layers on top of the World Computer that inherit the benefits Ethereum but are much more scalable.
+One of the more exciting applications of ZK-proofs are [ZK-rollups](/ethereum/zk-rollup), enabling layers on top of the World Computer that inherit the benefits Ethereum but are much more scalable.
 
-This technology, with [additional mainnet upgrades](/ethereum/upgrades/scaling/data), will scale Ethereum to 100k+ txns/sec.
+This technology, with [additional mainnet upgrades](/ethereum/data), will scale Ethereum to 100k+ txns/sec.
 
 A ZK-rollup will bundle up all the transactions that occurred on the rollup chain and created a ZK-proof. 
 
 Although this proof is difficult to generate, it is very easy to verify. 
 
-Once generated, the new [state](/ethereum/evm/state-machine), transactions and the ZK-proof are posted to a smart contract.
+Once generated, the new [state](/ethereum/state-machine), transactions and the ZK-proof are posted to a smart contract.
 
 ## ZK-EVM
 
@@ -89,7 +89,7 @@ There are 4(ish) categories of ZK-EVM:
 
 Fully and uncompromisingly Ethereum equivalent, regardless of ZK-proof implications, both within the context of the EVM and within the context of Ethereum as a whole.
 
-The goal of type 1 ZK-EVMs is to be able prove (execution-layer) [blocks](/ethereum/blockchain/block) in full, as they exist on the [blockchain](/ethereum/blockchain).
+The goal of type 1 ZK-EVMs is to be able prove (execution-layer) [blocks](/ethereum/block) in full, as they exist on the [blockchain](/ethereum/blockchain).
 
 Ultimately, type 1 ZK-EVMs are required to create trustless scaling of the World Computer. 
 
@@ -99,7 +99,7 @@ Ethereum was not originally designed around ZK-friendliness, so there are many p
 
 At present, it takes at type 1 ZK-EVM many hours to produce and prove a block.
 
-One of the particularly challenging data structures to create a ZK-proof for is a [Merkle Tree](/concepts/merkle-tree), a data structure Ethereum used to store a lot of the system critical information, including the [EVM state](/ethereum/evm/state-machine).
+One of the particularly challenging data structures to create a ZK-proof for is a [Merkle Tree](/concepts/merkle-tree), a data structure Ethereum used to store a lot of the system critical information, including the [EVM state](/ethereum/state-machine).
 
 From within the EVM, applications don't see (most) Merkle Trees.
 
@@ -157,4 +157,3 @@ Furthermore, a ZK-EVM can move up or down in classification over time - it just 
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1570984357774655489)
 
-Source Material - [PDF](/twitter-pdf-2022-09-16_zk_evm_taxonomy.pdf)

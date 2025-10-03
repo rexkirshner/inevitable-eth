@@ -16,11 +16,11 @@ related: []
 
 ## The World Computer
 
-Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)). These nodes are real computers in the real world, communicating directly from peer to peer. 
+Ethereum is the [World Computer](https://inevitableeth.com/home/ethereum/world-computer), a single, globally shared computing platform that exists in the space between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)). These nodes are real computers in the real world, communicating directly from peer to peer. 
 
 The purpose of the greater Ethereum apparatus is to offer a single shared computing platform - the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM).
 
-The EVM provides the context for [transactions](https://inevitableeth.com/home/ethereum/blockchain/transaction) (computation); everything you "do" on-chain happens within the EVM.
+The EVM provides the context for [transactions](https://inevitableeth.com/home/ethereum/transaction) (computation); everything you "do" on-chain happens within the EVM.
 
 By design, the EVM is completely isolated from the outside world. A smart contract has no way to access the internet to either read or send data.
 
@@ -52,7 +52,7 @@ But don't worry, dear reader, this is not the Ethereum endgame. One day, we will
 
 ![](/images/access-ethereum-1.jpeg)
 
-[Deep Dive: Accessing Ethereum](/ethereum/network/node/accessing-ethereum)
+[Deep Dive: Accessing Ethereum](/ethereum/accessing-ethereum)
 
 Today, directly accessing Ethereum is not an easy task. It entails running two pieces of software (one for the EVM, one for PoS) and an interrupted, high-bandwidth internet connection.
 
@@ -78,7 +78,7 @@ Let's talk through how you would actually implement this kind of bridge.
 
 ## A Trustless Bridge
 
-It starts with a [block](/ethereum/blockchain/block) - specifically a block header. Inside of the block header is the state root; using the state root, you can trustlessly verify Ethereum's state.
+It starts with a [block](/ethereum/block) - specifically a block header. Inside of the block header is the state root; using the state root, you can trustlessly verify Ethereum's state.
 
 This is very important: access to the state root = access to the EVM. We wont get into details here, we'll take this for granted (more info look into [Merkle trees & proofs](/concepts/merkle-tree)).
 
@@ -96,7 +96,7 @@ And so, let's look to how an Ethereum node trustlessly verifies every proposed b
 
 ![](/images/sync-committee-banner.jpeg)
 
-[Deep Dive: Sync Committtees](/ethereum/network/consensus/sync-committee)
+[Deep Dive: Sync Committtees](/ethereum/sync-committee)
 
 To verify a block, an Ethereum node checks all the attached signatures. (One of) the reason(s) a node is such a heavy-weight piece of software is because it must track the entire validator set (past and present) in order to verify these signatures.
 
@@ -106,7 +106,7 @@ Fortunately, this problem was identified long ago; we already have upgraded Ethe
 
 In Oct 2021, the Altair hard fork activated sync committees, which provide the scaffolding required for lightweight, trustless verification.
 
-Once every 256 [epochs](/ethereum/network/consensus/time) (~27 hours), 512 validators are randomly selected to be on the sync committee, who sign every single Ethereum block.
+Once every 256 [epochs](/ethereum/time) (~27 hours), 512 validators are randomly selected to be on the sync committee, who sign every single Ethereum block.
 
 Instead of tracking the entire validator set, a light client (or our trustless bridge) can track just these 512 validators.
 
@@ -156,7 +156,7 @@ For those of you that are still curious on the topic, I recommend [this talk fro
 
 ## Trustless Trust
 
-[Deep Dive: Trustless Trust](/ethereum/world-computer/endgame/trustless-trust)
+[Deep Dive: Trustless Trust](/ethereum/trustless-trust)
 
 But before we go, it's worth lingering on what's actually going on here - specifically all this handwaving around trust.
 

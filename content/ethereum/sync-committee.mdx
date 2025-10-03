@@ -24,11 +24,11 @@ related: []
 
 Credible randomness is critical to PoS's security design, particularly in regards to validator assignments (including block proposer). 
 
-Ethereum uses a process called [RANDAO](https://inevitableeth.com/home/ethereum/network/consensus/randao) to generate "good-enough" randomness.
+Ethereum uses a process called [RANDAO](https://inevitableeth.com/home/ethereum/randao) to generate "good-enough" randomness.
 
 ### Time on Ethereum (Slots & Epochs)
 
-[Deep Dive: ETH Time](https://inevitableeth.com/home/ethereum/network/consensus/time)
+[Deep Dive: ETH Time](https://inevitableeth.com/home/ethereum/time)
 
 A block goes into a slot. Epochs are made of 32 slots. 
 
@@ -38,13 +38,13 @@ A block goes into a slot. Epochs are made of 32 slots. 
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
-This distributed network of EVMs is held in sync via a [consensus mechanism](https://inevitableeth.com/home/ethereum/network/consensus). A consensus mechanism is a system by which a leader (block proposer) updates the state of their EVM and the rest of the network trustlessly follows.
+This distributed network of EVMs is held in sync via a [consensus mechanism](https://inevitableeth.com/home/ethereum/consensus). A consensus mechanism is a system by which a leader (block proposer) updates the state of their EVM and the rest of the network trustlessly follows.
 
-Ethereum uses [Proof of Stake](https://inevitableeth.com/home/ethereum/network/consensus/pos) (PoS) as its consensus system.
+Ethereum uses [Proof of Stake](https://inevitableeth.com/home/ethereum/pos) (PoS) as its consensus system.
 
 ## (Pre-Altair) Proof of Stake
 
@@ -54,17 +54,17 @@ The process known as RANDAO provides credible randomness for this shuffling, cri
 
 ### Block Proposal
 
-[Deep Dive: Proposal](https://inevitableeth.com/home/ethereum/network/consensus/block-proposal)
+[Deep Dive: Proposal](https://inevitableeth.com/home/ethereum/block-proposal)
 
 The first member of each committee is designated the block proposer. 
 
-The proposer is responsible for building (or otherwise sourcing) a [block](/ethereum/blockchain/block) and broadcasting it to the network. 
+The proposer is responsible for building (or otherwise sourcing) a [block](/ethereum/block) and broadcasting it to the network. 
 
 Each block progresses the state of the EVM and adds to the blockchain.
 
 ### Attestation
 
-[Deep Dive: Attestation](https://inevitableeth.com/home/ethereum/network/consensus/attestation)
+[Deep Dive: Attestation](https://inevitableeth.com/home/ethereum/attestation)
 
 Each validator in the committee is responsible for verifying the block. Assuming the block is valid, each committee member creates and publishes a cryptographic signature. 
 
@@ -158,4 +158,3 @@ A truly decentralized World Computer.
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1579283196708941824)
 
-Source Material - [PDF](/twitter-pdf-2022-10-10_sync_committee.pdf)

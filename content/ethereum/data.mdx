@@ -24,11 +24,11 @@ After settlement, the obligations of all the parties have been discharged and th
 
 ## The World Computer
 
-Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/network/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
+Ethereum exists between a network of 1,000s of computers ([nodes](https://inevitableeth.com/home/ethereum/node)), each running a local version of the [Ethereum Virtual Machine](https://inevitableeth.com/home/ethereum/evm) (EVM). All copies of the EVM are kept perfectly in sync. 
 
 Any individual EVM is a window into the shared state of the [World Computer](https://inevitableeth.com/home/ethereum/world-computer).
 
-As of mid-September 2022, Ethereum has switched its consensus mechanism from Proof of Work to [Proof of Stake](/ethereum/network/consensus/pos) (PoS).
+As of mid-September 2022, Ethereum has switched its consensus mechanism from Proof of Work to [Proof of Stake](/ethereum/pos) (PoS).
 
 Tl;dr node operators stake $ETH to gain the role of validator, earning $ETH and securing Ethereum. If the operator acts maliciously, he forfeits his stake.
 
@@ -54,7 +54,7 @@ Scalability is where things get interesting. After years of research, Ethereum h
 
 ![](/images/danksharding-3.jpeg)
 
-[Deep Dive: Scaling Execution](https://inevitableeth.com/home/ethereum/upgrades/scaling/execution)
+[Deep Dive: Scaling Execution](https://inevitableeth.com/home/ethereum/execution)
 
 The problem: as Ethereum/the EVM becomes more simple, its capabilities/speed stop improving. 
 
@@ -74,7 +74,7 @@ This is what settlement means.
 
 ![](/images/randomly-sampled-committees-2.jpeg)
 
-[Deep Dive: Data Availability Bottleneck](/ethereum/upgrades/scaling/data/data-availability-bottleneck)
+[Deep Dive: Data Availability Bottleneck](/ethereum/data-availability-bottleneck)
 
 Today, we're still in the infancy of rollup technology and even still we're seeing execution time and cost drop orders of magnitude. 
 
@@ -106,19 +106,19 @@ The Ethereum core devs will focus on data scalability through a 3 part plan:
 
 ## Proto-Danksharding
 
-[Deep Dive: EIP-4844 Proto-Danksharding](/ethereum/upgrades/scaling/data/proto-danksharding)
+[Deep Dive: EIP-4844 Proto-Danksharding](/ethereum/proto-danksharding)
 
 The first step - Proto-Danksharding - does a lot of the preparation for Danksharding. Interestingly, Proto-Danksharding is named after people ([protolambda](https://twitter.com/protolambda) & [Dankrad Feist](https://twitter.com/dankrad)), but it works descriptively. 
 
 The most important thing to understand about Proto-Danksharding is blobs.
 
-Today, we post data to the blockchain by passing it into a smart contract through [the "calldata" field](/ethereum/blockchain/transaction). This is a field that is intended for code and other data to be passed into the EVM. 
+Today, we post data to the blockchain by passing it into a smart contract through [the "calldata" field](/ethereum/transaction). This is a field that is intended for code and other data to be passed into the EVM. 
 
 Therefore, Rollups post their receipts INTO the EVM. 
 
 But... do they need to?
 
-Let's consider a (hypothetical) [ZK-rollup](/ethereum/upgrades/scaling/execution/zk-rollup). 
+Let's consider a (hypothetical) [ZK-rollup](/ethereum/zk-rollup). 
 
 The rollup bundles txns, creates a [ZK-proof](/concepts/zk-proof) (ensuring the batch is valid and final) and posts it on-chain. 
 
@@ -136,7 +136,7 @@ A single blob that every node will have to download.
 
 ![](/images/pbs-1.jpeg)
 
-[Deep Dive: Protocol-Enshrined Proposer-Builder Separation](/ethereum/upgrades/pbs)
+[Deep Dive: Protocol-Enshrined Proposer-Builder Separation](/ethereum/pbs)
 
 The transition from Proto-Danksharding to Danksharding involves two important changes: 
 
@@ -161,7 +161,7 @@ And, of course, nodes will always be able to be built solo (they just wont earn 
 
 ![](/images/p2p-network-1.jpeg)
 
-[Deep Dive: Danksharding P2P Network](/ethereum/upgrades/scaling/data/p2p-network)
+[Deep Dive: Danksharding P2P Network](/ethereum/p2p-network)
 
 PBS gives us the ability to propose our blobs, but we still need to address our biggest problem: how can we achieve 100% data availability without forcing any nodes to download 100% of the data?
 
@@ -190,13 +190,13 @@ Underneath some intimidating (but doable, try the article above) math, KZG commi
 3.  the prover sends the data and a proof of validity
 4.  the node verifies the proof
 
-It's creating the KZG commitments and proofs for 64 blobs in a [single slot timeframe](/ethereum/network/consensus/time) (12 sec) that is particularly intense and will require a centralized actor. 
+It's creating the KZG commitments and proofs for 64 blobs in a [single slot timeframe](/ethereum/time) (12 sec) that is particularly intense and will require a centralized actor. 
 
 But, again, a node can do all of this itself. It just (probably) wont be able to fill all the blob spaces.
 
 ## Ethereum Consensus Changes
 
-[Deep Dive: Danksharding Consensus Changes](/ethereum/upgrades/scaling/data/consensus-changes)
+[Deep Dive: Danksharding Consensus Changes](/ethereum/consensus-changes)
 
 Now look, at the end of the day we are putting a HUGE amount of data onto Ethereum. The P2P design is cute, but eventually this will catch up to us.
 
@@ -222,4 +222,3 @@ Danksharding is the upgrade that will increase the space Ethereum has for rollup
 
 Source Material - [Twitter Link](https://twitter.com/logarithmicrex/status/1585441288341508096)
 
-Source Material - [PDF](/twitter-pdf-2022-10-27_danksharding.pdf)
