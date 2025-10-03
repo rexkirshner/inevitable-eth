@@ -12,6 +12,7 @@ import { ArticleSummary } from '@/components/content/article-summary';
 import type { Metadata } from 'next';
 
 const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
+const ReadingProgress = dynamic(() => import('@/components/content/reading-progress').then(mod => ({ default: mod.ReadingProgress })));
 
 interface ArticlePageProps {
   params: Promise<{
@@ -112,6 +113,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <ReadingProgress />
       <div className="flex min-h-screen">
       {/* Left Sidebar */}
       <Sidebar contentTree={contentTree} />
