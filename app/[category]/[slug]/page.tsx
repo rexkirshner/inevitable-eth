@@ -13,6 +13,7 @@ import { ArticleKeyboardShortcuts } from '@/components/content/article-keyboard-
 import { ArticleShareButton } from '@/components/content/article-share-button';
 import { FontSizeAdjuster } from '@/components/content/font-size-adjuster';
 import { ArticleBookmarkButton } from '@/components/content/article-bookmark-button';
+import { ArticlePrerequisites } from '@/components/content/article-prerequisites';
 import type { Metadata } from 'next';
 
 const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
@@ -211,6 +212,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Article Summary */}
         <ArticleSummary description={frontmatter.description} />
+
+        {/* Prerequisites (if any) */}
+        {frontmatter.prerequisites && frontmatter.prerequisites.length > 0 && (
+          <ArticlePrerequisites
+            prerequisites={frontmatter.prerequisites}
+            currentCategory={category}
+          />
+        )}
 
         {/* Article Content */}
         <article className="prose">
