@@ -81,88 +81,108 @@
   },
   {
     "category": "concepts",
-    "slug": "abstraction",
+    "slug": "finance",
     "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "computer-science",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "cryptography",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "blockchain",
+    "parent": null
+  },
+  {
+    "category": "concepts",
+    "slug": "abstraction",
+    "parent": "computer-science"
   },
   {
     "category": "concepts",
     "slug": "api",
-    "parent": null
+    "parent": "computer-science"
   },
   {
     "category": "concepts",
     "slug": "arbitrage",
-    "parent": null
+    "parent": "finance"
   },
   {
     "category": "concepts",
     "slug": "array",
-    "parent": null
+    "parent": "computer-science"
   },
   {
     "category": "concepts",
     "slug": "bft",
-    "parent": null
+    "parent": "blockchain"
   },
   {
     "category": "concepts",
     "slug": "bls-signatures",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
     "slug": "bridge",
-    "parent": null
+    "parent": "blockchain"
   },
   {
     "category": "concepts",
     "slug": "commitment",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
     "slug": "credible-neutrality",
-    "parent": null
+    "parent": "blockchain"
   },
   {
     "category": "concepts",
     "slug": "crypto-economics",
-    "parent": null
+    "parent": "blockchain"
   },
   {
     "category": "concepts",
     "slug": "dcf",
-    "parent": null
+    "parent": "finance"
   },
   {
     "category": "concepts",
     "slug": "diffie-hellman",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
     "slug": "digital-signatures",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
     "slug": "elliptic-curve-cryptography",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
     "slug": "elliptic-curve-pairings",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
     "slug": "gas",
-    "parent": null
+    "parent": "blockchain"
   },
   {
     "category": "concepts",
     "slug": "hash",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
@@ -182,17 +202,17 @@
   {
     "category": "concepts",
     "slug": "kzg-commitment",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
     "slug": "liquidity",
-    "parent": null
+    "parent": "finance"
   },
   {
     "category": "concepts",
     "slug": "market-making",
-    "parent": null
+    "parent": "finance"
   },
   {
     "category": "concepts",
@@ -202,7 +222,7 @@
   {
     "category": "concepts",
     "slug": "merkle-tree",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
@@ -212,32 +232,32 @@
   {
     "category": "concepts",
     "slug": "mev",
-    "parent": null
+    "parent": "blockchain"
   },
   {
     "category": "concepts",
     "slug": "option",
-    "parent": null
+    "parent": "finance"
   },
   {
     "category": "concepts",
     "slug": "oracle",
-    "parent": null
+    "parent": "blockchain"
   },
   {
     "category": "concepts",
     "slug": "pcs-trusted-setup",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
     "slug": "perp",
-    "parent": null
+    "parent": "finance"
   },
   {
     "category": "concepts",
     "slug": "polynomial-commitment",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
@@ -247,57 +267,57 @@
   {
     "category": "concepts",
     "slug": "polynomial-encoding",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
     "slug": "power-law",
-    "parent": null
+    "parent": "blockchain"
   },
   {
     "category": "concepts",
     "slug": "reserve-currency",
-    "parent": null
+    "parent": "finance"
   },
   {
     "category": "concepts",
     "slug": "settlement",
-    "parent": null
+    "parent": "finance"
   },
   {
     "category": "concepts",
     "slug": "stack",
-    "parent": null
+    "parent": "computer-science"
   },
   {
     "category": "concepts",
     "slug": "turing-complete",
-    "parent": null
+    "parent": "computer-science"
   },
   {
     "category": "concepts",
     "slug": "vector",
-    "parent": null
+    "parent": "computer-science"
   },
   {
     "category": "concepts",
     "slug": "verkle-tree",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "concepts",
     "slug": "virtual-machine",
-    "parent": null
+    "parent": "computer-science"
   },
   {
     "category": "concepts",
     "slug": "working-capital",
-    "parent": null
+    "parent": "finance"
   },
   {
     "category": "concepts",
     "slug": "zk-proof",
-    "parent": null
+    "parent": "cryptography"
   },
   {
     "category": "ethereum",
