@@ -6,7 +6,7 @@ import type { ContentMetadata } from '@/lib/content';
 import { Network, GitBranch, Circle } from 'lucide-react';
 
 interface VisualizeClientProps {
-  articles: (ContentMetadata & { category: 'background' | 'concepts' | 'ethereum' })[];
+  articles: (ContentMetadata & { category: 'background' | 'concepts' | 'ethereum'; content: string })[];
 }
 
 interface TreeNode {
@@ -15,7 +15,7 @@ interface TreeNode {
   children?: TreeNode[];
 }
 
-type VisualizationMode = 'hierarchical-tree' | 'hierarchical-radial' | 'relational-radial';
+type VisualizationMode = 'hierarchical-tree' | 'hierarchical-radial' | 'relational-radial' | 'network-graph';
 
 export default function VisualizeClient({ articles }: VisualizeClientProps) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -305,6 +305,174 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
           d.fx = null;
           d.fy = null;
         }));
+
+    } else if (mode === 'network-graph') {
+      // Extract all internal links from articles to build reference network
+      const extractInternalLinks = (content: string, category: string): string[] => {
+        const linkRegex = /\[([^\]]+)\]\(\/([^)]+)\)/g;
+        const links: string[] = [];
+        let match;
+
+        while ((match = linkRegex.exec(content)) !== null) {
+          const url = match[2];
+          // Only include internal article links (not /search, /about, etc)
+          if (url.includes('/')) {
+            links.push(url);
+          }
+        }
+
+        return links;
+      };
+
+      // Build nodes and links from articles
+      const nodes: any[] = [];
+      const links: any[] = [];
+
+      // Create article lookup map
+      const articleMap = new Map<string, any>();
+
+      articles.forEach(article => {
+        const articleId = `${article.category}/${article.slug}`;
+        const node = {
+          id: articleId,
+          name: article.frontmatter.title,
+          url: `/${articleId}`,
+          category: article.category,
+        };
+        nodes.push(node);
+        articleMap.set(articleId, node);
+      });
+
+      // Extract links between articles
+      articles.forEach(article => {
+        const sourceId = `${article.category}/${article.slug}`;
+        const internalLinks = extractInternalLinks(article.content, article.category);
+
+        internalLinks.forEach(linkUrl => {
+          if (articleMap.has(linkUrl)) {
+            links.push({
+              source: sourceId,
+              target: linkUrl,
+            });
+          }
+        });
+
+        // Also add links from 'related' field in frontmatter
+        if (article.frontmatter.related && article.frontmatter.related.length > 0) {
+          article.frontmatter.related.forEach(relatedSlug => {
+            // Try to find in same category first, then search all
+            let targetId = `${article.category}/${relatedSlug}`;
+            if (!articleMap.has(targetId)) {
+              // Search in other categories
+              for (const cat of ['background', 'concepts', 'ethereum']) {
+                targetId = `${cat}/${relatedSlug}`;
+                if (articleMap.has(targetId)) break;
+              }
+            }
+            if (articleMap.has(targetId) && sourceId !== targetId) {
+              links.push({
+                source: sourceId,
+                target: targetId,
+              });
+            }
+          });
+        }
+      });
+
+      // Radial force-directed network
+      const radius = Math.min(width, height) / 2 - 120;
+      const svg = d3.select(svgRef.current)
+        .attr('width', width)
+        .attr('height', height)
+        .append('g')
+        .attr('transform', `translate(${width / 2},${height / 2})`);
+
+      // Force simulation with radial positioning by category
+      const categoryAngles: Record<string, number> = {
+        background: 0,
+        concepts: (2 * Math.PI) / 3,
+        ethereum: (4 * Math.PI) / 3,
+      };
+
+      const simulation = d3.forceSimulation(nodes)
+        .force('link', d3.forceLink(links).id((d: any) => d.id).distance(80).strength(0.5))
+        .force('charge', d3.forceManyBody().strength(-50))
+        .force('collision', d3.forceCollide().radius(15))
+        .force('r', d3.forceRadial((d: any) => {
+          // Position by category in radial sections
+          return radius * 0.6;
+        }, 0, 0).strength(0.2))
+        .force('angle', d3.forceRadial(0, (d: any) => {
+          // Gentle push toward category angle
+          const angle = categoryAngles[d.category];
+          return Math.cos(angle) * 50;
+        }, (d: any) => {
+          const angle = categoryAngles[d.category];
+          return Math.sin(angle) * 50;
+        }).strength(0.1));
+
+      // Links
+      const link = svg.append('g')
+        .attr('stroke', '#999')
+        .attr('stroke-opacity', 0.3)
+        .selectAll('line')
+        .data(links)
+        .join('line')
+        .attr('stroke-width', 0.5);
+
+      // Nodes
+      const node = svg.append('g')
+        .selectAll('g')
+        .data(nodes)
+        .join('g')
+        .style('cursor', 'pointer')
+        .on('click', (event, d: any) => {
+          if (d.url) window.location.href = d.url;
+        });
+
+      const categoryColors: Record<string, string> = {
+        background: '#8B4513',
+        concepts: '#4169E1',
+        ethereum: '#627EEA',
+      };
+
+      node.append('circle')
+        .attr('r', 3)
+        .attr('fill', (d: any) => categoryColors[d.category] || '#666');
+
+      node.append('text')
+        .text((d: any) => d.name)
+        .attr('x', 6)
+        .attr('y', '0.31em')
+        .style('font-size', '9px')
+        .style('fill', '#333');
+
+      simulation.on('tick', () => {
+        link
+          .attr('x1', (d: any) => d.source.x)
+          .attr('y1', (d: any) => d.source.y)
+          .attr('x2', (d: any) => d.target.x)
+          .attr('y2', (d: any) => d.target.y);
+
+        node.attr('transform', (d: any) => `translate(${d.x},${d.y})`);
+      });
+
+      // Drag behavior
+      node.call(d3.drag<any, any>()
+        .on('start', (event, d: any) => {
+          if (!event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x;
+          d.fy = d.y;
+        })
+        .on('drag', (event, d: any) => {
+          d.fx = event.x;
+          d.fy = event.y;
+        })
+        .on('end', (event, d: any) => {
+          if (!event.active) simulation.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
+        }));
     }
   }, [articles, mode]);
 
@@ -336,14 +504,25 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
         </button>
         <button
           onClick={() => setMode('relational-radial')}
-          className={`flex items-center gap-2 px-6 py-3 transition-colors ${
+          className={`flex items-center gap-2 px-6 py-3 transition-colors border-t border-b ${
             mode === 'relational-radial'
+              ? 'bg-white border-2 border-gray-300 text-gray-900 font-medium'
+              : 'bg-gray-100 border-l-0 border-r border-gray-300 text-gray-600 hover:bg-gray-200'
+          }`}
+        >
+          <Network className="w-5 h-5" />
+          Relational Radial
+        </button>
+        <button
+          onClick={() => setMode('network-graph')}
+          className={`flex items-center gap-2 px-6 py-3 transition-colors ${
+            mode === 'network-graph'
               ? 'bg-blue-100 border-2 border-blue-300 text-blue-900 font-medium rounded-r-lg'
               : 'bg-gray-100 border border-gray-300 text-gray-600 hover:bg-gray-200 rounded-r-lg'
           }`}
         >
           <Network className="w-5 h-5" />
-          Relational Radial
+          Network Graph
         </button>
       </div>
 

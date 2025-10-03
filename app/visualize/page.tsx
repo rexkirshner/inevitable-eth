@@ -1,4 +1,4 @@
-import { getAllContent } from '@/lib/content';
+import { getAllContent, getContentBySlug } from '@/lib/content';
 import { getDefaultOgImage } from '@/lib/og-image';
 import type { Metadata } from 'next';
 import VisualizeClient from './visualize-client';
@@ -26,11 +26,20 @@ export default function VisualizePage() {
   const conceptsArticles = getAllContent('concepts');
   const ethereumArticles = getAllContent('ethereum');
 
-  // Combine all articles
+  // Combine all articles with their content for link extraction
   const allArticles = [
-    ...backgroundArticles.map(a => ({ ...a, category: 'background' as const })),
-    ...conceptsArticles.map(a => ({ ...a, category: 'concepts' as const })),
-    ...ethereumArticles.map(a => ({ ...a, category: 'ethereum' as const })),
+    ...backgroundArticles.map(a => {
+      const { content } = getContentBySlug('background', a.slug);
+      return { ...a, category: 'background' as const, content };
+    }),
+    ...conceptsArticles.map(a => {
+      const { content } = getContentBySlug('concepts', a.slug);
+      return { ...a, category: 'concepts' as const, content };
+    }),
+    ...ethereumArticles.map(a => {
+      const { content } = getContentBySlug('ethereum', a.slug);
+      return { ...a, category: 'ethereum' as const, content };
+    }),
   ];
 
   return <VisualizeClient articles={allArticles} />;
