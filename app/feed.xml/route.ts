@@ -2,6 +2,9 @@ import { getAllContent } from '@/lib/content';
 
 export const dynamic = 'force-static';
 
+// Revalidate every hour (3600 seconds) to reduce file reads
+export const revalidate = 3600;
+
 export async function GET() {
   const allArticles = getAllContent();
 
