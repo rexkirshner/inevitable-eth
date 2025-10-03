@@ -1,9 +1,16 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import { Search, Menu, BookOpen } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
+import { MobileMenu } from './mobile-menu';
 
 export function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
+    <>
     <header className="sticky top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--background)] shadow-sm">
       {/* Top bar - Wikipedia style */}
       <div className="mx-auto max-w-[1440px] px-4">
@@ -33,8 +40,10 @@ export function Header() {
             <ThemeToggle />
 
             <button
-              className="md:hidden text-[var(--text)] p-2"
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden text-[var(--text)] p-2 hover:text-[var(--link)] transition-colors"
               aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -81,6 +90,10 @@ export function Header() {
           </ul>
         </div>
       </nav>
+
+      {/* Mobile Menu */}
+      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
     </header>
+    </>
   );
 }
