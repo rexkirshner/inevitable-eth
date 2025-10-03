@@ -8,6 +8,7 @@ import { Sidebar } from '@/components/layout/sidebar';
 import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { ArticleNavigation } from '@/components/content/article-navigation';
 import { RelatedArticles } from '@/components/content/related-articles';
+import { ArticleSummary } from '@/components/content/article-summary';
 import type { Metadata } from 'next';
 
 const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
@@ -155,6 +156,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </div>
           )}
         </header>
+
+        {/* Article Summary */}
+        <ArticleSummary description={frontmatter.description} />
 
         {/* Article Content */}
         <article className="prose">
