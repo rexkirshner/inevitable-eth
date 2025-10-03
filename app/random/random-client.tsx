@@ -112,7 +112,8 @@ export default function RandomClient({ allArticles }: RandomClientProps) {
         <div className="flex items-end">
           <button
             onClick={handleRefresh}
-            className="px-4 py-2 bg-[var(--link)] text-white rounded hover:opacity-90 transition-opacity flex items-center gap-2"
+            className="px-4 py-2 bg-[var(--link)] rounded hover:opacity-90 transition-opacity flex items-center gap-2"
+            style={{ color: '#ffffff' }}
           >
             <RefreshCw className="h-4 w-4" />
             Get Another
@@ -170,7 +171,8 @@ export default function RandomClient({ allArticles }: RandomClientProps) {
           {/* Read Article Button */}
           <Link
             href={`/${currentArticle.category}/${currentArticle.slug}`}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--link)] text-white rounded hover:opacity-90 transition-opacity font-medium"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--link)] rounded hover:opacity-90 transition-opacity font-medium"
+            style={{ color: '#ffffff' }}
           >
             Read Article
             <ArrowRight className="h-4 w-4" />
