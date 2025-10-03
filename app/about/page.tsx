@@ -140,7 +140,7 @@ export default function AboutPage() {
           </p>
           <div className="flex gap-4 mt-6">
             <a
-              href="https://github.com/rexkirshner/inevitable-eth"
+              href={process.env.NEXT_PUBLIC_GITHUB_REPO || 'https://github.com/rexkirshner/inevitable-eth'}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded hover:border-[var(--link)] transition-colors"

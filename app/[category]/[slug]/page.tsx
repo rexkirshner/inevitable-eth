@@ -181,7 +181,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 url={`https://inevitableeth.com/${category}/${slug}`}
               />
               <a
-                href={`https://github.com/rexkirshner/inevitable-eth/blob/main/content/${category}/${slug}.mdx`}
+                href={`${process.env.NEXT_PUBLIC_GITHUB_REPO || 'https://github.com/rexkirshner/inevitable-eth'}/blob/main/content/${category}/${slug}.mdx`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs hover:text-[var(--link)] hover:underline transition-colors flex items-center gap-1"

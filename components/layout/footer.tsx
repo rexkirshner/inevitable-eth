@@ -93,7 +93,7 @@ export function Footer() {
             <ul className="space-y-2 text-xs">
               <li>
                 <a
-                  href="https://github.com/rexkirshner/inevitable-eth"
+                  href={process.env.NEXT_PUBLIC_GITHUB_REPO || 'https://github.com/rexkirshner/inevitable-eth'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[var(--text-secondary)] hover:text-[var(--link)] transition-colors inline-flex items-center gap-1"
