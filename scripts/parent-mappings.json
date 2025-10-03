@@ -671,8 +671,8 @@
   },
   {
     "category": "ethereum",
-    "slug": "overview",
-    "parent": "zkevm"
+    "slug": "polygon-zkevm",
+    "parent": "zk-rollup"
   },
   {
     "category": "ethereum",
