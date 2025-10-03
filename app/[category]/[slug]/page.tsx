@@ -8,7 +8,6 @@ import { Sidebar } from '@/components/layout/sidebar';
 import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { ArticleNavigation } from '@/components/content/article-navigation';
 import { RelatedArticles } from '@/components/content/related-articles';
-import { ArticleSummary } from '@/components/content/article-summary';
 import { ArticleKeyboardShortcuts } from '@/components/content/article-keyboard-shortcuts';
 import { ArticleShareButton } from '@/components/content/article-share-button';
 import { FontSizeAdjuster } from '@/components/content/font-size-adjuster';
@@ -215,9 +214,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </div>
           )}
         </header>
-
-        {/* Article Summary */}
-        <ArticleSummary description={frontmatter.description} />
 
         {/* Prerequisites (if any) */}
         {frontmatter.prerequisites && frontmatter.prerequisites.length > 0 && (
