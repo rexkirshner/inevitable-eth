@@ -12,6 +12,7 @@
     "migrate": "tsx scripts/migrate-html-to-mdx.ts",
     "check-links": "tsx scripts/check-broken-links.ts",
     "optimize-images": "tsx scripts/optimize-images.ts",
+    "validate-images": "tsx scripts/validate-images.ts",
     "build-search-index": "tsx scripts/build-search-index.ts"
   },
   "dependencies": {
