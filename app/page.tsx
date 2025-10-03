@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getAllContent } from '@/lib/content';
 import { getDefaultOgImage } from '@/lib/og-image';
 import { BookOpen, Lightbulb, Blocks } from 'lucide-react';
@@ -28,6 +29,18 @@ export default function Home() {
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8">
+      {/* Hero banner image */}
+      <div className="mb-8 rounded-lg overflow-hidden">
+        <Image
+          src="/images/inevitable-eth-banner.png"
+          alt="Inevitable Ethereum - The World Computer"
+          width={1200}
+          height={400}
+          priority
+          className="w-full h-auto"
+        />
+      </div>
+
       {/* Wikipedia-style welcome banner */}
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-serif font-normal mb-2">
