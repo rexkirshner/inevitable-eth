@@ -11,6 +11,7 @@ import { RelatedArticles } from '@/components/content/related-articles';
 import { ArticleSummary } from '@/components/content/article-summary';
 import { ArticleKeyboardShortcuts } from '@/components/content/article-keyboard-shortcuts';
 import { ArticleShareButton } from '@/components/content/article-share-button';
+import { FontSizeAdjuster } from '@/components/content/font-size-adjuster';
 import type { Metadata } from 'next';
 
 const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
@@ -154,6 +155,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Metadata Bar */}
           <div className="flex items-center justify-between gap-4 text-sm text-[var(--text-secondary)] pb-4 border-b border-[var(--border)]">
             <div className="flex items-center gap-4">
+              <FontSizeAdjuster />
               {frontmatter.difficulty && (
                 <span className="px-2 py-1 bg-[var(--surface)] rounded text-xs">
                   {frontmatter.difficulty}
