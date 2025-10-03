@@ -1,10 +1,13 @@
 import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { getContentBySlug, getAllSlugsInCategory, getAllCategories, buildContentTree } from '@/lib/content';
+import { getContentBySlug, getAllSlugsInCategory, getAllCategories, buildContentTree, generateBreadcrumbs, getPrevNextArticles, getRelatedContent } from '@/lib/content';
 import { renderMarkdown } from '@/lib/mdx';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { getArticleOgImage } from '@/lib/og-image';
 import { Sidebar } from '@/components/layout/sidebar';
+import { Breadcrumbs } from '@/components/layout/breadcrumbs';
+import { ArticleNavigation } from '@/components/content/article-navigation';
+import { RelatedArticles } from '@/components/content/related-articles';
 import type { Metadata } from 'next';
 
 const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
@@ -73,6 +76,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   const { frontmatter, content } = article;
   const contentTree = buildContentTree();
+  const breadcrumbs = generateBreadcrumbs(category, slug);
+  const { prev, next } = getPrevNextArticles(category, slug);
+  const relatedArticles = getRelatedContent(category, slug, 3);
   const renderedContent = await renderMarkdown(content);
   const sanitizedContent = sanitizeHtml(renderedContent);
 
@@ -111,6 +117,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
       {/* Main Content */}
       <main className="flex-1 max-w-4xl mx-auto px-8 py-8">
+        {/* Breadcrumbs */}
+        <Breadcrumbs items={breadcrumbs} />
+
         {/* Article Header */}
         <header className="mb-8">
           <h1 className="text-4xl font-normal mb-4" style={{ fontFamily: '"Linux Libertine", Georgia, Times, serif' }}>
@@ -151,6 +160,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <article className="prose">
           <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
         </article>
+
+        {/* Related Articles */}
+        <RelatedArticles articles={relatedArticles} />
+
+        {/* Previous/Next Navigation */}
+        <ArticleNavigation prev={prev} next={next} />
       </main>
 
       {/* Right TOC */}
