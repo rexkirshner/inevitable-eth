@@ -482,7 +482,7 @@
   {
     "category": "ethereum",
     "slug": "eof",
-    "parent": "execution-updates"
+    "parent": "evm"
   },
   {
     "category": "ethereum",
