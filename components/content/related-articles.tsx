@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import { BookOpen, Clock } from 'lucide-react';
 import type { ContentMetadata } from '@/lib/content.schema';
+import { ArticleReadIndicator } from './article-read-indicator';
 
 interface RelatedArticlesProps {
   articles: ContentMetadata[];
@@ -36,6 +39,7 @@ export function RelatedArticles({ articles }: RelatedArticlesProps) {
               {article.frontmatter.description}
             </p>
             <div className="flex items-center gap-3 text-xs text-[var(--text-secondary)]">
+              <ArticleReadIndicator category={article.category} slug={article.slug} />
               {article.frontmatter.difficulty && (
                 <span className="px-2 py-1 bg-[var(--surface)] rounded">
                   {article.frontmatter.difficulty}

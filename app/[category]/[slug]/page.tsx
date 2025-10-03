@@ -14,6 +14,7 @@ import { ArticleShareButton } from '@/components/content/article-share-button';
 import { FontSizeAdjuster } from '@/components/content/font-size-adjuster';
 import { ArticleBookmarkButton } from '@/components/content/article-bookmark-button';
 import { ArticlePrerequisites } from '@/components/content/article-prerequisites';
+import { ArticleReadTracker } from '@/components/content/article-read-tracker';
 import type { Metadata } from 'next';
 
 const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
@@ -135,6 +136,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <ReadingProgress />
+      <ArticleReadTracker
+        category={category}
+        slug={slug}
+        title={frontmatter.title}
+      />
       <ArticleKeyboardShortcuts
         prevUrl={prev ? `/${category}/${prev.slug}` : undefined}
         nextUrl={next ? `/${category}/${next.slug}` : undefined}

@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Fuse from 'fuse.js';
 import { Search as SearchIcon, X } from 'lucide-react';
+import { ArticleReadIndicator } from '@/components/content/article-read-indicator';
 
 interface ArticleForSearch {
   category: string;
@@ -276,7 +277,8 @@ export default function SearchClient() {
                   </p>
                 )}
 
-                <div className="flex flex-wrap gap-3 text-xs text-[var(--text-secondary)]">
+                <div className="flex flex-wrap gap-3 text-xs text-[var(--text-secondary)] items-center">
+                  <ArticleReadIndicator category={item.category} slug={item.slug} />
                   <span className="px-2 py-1 bg-[var(--background)] rounded capitalize">
                     {item.category}
                   </span>

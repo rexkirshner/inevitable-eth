@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import { getAllContent, getAllCategories } from '@/lib/content';
 import { getDefaultOgImage } from '@/lib/og-image';
+import { ArticleListItem } from '@/components/content/article-list-item';
 
 interface CategoryPageProps {
   params: Promise<{
@@ -99,27 +99,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </h2>
             <ul className="space-y-3">
               {introArticles.map((article) => (
-                <li key={article.slug} className="border-b border-[var(--border)] pb-3">
-                  <Link
-                    href={`/${category}/${article.slug}`}
-                    className="text-lg text-[var(--link)] hover:underline font-semibold"
-                  >
-                    {article.frontmatter.title}
-                  </Link>
-                  {article.frontmatter.description && (
-                    <p className="text-sm text-[var(--text-secondary)] mt-1">
-                      {article.frontmatter.description}
-                    </p>
-                  )}
-                  <div className="flex gap-4 text-xs text-[var(--text-secondary)] mt-2">
-                    {article.frontmatter.readingTime && (
-                      <span>{article.frontmatter.readingTime} min read</span>
-                    )}
-                    {article.frontmatter.updated && (
-                      <span>Updated {article.frontmatter.updated}</span>
-                    )}
-                  </div>
-                </li>
+                <ArticleListItem
+                  key={article.slug}
+                  category={category}
+                  slug={article.slug}
+                  title={article.frontmatter.title}
+                  description={article.frontmatter.description}
+                  readingTime={article.frontmatter.readingTime}
+                  updated={article.frontmatter.updated}
+                />
               ))}
             </ul>
           </section>
@@ -132,27 +120,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </h2>
             <ul className="space-y-3">
               {intermediateArticles.map((article) => (
-                <li key={article.slug} className="border-b border-[var(--border)] pb-3">
-                  <Link
-                    href={`/${category}/${article.slug}`}
-                    className="text-lg text-[var(--link)] hover:underline font-semibold"
-                  >
-                    {article.frontmatter.title}
-                  </Link>
-                  {article.frontmatter.description && (
-                    <p className="text-sm text-[var(--text-secondary)] mt-1">
-                      {article.frontmatter.description}
-                    </p>
-                  )}
-                  <div className="flex gap-4 text-xs text-[var(--text-secondary)] mt-2">
-                    {article.frontmatter.readingTime && (
-                      <span>{article.frontmatter.readingTime} min read</span>
-                    )}
-                    {article.frontmatter.updated && (
-                      <span>Updated {article.frontmatter.updated}</span>
-                    )}
-                  </div>
-                </li>
+                <ArticleListItem
+                  key={article.slug}
+                  category={category}
+                  slug={article.slug}
+                  title={article.frontmatter.title}
+                  description={article.frontmatter.description}
+                  readingTime={article.frontmatter.readingTime}
+                  updated={article.frontmatter.updated}
+                />
               ))}
             </ul>
           </section>
@@ -165,27 +141,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </h2>
             <ul className="space-y-3">
               {advancedArticles.map((article) => (
-                <li key={article.slug} className="border-b border-[var(--border)] pb-3">
-                  <Link
-                    href={`/${category}/${article.slug}`}
-                    className="text-lg text-[var(--link)] hover:underline font-semibold"
-                  >
-                    {article.frontmatter.title}
-                  </Link>
-                  {article.frontmatter.description && (
-                    <p className="text-sm text-[var(--text-secondary)] mt-1">
-                      {article.frontmatter.description}
-                    </p>
-                  )}
-                  <div className="flex gap-4 text-xs text-[var(--text-secondary)] mt-2">
-                    {article.frontmatter.readingTime && (
-                      <span>{article.frontmatter.readingTime} min read</span>
-                    )}
-                    {article.frontmatter.updated && (
-                      <span>Updated {article.frontmatter.updated}</span>
-                    )}
-                  </div>
-                </li>
+                <ArticleListItem
+                  key={article.slug}
+                  category={category}
+                  slug={article.slug}
+                  title={article.frontmatter.title}
+                  description={article.frontmatter.description}
+                  readingTime={article.frontmatter.readingTime}
+                  updated={article.frontmatter.updated}
+                />
               ))}
             </ul>
           </section>
@@ -198,27 +162,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </h2>
             <ul className="space-y-3">
               {uncategorizedArticles.map((article) => (
-                <li key={article.slug} className="border-b border-[var(--border)] pb-3">
-                  <Link
-                    href={`/${category}/${article.slug}`}
-                    className="text-lg text-[var(--link)] hover:underline font-semibold"
-                  >
-                    {article.frontmatter.title}
-                  </Link>
-                  {article.frontmatter.description && (
-                    <p className="text-sm text-[var(--text-secondary)] mt-1">
-                      {article.frontmatter.description}
-                    </p>
-                  )}
-                  <div className="flex gap-4 text-xs text-[var(--text-secondary)] mt-2">
-                    {article.frontmatter.readingTime && (
-                      <span>{article.frontmatter.readingTime} min read</span>
-                    )}
-                    {article.frontmatter.updated && (
-                      <span>Updated {article.frontmatter.updated}</span>
-                    )}
-                  </div>
-                </li>
+                <ArticleListItem
+                  key={article.slug}
+                  category={category}
+                  slug={article.slug}
+                  title={article.frontmatter.title}
+                  description={article.frontmatter.description}
+                  readingTime={article.frontmatter.readingTime}
+                  updated={article.frontmatter.updated}
+                />
               ))}
             </ul>
           </section>

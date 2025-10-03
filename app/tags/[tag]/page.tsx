@@ -3,6 +3,7 @@ import { getAllTags, getArticlesByTag, getRelatedTags } from '@/lib/content';
 import Link from 'next/link';
 import { Tag, ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
+import { TagArticleCard } from '@/components/content/tag-article-card';
 
 interface TagPageProps {
   params: Promise<{
@@ -81,35 +82,16 @@ export default async function TagPage({ params }: TagPageProps) {
       {/* Articles List */}
       <div className="space-y-6 mb-12">
         {articles.map((article) => (
-          <article key={`${article.category}-${article.slug}`} className="border-b border-[var(--border)] pb-6">
-            <Link href={`/${article.category}/${article.slug}`}>
-              <h2 className="text-2xl font-normal text-[var(--text)] hover:text-[var(--link)] transition-colors mb-2" style={{ fontFamily: '"Linux Libertine", Georgia, Times, serif' }}>
-                {article.frontmatter.title}
-              </h2>
-            </Link>
-
-            <p className="text-[var(--text-secondary)] mb-3">
-              {article.frontmatter.description}
-            </p>
-
-            <div className="flex items-center gap-4 text-sm text-[var(--text-secondary)]">
-              <span className="capitalize">{article.category}</span>
-              {article.frontmatter.difficulty && (
-                <>
-                  <span>•</span>
-                  <span className="capitalize">{article.frontmatter.difficulty}</span>
-                </>
-              )}
-              {article.frontmatter.readingTime && (
-                <>
-                  <span>•</span>
-                  <span>{article.frontmatter.readingTime} min read</span>
-                </>
-              )}
-              <span>•</span>
-              <span>Updated {article.frontmatter.updated}</span>
-            </div>
-          </article>
+          <TagArticleCard
+            key={`${article.category}-${article.slug}`}
+            category={article.category}
+            slug={article.slug}
+            title={article.frontmatter.title}
+            description={article.frontmatter.description}
+            difficulty={article.frontmatter.difficulty}
+            readingTime={article.frontmatter.readingTime}
+            updated={article.frontmatter.updated}
+          />
         ))}
       </div>
 
