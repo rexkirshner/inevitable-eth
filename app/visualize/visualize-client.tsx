@@ -9,6 +9,7 @@ interface VisualizeClientProps {
   articles: (ContentMetadata & { category: 'background' | 'concepts' | 'ethereum'; content: string })[];
   initialMode?: VisualizationMode;
   hideControls?: boolean;
+  hideLabels?: boolean;
 }
 
 interface TreeNode {
@@ -19,7 +20,7 @@ interface TreeNode {
 
 type VisualizationMode = 'hierarchical-tree' | 'hierarchical-radial' | 'relational-radial' | 'network-graph';
 
-export default function VisualizeClient({ articles, initialMode = 'hierarchical-radial', hideControls = false }: VisualizeClientProps) {
+export default function VisualizeClient({ articles, initialMode = 'hierarchical-radial', hideControls = false, hideLabels = false }: VisualizeClientProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [mode, setMode] = useState<VisualizationMode>(initialMode);
 
@@ -470,27 +471,29 @@ export default function VisualizeClient({ articles, initialMode = 'hierarchical-
         .attr('stroke', '#fff')
         .attr('stroke-width', 1);
 
-      // Position text radially outward from circle
-      node.append('text')
-        .text((d: any) => d.name)
-        .attr('dy', '0.31em')
-        .attr('transform', (d: any) => {
-          // Rotate text to be readable
-          const angle = d.angle * 180 / Math.PI;
-          const rotate = angle > 90 && angle < 270 ? angle + 180 : angle;
-          return `rotate(${rotate})`;
-        })
-        .attr('text-anchor', (d: any) => {
-          const angle = d.angle * 180 / Math.PI;
-          return angle > 90 && angle < 270 ? 'end' : 'start';
-        })
-        .attr('x', (d: any) => {
-          const angle = d.angle * 180 / Math.PI;
-          return angle > 90 && angle < 270 ? -8 : 8;
-        })
-        .style('font-size', '10px')
-        .style('fill', '#333')
-        .style('font-weight', '400');
+      // Position text radially outward from circle (hide if hideLabels is true)
+      if (!hideLabels) {
+        node.append('text')
+          .text((d: any) => d.name)
+          .attr('dy', '0.31em')
+          .attr('transform', (d: any) => {
+            // Rotate text to be readable
+            const angle = d.angle * 180 / Math.PI;
+            const rotate = angle > 90 && angle < 270 ? angle + 180 : angle;
+            return `rotate(${rotate})`;
+          })
+          .attr('text-anchor', (d: any) => {
+            const angle = d.angle * 180 / Math.PI;
+            return angle > 90 && angle < 270 ? 'end' : 'start';
+          })
+          .attr('x', (d: any) => {
+            const angle = d.angle * 180 / Math.PI;
+            return angle > 90 && angle < 270 ? -8 : 8;
+          })
+          .style('font-size', '10px')
+          .style('fill', '#333')
+          .style('font-weight', '400');
+      }
     }
   }, [articles, mode]);
 

@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { Github, ExternalLink } from 'lucide-react';
+import { Github, ExternalLink, Mail, Linkedin, Twitter, Send } from 'lucide-react';
 import { getDefaultOgImage } from '@/lib/og-image';
 import { getAllContent, getContentBySlug } from '@/lib/content';
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
-const VisualizeClient = dynamic(() => import('../visualize/visualize-client'), { ssr: false });
+const VisualizeClient = dynamic(() => import('../visualize/visualize-client'));
 
 export const metadata: Metadata = {
   title: 'About | Inevitable Ethereum',
@@ -137,8 +137,8 @@ export default function AboutPage() {
               </Link>
               , which shows the dense web of knowledge linking these concepts:
             </p>
-            <div className="border border-[var(--border)] rounded-lg overflow-hidden bg-[var(--surface)] h-[400px]">
-              <VisualizeClient articles={allArticles} initialMode="network-graph" hideControls={true} />
+            <div className="border border-[var(--border)] rounded-lg overflow-hidden bg-[var(--surface)] h-[600px]">
+              <VisualizeClient articles={allArticles} initialMode="network-graph" hideControls={true} hideLabels={true} />
             </div>
             <p className="text-xs text-[var(--text-secondary)] mt-2 text-center">
               Network graph showing connections between all {allArticles.length} articles •
@@ -152,18 +152,58 @@ export default function AboutPage() {
         <section>
           <h2 className="text-2xl font-serif font-normal mb-4">The Author</h2>
           <p className="text-[var(--text)] mb-4">
-            Created by Rex Kirshner (
+            Created by{' '}
+            <a
+              href="https://rexkirshner.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--link)] hover:underline"
+            >
+              Rex Kirshner
+            </a>
+            , this project represents years of research, learning, and synthesis of Ethereum knowledge. The goal is to create the materials to take your spark of interest and grow it into an all consuming fire.
+          </p>
+          <p className="text-[var(--text)] mb-4">
+            All written materials and infographics are original content.
+          </p>
+
+          <h3 className="text-xl font-serif font-normal mb-3 mt-6">Contact</h3>
+          <div className="flex gap-4 flex-wrap">
+            <a
+              href="mailto:inevitableeth@rexkirshner.com"
+              className="flex items-center gap-2 px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded hover:border-[var(--link)] transition-colors"
+            >
+              <Mail className="h-5 w-5" />
+              Email
+            </a>
+            <a
+              href="https://linkedin.com/in/rexkirshner"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded hover:border-[var(--link)] transition-colors"
+            >
+              <Linkedin className="h-5 w-5" />
+              LinkedIn
+            </a>
             <a
               href="https://twitter.com/logarithmicrex"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[var(--link)] hover:underline inline-flex items-center gap-1"
+              className="flex items-center gap-2 px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded hover:border-[var(--link)] transition-colors"
             >
-              @logarithmicrex
-              <ExternalLink className="h-3 w-3" />
+              <Twitter className="h-5 w-5" />
+              Twitter
             </a>
-            ), this project represents years of research, learning, and synthesis of Ethereum knowledge.
-          </p>
+            <a
+              href="https://t.me/logarithmicrex"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded hover:border-[var(--link)] transition-colors"
+            >
+              <Send className="h-5 w-5" />
+              Telegram
+            </a>
+          </div>
         </section>
 
         <section>

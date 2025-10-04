@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Search, Menu, BookOpen } from 'lucide-react';
+import Image from 'next/image';
+import { Search, Menu } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import { MobileMenu } from './mobile-menu';
 
@@ -20,7 +21,14 @@ export function Header() {
             href="/"
             className="flex items-center gap-2 text-[var(--text)] hover:no-underline"
           >
-            <BookOpen className="h-6 w-6" aria-hidden="true" />
+            <Image
+              src="/ethereum-logo.svg"
+              alt=""
+              width={24}
+              height={24}
+              className="h-6 w-6"
+              aria-hidden="true"
+            />
             <span className="text-xl font-normal" style={{ fontFamily: '"Linux Libertine", Georgia, Times, serif' }}>
               Inevitable Ethereum
             </span>

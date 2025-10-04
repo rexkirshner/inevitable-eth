@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getAllContent } from '@/lib/content';
 import { getDefaultOgImage } from '@/lib/og-image';
-import { BookOpen, Lightbulb, Blocks } from 'lucide-react';
+import { Star, BookOpen, Lightbulb, Blocks } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -56,9 +56,9 @@ export default function Home() {
         {/* Left column */}
         <div className="space-y-6">
           {/* Featured article */}
-          <section className="border border-[var(--border)] bg-[var(--surface)] p-4">
+          <section className="border border-[var(--border)] bg-[var(--surface)] p-4 flex flex-col h-[280px]">
             <h2 className="text-xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-3 flex items-center gap-2">
-              <BookOpen className="h-5 w-5" />
+              <Star className="h-5 w-5" />
               Featured article
             </h2>
             <div className="space-y-2">
@@ -83,8 +83,9 @@ export default function Home() {
           </section>
 
           {/* Background section */}
-          <section className="border border-[var(--border)] bg-[var(--surface)] p-4">
-            <h2 className="text-xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-3">
+          <section className="border border-[var(--border)] bg-[var(--surface)] p-4 flex flex-col h-[280px]">
+            <h2 className="text-xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-3 flex items-center gap-2">
+              <BookOpen className="h-5 w-5" />
               Background & Context
             </h2>
             <ul className="space-y-1">
@@ -111,7 +112,7 @@ export default function Home() {
         {/* Right column */}
         <div className="space-y-6">
           {/* Concepts section */}
-          <section className="border border-[var(--border)] bg-[var(--surface)] p-4">
+          <section className="border border-[var(--border)] bg-[var(--surface)] p-4 flex flex-col h-[280px]">
             <h2 className="text-xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-3 flex items-center gap-2">
               <Lightbulb className="h-5 w-5" />
               Technical Concepts
@@ -137,7 +138,7 @@ export default function Home() {
           </section>
 
           {/* Ethereum section */}
-          <section className="border border-[var(--border)] bg-[var(--surface)] p-4">
+          <section className="border border-[var(--border)] bg-[var(--surface)] p-4 flex flex-col h-[280px]">
             <h2 className="text-xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-3 flex items-center gap-2">
               <Blocks className="h-5 w-5" />
               Ethereum
