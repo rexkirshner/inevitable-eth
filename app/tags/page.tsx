@@ -99,7 +99,8 @@ export default function TagsPage() {
             <Link
               key={tagInfo.tag}
               href={`/tags/${encodeURIComponent(tagInfo.tag)}`}
-              className="px-3 py-1.5 bg-[var(--link)] text-[var(--background)] rounded hover:brightness-110 transition-all text-sm"
+              className="px-3 py-1.5 bg-[var(--link)] rounded hover:brightness-110 transition-all text-sm"
+              style={{ color: '#ffffff' }}
             >
               {tagInfo.tag} ({tagInfo.count})
             </Link>
