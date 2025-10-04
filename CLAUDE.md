@@ -11,6 +11,86 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Content backup: https://github.com/haymsalomon/inevitable-eth
 - PRD: See `PRD.md` for complete roadmap and design philosophy
 
+## Working with Rex
+
+### Workflow Preferences
+
+**Git & Deployment:**
+- ⚠️ **ALWAYS wait for explicit approval before pushing to GitHub** unless specifically told to push
+- Test all changes in dev environment before committing
+- Make incremental commits with clear, detailed messages
+- Use the standardized commit message format with "🤖 Generated with Claude Code" footer
+- Push only after user confirms changes work correctly
+
+**Development Approach:**
+- **Simplicity is paramount** - every change should impact as little code as possible
+- Make the smallest possible change to fix an issue
+- NO temporary fixes or band-aids - always find and fix root causes
+- Operate with a senior developer mindset - never take shortcuts
+- Trace through ENTIRE code flows when debugging - no assumptions
+
+**Planning & Communication:**
+- For complex tasks:
+  1. Write a plan to `tasks/todo.md`
+  2. Check in with user before starting work
+  3. Provide high-level explanations of what changed (not verbose code walkthroughs unless asked)
+  4. Mark todo items complete as you go
+  5. Add a review section summarizing changes
+- For simple tasks: just do the work directly
+- User provides screenshots to show issues - always read them with the Read tool
+
+**Code Quality Standards:**
+- Every fix must address the root cause, not symptoms
+- Impact minimal code - surgical precision over broad changes
+- No lazy coding - find the actual problem and fix it properly
+- Avoid introducing new bugs through overly complex changes
+- When in doubt, choose the simpler solution
+
+### Communication Style
+
+**What Rex Prefers:**
+- Direct, concise responses without preamble
+- High-level summaries of changes made (e.g., "Changed X to Y in file.ts:123")
+- Clear indication when waiting for approval vs. when work is complete
+- Honest assessment of what you're confident about vs. uncertain
+
+**What to Avoid:**
+- Verbose explanations unless specifically requested
+- Pushing to GitHub without explicit approval
+- Making assumptions about what user wants
+- Complex changes when simple ones will work
+- Temporary fixes instead of root cause solutions
+
+### Testing & Verification
+
+**Before Committing:**
+1. Verify changes work in dev environment (npm run dev)
+2. Check for any console errors or warnings
+3. Test on both desktop and mobile when UI is involved
+4. Confirm no unintended side effects
+
+**When User Says "let's make sure it works first":**
+- This means: make the change, verify in dev, then WAIT for user's explicit approval
+- Do NOT push to GitHub until user confirms it works on their end
+- Be patient - user will test and give feedback
+
+### Examples from Past Sessions
+
+**Good Workflow (Session 12):**
+1. User: "Visualization is off-screen on about page"
+2. Claude: Investigates, finds root cause (window vs container dimensions)
+3. Makes minimal change (2 lines modified)
+4. User: "looks good, let's make sure it works before you push"
+5. Claude: Makes change, waits for approval
+6. User: "ok great, push to GitHub"
+7. Claude: Pushes with detailed commit message
+
+**What NOT to Do:**
+- Making broad refactors when a small change would work
+- Using temporary workarounds instead of fixing root issues
+- Pushing to GitHub without approval when user requested verification first
+- Assuming a fix works without actually testing it
+
 ## Commands
 
 ```bash
