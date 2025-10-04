@@ -448,7 +448,7 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
         })
         .attr('fill', 'none')
         .attr('stroke', '#999')
-        .attr('stroke-opacity', 0.25)
+        .attr('stroke-opacity', 0.4)
         .attr('stroke-width', 0.5);
 
       // Nodes
