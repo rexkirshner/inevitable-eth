@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Search, ArrowLeft } from 'lucide-react';
+import { Home, Search, ArrowLeft, Info } from 'lucide-react';
 
 export default function NotFound() {
   return (
@@ -16,6 +16,32 @@ export default function NotFound() {
         <p className="text-[var(--text-secondary)]">
           The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </p>
+      </div>
+
+      {/* Callout box for site rewrite */}
+      <div className="mb-8 mx-auto max-w-[600px] p-4 border-2 border-[var(--link)] bg-[var(--surface)] rounded-lg">
+        <div className="flex items-start gap-3">
+          <Info className="h-5 w-5 text-[var(--link)] flex-shrink-0 mt-0.5" />
+          <div className="text-left">
+            <h3 className="font-semibold text-[var(--text)] mb-2">Site Recently Rebuilt</h3>
+            <p className="text-sm text-[var(--text-secondary)] mb-2">
+              This website has been completely rewritten. If you followed a link from the old version,
+              the URL structure may have changed.
+            </p>
+            <p className="text-sm text-[var(--text-secondary)]">
+              Try checking the same link at{' '}
+              <a
+                href="https://old.inevitableeth.com"
+                className="text-[var(--link)] hover:underline font-medium"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                old.inevitableeth.com
+              </a>
+              {' '}or use the search below to find what you&apos;re looking for.
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

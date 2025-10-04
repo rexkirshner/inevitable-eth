@@ -232,7 +232,7 @@ export default function AboutPage() {
               View on GitHub
             </a>
             <a
-              href="https://inevitableeth.com"
+              href="https://old.inevitableeth.com"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded hover:border-[var(--link)] transition-colors"

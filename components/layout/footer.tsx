@@ -104,7 +104,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://inevitableeth.com"
+                  href="https://old.inevitableeth.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[var(--text-secondary)] hover:text-[var(--link)] transition-colors inline-flex items-center gap-1"

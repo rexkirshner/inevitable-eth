@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import GoogleAnalytics from "@/components/analytics/google-analytics";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -60,6 +61,7 @@ export default function RootLayout({
           >
             Skip to main content
           </a>
+          <GoogleAnalytics />
           <Header />
           <main id="main-content" className="flex-1">{children}</main>
           <Footer />
