@@ -80,8 +80,10 @@ export default function VisualizeClient({ articles, initialMode = 'hierarchical-
     const treeData = buildTree();
     d3.select(svgRef.current).selectAll('*').remove();
 
-    const width = window.innerWidth;
-    const height = window.innerHeight - 80; // Account for tabs
+    // Use actual container dimensions instead of window dimensions
+    // This ensures the visualization fits properly when embedded in smaller containers
+    const width = svgRef.current.clientWidth || window.innerWidth;
+    const height = svgRef.current.clientHeight || (window.innerHeight - 80); // Account for tabs
 
     if (mode === 'hierarchical-tree') {
       // Traditional vertical tree layout
@@ -384,7 +386,7 @@ export default function VisualizeClient({ articles, initialMode = 'hierarchical-
       });
 
       // Circular layout: all nodes on perimeter, connections in center
-      const radius = Math.min(width, height) / 2 - 150;
+      const radius = Math.min(width, height) / 2 - 20;
       const svg = d3.select(svgRef.current)
         .attr('width', width)
         .attr('height', height)

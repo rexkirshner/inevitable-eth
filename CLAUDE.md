@@ -294,9 +294,25 @@ See `tasks/code-review.md` for comprehensive code audit (conducted 2025-10-02).
 - Metadata via `export const metadata` in pages/layouts
 - Dynamic routes: `[param]/page.tsx`
 
-## Critical Path (As of 2025-10-03 Session 11)
+## Critical Path (As of 2025-10-03 Session 12)
 
 **Current Status:** Phases 1-8 Complete ✅ | All UI Polish Complete ✅ | Production Ready 🚀
+
+**Completed in Session 12 (Visualization Fixes & Deployment Prep):**
+- ✅ **Fixed Visualization Positioning on About Page**
+  - Root cause: D3 was using window dimensions instead of container dimensions
+  - Changed to use `svgRef.current.clientWidth/clientHeight` for accurate sizing
+  - Location: `app/visualize/visualize-client.tsx:85-86`
+- ✅ **Increased Visualization Circle Size**
+  - Changed radius padding from 150px to 20px for 95% container fill
+  - Location: `app/visualize/visualize-client.tsx:389`
+- ✅ **Fixed Mobile Responsiveness**
+  - Changed container from fixed `h-[600px]` to `aspect-square max-h-[600px]`
+  - Ensures square container on mobile for properly centered circle
+  - Location: `app/about/page.tsx:140`
+- ✅ **UI Polish**
+  - Removed dot separator between article count and "View full size" link
+  - Location: `app/about/page.tsx:144`
 
 **Completed in Session 11 (Post-Revert UI Polish & Bug Fixes):**
 - ✅ **Restored Lost UI Improvements** (from Session 10)

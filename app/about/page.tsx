@@ -137,11 +137,11 @@ export default function AboutPage() {
               </Link>
               , which shows the dense web of knowledge linking these concepts:
             </p>
-            <div className="border border-[var(--border)] rounded-lg overflow-hidden bg-[var(--surface)] h-[600px]">
+            <div className="border border-[var(--border)] rounded-lg overflow-hidden bg-[var(--surface)] w-full aspect-square max-h-[600px]">
               <VisualizeClient articles={allArticles} initialMode="network-graph" hideControls={true} hideLabels={true} />
             </div>
             <p className="text-xs text-[var(--text-secondary)] mt-2 text-center">
-              Network graph showing connections between all {allArticles.length} articles •
+              Network graph showing connections between all {allArticles.length} articles
               <Link href="/visualize" className="text-[var(--link)] hover:underline ml-1">
                 View full size
               </Link>
