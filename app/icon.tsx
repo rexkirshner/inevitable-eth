@@ -32,14 +32,14 @@ export default function Icon() {
         >
           <polygon
             fill="none"
-            stroke="#263238"
+            stroke="#6B7280"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
             points="16.01,1.5 7.62,16.23 16.01,21.5 24.38,16.18"
           />
           <line
-            stroke="#263238"
+            stroke="#6B7280"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -50,7 +50,7 @@ export default function Icon() {
           />
           <polygon
             fill="none"
-            stroke="#263238"
+            stroke="#6B7280"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -58,14 +58,14 @@ export default function Icon() {
           />
           <polygon
             fill="none"
-            stroke="#263238"
+            stroke="#6B7280"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
             points="16.01,12.3 7.62,16.23 16.01,21.5 24.38,16.18"
           />
           <line
-            stroke="#263238"
+            stroke="#6B7280"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"

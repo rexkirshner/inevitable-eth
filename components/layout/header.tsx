@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Search, Menu } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import { MobileMenu } from './mobile-menu';
@@ -21,14 +20,24 @@ export function Header() {
             href="/"
             className="flex items-center gap-2 text-[var(--text)] hover:no-underline"
           >
-            <Image
-              src="/ethereum-logo.svg"
-              alt=""
-              width={24}
-              height={24}
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 32 32"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="h-6 w-6"
               aria-hidden="true"
-            />
+            >
+              <polygon points="16.01,1.5 7.62,16.23 16.01,21.5 24.38,16.18" />
+              <line x1="16.01" x2="16.01" y1="30.5" y2="24.1" />
+              <polygon points="16.01,30.5 7.62,18.83 16.01,24.1 24.38,18.78" />
+              <polygon points="16.01,12.3 7.62,16.23 16.01,21.5 24.38,16.18" />
+              <line x1="16.01" x2="16.01" y1="1.5" y2="21.5" />
+            </svg>
             <span className="text-xl font-normal" style={{ fontFamily: '"Linux Libertine", Georgia, Times, serif' }}>
               Inevitable Ethereum
             </span>
