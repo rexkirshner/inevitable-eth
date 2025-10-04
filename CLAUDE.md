@@ -387,6 +387,85 @@ See `tasks/code-review.md` for comprehensive code audit (conducted 2025-10-02).
 
 **Project is deployment-ready for Cloudflare Pages**
 
+## Troubleshooting & Known Issues
+
+### Build & Cache Issues
+
+**Problem: Inexplicable import errors (e.g., "BookOpen is not defined" despite correct imports)**
+- **Root Cause**: Corrupted `.next` build cache with stale manifest files
+- **Solution**: Delete `.next` directory and rebuild
+  ```bash
+  rm -rf .next
+  npm run dev
+  ```
+- **Prevention**: When seeing import errors that don't make sense, always check build cache first
+
+**Problem: "Internal Server Error" after making changes**
+- **Diagnosis Steps**:
+  1. Check for corrupted build cache (delete `.next`)
+  2. Look for multiple dev servers running (kill all: `lsof -ti:3000 | xargs kill -9`)
+  3. Check for Next.js 15 incompatibilities (e.g., `ssr: false` in Server Components)
+- **Session 11 Example**: `dynamic(..., { ssr: false })` not allowed in Server Components - remove the option
+
+### Theme & Styling Issues
+
+**Problem: Theme toggle button changes icon but colors don't switch**
+- **Root Cause**: `@media (prefers-color-scheme: dark)` overrides class-based theme
+- **Solution**: Use `:root:not(.light)` selector in media query + explicit `.light` class
+  ```css
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) { /* dark colors */ }
+  }
+  .light { /* light colors - overrides media query */ }
+  ```
+- **Location**: `app/globals.css` lines 34-60
+
+**Problem: CSS variable text color invisible on background**
+- **Root Cause**: Variables like `--background` change value between light/dark mode
+- **Bad**: `text-[var(--background)]` - dark text on dark bg in dark mode
+- **Good**: `style={{ color: '#ffffff' }}` - consistent across themes
+- **Session 11 Example**: Tags page buttons (app/tags/page.tsx:103)
+
+### Git & Version Control
+
+**Problem: Lost uncommitted work after reverting changes**
+- **Bad**: `git checkout .` - DESTROYS all uncommitted changes permanently
+- **Good**: `git stash` - Saves changes for later recovery
+- **Prevention**: Always verify uncommitted work exists before reverting
+  ```bash
+  git status  # Check what you'll lose
+  git stash   # Save instead of destroy
+  git stash pop  # Restore later
+  ```
+
+### Next.js 15 Specific Gotchas
+
+**Dynamic Imports in Server Components**
+- ❌ `dynamic(() => import('./component'), { ssr: false })` - NOT allowed in Server Components
+- ✅ `dynamic(() => import('./component'))` - Works fine
+- ✅ Add `'use client'` to component if it needs browser APIs
+
+**CSS Custom Properties in Tailwind**
+- ✅ `className="bg-[var(--background)]"` - Works for backgrounds, borders
+- ⚠️ `className="text-[var(--background)]"` - Problematic when variable changes (light/dark)
+- ✅ `style={{ color: 'var(--link)' }}` - Inline styles more reliable for dynamic values
+
+### Development Workflow
+
+**Before Making Breaking Changes:**
+1. Verify what uncommitted work exists: `git status`
+2. Consider `git stash` instead of `git checkout .`
+3. Test in dev environment before committing
+4. Make smallest possible change to fix issue
+5. Verify build still works: `npm run build`
+
+**Debugging Checklist:**
+1. Check `.next` cache corruption (delete and rebuild)
+2. Verify no conflicting dev servers running
+3. Check browser console for client-side errors
+4. Review recent git changes: `git log --oneline -5`
+5. Trace through ENTIRE code flow (no assumptions)
+
 1. First think through the problem, read the codebase for relevant files, and write a plan to tasks/todo.md.
 2. The plan should have a list of todo items that you can check off as you complete them
 3. Before you begin working, check in with me and I will verify the plan.
