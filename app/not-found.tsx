@@ -1,9 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Home, Search, ArrowLeft, Info } from 'lucide-react';
 
 export default function NotFound() {
+  const pathname = usePathname();
+  const oldSiteUrl = `https://old.inevitableeth.com${pathname}`;
+
   return (
     <div className="mx-auto max-w-[800px] px-4 py-16 text-center">
       <div className="mb-8">
@@ -31,12 +35,12 @@ export default function NotFound() {
             <p className="text-sm text-[var(--text-secondary)]">
               Try checking the same link at{' '}
               <a
-                href="https://old.inevitableeth.com"
+                href={oldSiteUrl}
                 className="text-[var(--link)] hover:underline font-medium"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                old.inevitableeth.com
+                old.inevitableeth.com{pathname}
               </a>
               {' '}or use the search below to find what you&apos;re looking for.
             </p>
