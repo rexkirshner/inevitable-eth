@@ -387,9 +387,28 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
         .append('g')
         .attr('transform', `translate(${width / 2},${height / 2})`);
 
-      // Position nodes evenly around circle perimeter
-      nodes.forEach((node, i) => {
-        const angle = (i / nodes.length) * 2 * Math.PI - Math.PI / 2; // Start at top
+      // Calculate connectivity (degree) for each node to optimize ordering
+      const nodeDegree = new Map<string, number>();
+      nodes.forEach(node => nodeDegree.set(node.id, 0));
+      links.forEach(link => {
+        nodeDegree.set(link.source, (nodeDegree.get(link.source) || 0) + 1);
+        nodeDegree.set(link.target, (nodeDegree.get(link.target) || 0) + 1);
+      });
+
+      // Sort nodes by category and connectivity for better visual patterns
+      const sortedNodes = [...nodes].sort((a, b) => {
+        // First by category to group related articles
+        if (a.category !== b.category) {
+          const catOrder: Record<string, number> = { background: 0, concepts: 1, ethereum: 2 };
+          return catOrder[a.category] - catOrder[b.category];
+        }
+        // Within category, sort by connectivity (degree) for dense clustering
+        return (nodeDegree.get(b.id) || 0) - (nodeDegree.get(a.id) || 0);
+      });
+
+      // Position sorted nodes evenly around circle perimeter
+      sortedNodes.forEach((node, i) => {
+        const angle = (i / sortedNodes.length) * 2 * Math.PI - Math.PI / 2; // Start at top
         node.x = Math.cos(angle) * radius;
         node.y = Math.sin(angle) * radius;
         node.fx = node.x; // Fix position
@@ -429,7 +448,7 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
         })
         .attr('fill', 'none')
         .attr('stroke', '#999')
-        .attr('stroke-opacity', 0.15)
+        .attr('stroke-opacity', 0.25)
         .attr('stroke-width', 0.5);
 
       // Nodes
