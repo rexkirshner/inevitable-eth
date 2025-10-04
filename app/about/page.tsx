@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import { Github, ExternalLink } from 'lucide-react';
 import { getDefaultOgImage } from '@/lib/og-image';
+import { getAllContent, getContentBySlug } from '@/lib/content';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
+
+const VisualizeClient = dynamic(() => import('../visualize/visualize-client'), { ssr: false });
 
 export const metadata: Metadata = {
   title: 'About | Inevitable Ethereum',
@@ -21,6 +25,26 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
+  // Get all articles for visualization
+  const backgroundArticles = getAllContent('background');
+  const conceptsArticles = getAllContent('concepts');
+  const ethereumArticles = getAllContent('ethereum');
+
+  const allArticles = [
+    ...backgroundArticles.map(a => {
+      const { content } = getContentBySlug('background', a.slug);
+      return { ...a, category: 'background' as const, content };
+    }),
+    ...conceptsArticles.map(a => {
+      const { content } = getContentBySlug('concepts', a.slug);
+      return { ...a, category: 'concepts' as const, content };
+    }),
+    ...ethereumArticles.map(a => {
+      const { content } = getContentBySlug('ethereum', a.slug);
+      return { ...a, category: 'ethereum' as const, content };
+    }),
+  ];
+
   return (
     <div className="mx-auto max-w-[800px] px-4 py-8">
       <h1 className="text-3xl font-serif font-normal border-b border-[var(--border)] pb-2 mb-8">
@@ -103,6 +127,25 @@ export default function AboutPage() {
                 Deep dive into Ethereum&apos;s architecture, consensus, and ecosystem
               </p>
             </Link>
+          </div>
+
+          <div className="mt-8">
+            <p className="text-[var(--text)] mb-4">
+              Explore how all these articles connect together through our{' '}
+              <Link href="/visualize" className="text-[var(--link)] hover:underline font-semibold">
+                interactive visualization page
+              </Link>
+              , which shows the dense web of knowledge linking these concepts:
+            </p>
+            <div className="border border-[var(--border)] rounded-lg overflow-hidden bg-[var(--surface)] h-[400px]">
+              <VisualizeClient articles={allArticles} initialMode="network-graph" hideControls={true} />
+            </div>
+            <p className="text-xs text-[var(--text-secondary)] mt-2 text-center">
+              Network graph showing connections between all {allArticles.length} articles •
+              <Link href="/visualize" className="text-[var(--link)] hover:underline ml-1">
+                View full size
+              </Link>
+            </p>
           </div>
         </section>
 

@@ -7,6 +7,8 @@ import { Network, GitBranch, Circle } from 'lucide-react';
 
 interface VisualizeClientProps {
   articles: (ContentMetadata & { category: 'background' | 'concepts' | 'ethereum'; content: string })[];
+  initialMode?: VisualizationMode;
+  hideControls?: boolean;
 }
 
 interface TreeNode {
@@ -17,9 +19,9 @@ interface TreeNode {
 
 type VisualizationMode = 'hierarchical-tree' | 'hierarchical-radial' | 'relational-radial' | 'network-graph';
 
-export default function VisualizeClient({ articles }: VisualizeClientProps) {
+export default function VisualizeClient({ articles, initialMode = 'hierarchical-radial', hideControls = false }: VisualizeClientProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [mode, setMode] = useState<VisualizationMode>('hierarchical-radial');
+  const [mode, setMode] = useState<VisualizationMode>(initialMode);
 
   // Build hierarchical tree structure
   const buildTree = (): TreeNode => {
@@ -493,9 +495,10 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
   }, [articles, mode]);
 
   return (
-    <div className="w-full h-screen bg-white flex flex-col">
+    <div className="w-full h-full bg-white flex flex-col">
       {/* Tabs */}
-      <div className="flex justify-center gap-0 p-4 bg-gray-50 border-b border-gray-200">
+      {!hideControls && (
+        <div className="flex justify-center gap-0 p-4 bg-gray-50 border-b border-gray-200">
         <button
           onClick={() => setMode('hierarchical-tree')}
           className={`flex items-center gap-2 px-6 py-3 transition-colors ${
@@ -541,6 +544,7 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
           Network Graph
         </button>
       </div>
+      )}
 
       {/* Visualization */}
       <div className="flex-1">
