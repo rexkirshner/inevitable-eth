@@ -397,6 +397,13 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
         node.angle = angle;
       });
 
+      // Resolve link source/target from IDs to actual node objects
+      const nodeById = new Map(nodes.map(n => [n.id, n]));
+      const resolvedLinks = links.map(link => ({
+        source: nodeById.get(link.source),
+        target: nodeById.get(link.target),
+      })).filter(link => link.source && link.target); // Filter out broken links
+
       const categoryColors: Record<string, string> = {
         background: '#8B4513',
         concepts: '#4169E1',
@@ -406,7 +413,7 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
       // Draw curved links (airline route style)
       const link = svg.append('g')
         .selectAll('path')
-        .data(links)
+        .data(resolvedLinks)
         .join('path')
         .attr('d', (d: any) => {
           const source = d.source;
