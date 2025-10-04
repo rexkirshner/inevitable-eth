@@ -379,56 +379,23 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
         }
       });
 
-      // Radial force-directed network
-      const radius = Math.min(width, height) / 2 - 120;
+      // Circular layout: all nodes on perimeter, connections in center
+      const radius = Math.min(width, height) / 2 - 150;
       const svg = d3.select(svgRef.current)
         .attr('width', width)
         .attr('height', height)
         .append('g')
         .attr('transform', `translate(${width / 2},${height / 2})`);
 
-      // Force simulation with radial positioning by category
-      const categoryAngles: Record<string, number> = {
-        background: 0,
-        concepts: (2 * Math.PI) / 3,
-        ethereum: (4 * Math.PI) / 3,
-      };
-
-      const simulation = d3.forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id((d: any) => d.id).distance(80).strength(0.5))
-        .force('charge', d3.forceManyBody().strength(-50))
-        .force('collision', d3.forceCollide().radius(15))
-        .force('r', d3.forceRadial((d: any) => {
-          // Position by category in radial sections
-          return radius * 0.6;
-        }, 0, 0).strength(0.2))
-        .force('angle', d3.forceRadial(0, (d: any) => {
-          // Gentle push toward category angle
-          const angle = categoryAngles[d.category];
-          return Math.cos(angle) * 50;
-        }, (d: any) => {
-          const angle = categoryAngles[d.category];
-          return Math.sin(angle) * 50;
-        }).strength(0.1));
-
-      // Links
-      const link = svg.append('g')
-        .attr('stroke', '#999')
-        .attr('stroke-opacity', 0.3)
-        .selectAll('line')
-        .data(links)
-        .join('line')
-        .attr('stroke-width', 0.5);
-
-      // Nodes
-      const node = svg.append('g')
-        .selectAll('g')
-        .data(nodes)
-        .join('g')
-        .style('cursor', 'pointer')
-        .on('click', (event, d: any) => {
-          if (d.url) window.location.href = d.url;
-        });
+      // Position nodes evenly around circle perimeter
+      nodes.forEach((node, i) => {
+        const angle = (i / nodes.length) * 2 * Math.PI - Math.PI / 2; // Start at top
+        node.x = Math.cos(angle) * radius;
+        node.y = Math.sin(angle) * radius;
+        node.fx = node.x; // Fix position
+        node.fy = node.y;
+        node.angle = angle;
+      });
 
       const categoryColors: Record<string, string> = {
         background: '#8B4513',
@@ -436,43 +403,66 @@ export default function VisualizeClient({ articles }: VisualizeClientProps) {
         ethereum: '#627EEA',
       };
 
-      node.append('circle')
-        .attr('r', 3)
-        .attr('fill', (d: any) => categoryColors[d.category] || '#666');
+      // Draw curved links (airline route style)
+      const link = svg.append('g')
+        .selectAll('path')
+        .data(links)
+        .join('path')
+        .attr('d', (d: any) => {
+          const source = d.source;
+          const target = d.target;
 
+          // Calculate control point for curve (toward center)
+          const dx = target.x - source.x;
+          const dy = target.y - source.y;
+          const dr = Math.sqrt(dx * dx + dy * dy);
+
+          // Curve toward center
+          return `M${source.x},${source.y}A${dr},${dr} 0 0,1 ${target.x},${target.y}`;
+        })
+        .attr('fill', 'none')
+        .attr('stroke', '#999')
+        .attr('stroke-opacity', 0.15)
+        .attr('stroke-width', 0.5);
+
+      // Nodes
+      const node = svg.append('g')
+        .selectAll('g')
+        .data(nodes)
+        .join('g')
+        .attr('transform', (d: any) => `translate(${d.x},${d.y})`)
+        .style('cursor', 'pointer')
+        .on('click', (event, d: any) => {
+          if (d.url) window.location.href = d.url;
+        });
+
+      node.append('circle')
+        .attr('r', 4)
+        .attr('fill', (d: any) => categoryColors[d.category] || '#666')
+        .attr('stroke', '#fff')
+        .attr('stroke-width', 1);
+
+      // Position text radially outward from circle
       node.append('text')
         .text((d: any) => d.name)
-        .attr('x', 6)
-        .attr('y', '0.31em')
-        .style('font-size', '9px')
-        .style('fill', '#333');
-
-      simulation.on('tick', () => {
-        link
-          .attr('x1', (d: any) => d.source.x)
-          .attr('y1', (d: any) => d.source.y)
-          .attr('x2', (d: any) => d.target.x)
-          .attr('y2', (d: any) => d.target.y);
-
-        node.attr('transform', (d: any) => `translate(${d.x},${d.y})`);
-      });
-
-      // Drag behavior
-      node.call(d3.drag<any, any>()
-        .on('start', (event, d: any) => {
-          if (!event.active) simulation.alphaTarget(0.3).restart();
-          d.fx = d.x;
-          d.fy = d.y;
+        .attr('dy', '0.31em')
+        .attr('transform', (d: any) => {
+          // Rotate text to be readable
+          const angle = d.angle * 180 / Math.PI;
+          const rotate = angle > 90 && angle < 270 ? angle + 180 : angle;
+          return `rotate(${rotate})`;
         })
-        .on('drag', (event, d: any) => {
-          d.fx = event.x;
-          d.fy = event.y;
+        .attr('text-anchor', (d: any) => {
+          const angle = d.angle * 180 / Math.PI;
+          return angle > 90 && angle < 270 ? 'end' : 'start';
         })
-        .on('end', (event, d: any) => {
-          if (!event.active) simulation.alphaTarget(0);
-          d.fx = null;
-          d.fy = null;
-        }));
+        .attr('x', (d: any) => {
+          const angle = d.angle * 180 / Math.PI;
+          return angle > 90 && angle < 270 ? -8 : 8;
+        })
+        .style('font-size', '10px')
+        .style('fill', '#333')
+        .style('font-weight', '400');
     }
   }, [articles, mode]);
 
