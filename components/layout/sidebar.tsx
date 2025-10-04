@@ -89,7 +89,6 @@ export function Sidebar({ contentTree }: SidebarProps) {
     });
   };
 
-  const isActive = (href: string) => pathname === href;
   const isCategoryActive = (categorySlug: string) => pathname.startsWith(`/${categorySlug}`);
 
   return (

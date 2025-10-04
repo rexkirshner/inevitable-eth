@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
+// Configuration for Cloudflare Pages static export
 const nextConfig: NextConfig = {
+  output: 'export', // Static export for Cloudflare Pages
   images: {
+    unoptimized: true, // Required for static export (images already optimized via custom renderer)
     remotePatterns: [
       {
         protocol: 'https',
@@ -14,45 +17,8 @@ const nextConfig: NextConfig = {
       root: __dirname,
     },
   },
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'",
-              "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: https:",
-              "font-src 'self'",
-              "connect-src 'self'",
-              "frame-ancestors 'none'",
-              "base-uri 'self'",
-              "form-action 'self'"
-            ].join('; ')
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin'
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()'
-          }
-        ],
-      },
-    ];
-  },
+  // Note: async headers() doesn't work with static export
+  // Security headers are configured in public/_headers for Cloudflare Pages
 };
 
 export default nextConfig;

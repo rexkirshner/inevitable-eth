@@ -16,7 +16,7 @@ export default function RandomPage() {
     category: article.category,
     slug: article.slug,
     title: article.frontmatter.title,
-    description: article.frontmatter.description,
+    description: article.frontmatter.description || article.frontmatter.title,
     tags: article.frontmatter.tags,
     difficulty: article.frontmatter.difficulty,
     readingTime: article.frontmatter.readingTime,

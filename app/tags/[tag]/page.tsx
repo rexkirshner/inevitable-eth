@@ -46,15 +46,6 @@ export default async function TagPage({ params }: TagPageProps) {
 
   const relatedTags = getRelatedTags(decodedTag, 8);
 
-  // Group articles by category
-  const articlesByCategory = articles.reduce((acc, article) => {
-    if (!acc[article.category]) {
-      acc[article.category] = [];
-    }
-    acc[article.category].push(article);
-    return {};
-  }, {} as Record<string, typeof articles>);
-
   return (
     <div className="max-w-4xl mx-auto px-8 py-12">
       {/* Header */}
@@ -75,7 +66,7 @@ export default async function TagPage({ params }: TagPageProps) {
         </div>
 
         <p className="text-[var(--text-secondary)] text-lg">
-          {articles.length} article{articles.length !== 1 ? 's' : ''} tagged with "{decodedTag}"
+          {articles.length} article{articles.length !== 1 ? 's' : ''} tagged with &ldquo;{decodedTag}&rdquo;
         </p>
       </div>
 
@@ -87,7 +78,7 @@ export default async function TagPage({ params }: TagPageProps) {
             category={article.category}
             slug={article.slug}
             title={article.frontmatter.title}
-            description={article.frontmatter.description}
+            description={article.frontmatter.description || article.frontmatter.title}
             difficulty={article.frontmatter.difficulty}
             readingTime={article.frontmatter.readingTime}
             updated={article.frontmatter.updated}

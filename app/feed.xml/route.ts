@@ -26,7 +26,7 @@ export async function GET() {
       <title>${escapeXml(article.frontmatter.title)}</title>
       <link>https://inevitableeth.com/${article.category}/${article.slug}</link>
       <guid>https://inevitableeth.com/${article.category}/${article.slug}</guid>
-      <description>${escapeXml(article.frontmatter.description)}</description>
+      <description>${escapeXml(article.frontmatter.description || article.frontmatter.title)}</description>
       <pubDate>${new Date(article.frontmatter.updated).toUTCString()}</pubDate>
       <category>${article.category}</category>
       ${article.frontmatter.tags.map(tag => `<category>${escapeXml(tag)}</category>`).join('\n      ')}

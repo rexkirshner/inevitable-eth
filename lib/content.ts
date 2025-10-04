@@ -345,7 +345,7 @@ export function searchArticles(query: string, filters?: {
     const lowerQuery = query.toLowerCase();
     articles = articles.filter(a =>
       a.frontmatter.title.toLowerCase().includes(lowerQuery) ||
-      a.frontmatter.description.toLowerCase().includes(lowerQuery) ||
+      (a.frontmatter.description || '').toLowerCase().includes(lowerQuery) ||
       a.frontmatter.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
     );
   }

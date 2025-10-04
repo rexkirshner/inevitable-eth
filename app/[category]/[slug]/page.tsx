@@ -187,7 +187,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               />
               <ArticleShareButton
                 title={frontmatter.title}
-                description={frontmatter.description}
+                description={frontmatter.description || frontmatter.title}
                 url={`https://inevitableeth.com/${category}/${slug}`}
               />
               <a
