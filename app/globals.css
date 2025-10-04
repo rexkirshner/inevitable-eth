@@ -32,7 +32,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     /* Wikipedia-inspired Dark Mode Palette */
     --background: #1a1a1a;
     --surface: #222222;
@@ -44,6 +44,19 @@
     --link-red: #ff6b6b;
     --foreground: var(--text);
   }
+}
+
+.light {
+  /* Wikipedia-inspired Light Mode Palette (class-based) */
+  --background: #ffffff;
+  --surface: #f8f9fa;
+  --border: #a7a7a7;
+  --text: #202122;
+  --text-secondary: #54595d;
+  --link: #0645ad;
+  --link-visited: #0b0080;
+  --link-red: #ba0000;
+  --foreground: var(--text);
 }
 
 .dark {
