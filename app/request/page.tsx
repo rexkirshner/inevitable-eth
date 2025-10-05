@@ -30,7 +30,7 @@ export default function RequestArticlePage() {
           </h1>
           <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
             Have an idea for an article that would help you or others understand Ethereum better?
-            We'd love to hear it! Your request will be reviewed and prioritized based on community interest.
+            We&apos;d love to hear it! Your request will be reviewed and prioritized based on community interest.
           </p>
         </div>
 
@@ -71,7 +71,7 @@ export default function RequestArticlePage() {
                 Can I write the article myself?
               </h3>
               <p className="text-sm text-[var(--text-secondary)]">
-                Absolutely! If you'd like to contribute an article, you can submit a pull request on GitHub.
+                Absolutely! If you&apos;d like to contribute an article, you can submit a pull request on GitHub.
                 Check the contributing guidelines in the repository for more information.
               </p>
             </div>
@@ -81,8 +81,8 @@ export default function RequestArticlePage() {
                 How do I vote on existing requests?
               </h3>
               <p className="text-sm text-[var(--text-secondary)]">
-                All article requests are tracked as GitHub issues with the "article-request" label.
-                You can browse existing requests and add a 👍 reaction to vote for the ones you'd like to see prioritized.
+                All article requests are tracked as GitHub issues with the &quot;article-request&quot; label.
+                You can browse existing requests and add a 👍 reaction to vote for the ones you&apos;d like to see prioritized.
               </p>
             </div>
           </div>

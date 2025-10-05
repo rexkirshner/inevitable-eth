@@ -184,7 +184,7 @@ _This issue was automatically created from the article request form._`;
             <li>• Your request will be submitted as a GitHub issue</li>
             <li>• Other users can vote on requests by adding 👍 reactions</li>
             <li>• The most-voted requests are prioritized for development</li>
-            <li>• You'll be able to track progress and discuss in the issue comments</li>
+            <li>• You&apos;ll be able to track progress and discuss in the issue comments</li>
             <li>• All requests are public and transparent</li>
           </ul>
         </div>

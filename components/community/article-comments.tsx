@@ -9,7 +9,7 @@ interface ArticleCommentsProps {
   category: string;
 }
 
-export function ArticleComments({ articleTitle, articleSlug, category }: ArticleCommentsProps) {
+export function ArticleComments({ articleTitle: _articleTitle, articleSlug: _articleSlug, category: _category }: ArticleCommentsProps) {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   // Detect theme from document

@@ -76,7 +76,7 @@ _This issue was automatically created from the article feedback widget._`;
               <div>
                 <p className="font-semibold text-[var(--text)]">Thank you for your feedback!</p>
                 <p className="text-sm text-[var(--text-secondary)]">
-                  We're glad this article was helpful.
+                  We&apos;re glad this article was helpful.
                 </p>
               </div>
             </>
@@ -86,7 +86,7 @@ _This issue was automatically created from the article feedback widget._`;
               <div>
                 <p className="font-semibold text-[var(--text)]">Thank you for your feedback!</p>
                 <p className="text-sm text-[var(--text-secondary)]">
-                  We'll work on improving this article.
+                  We&apos;ll work on improving this article.
                 </p>
               </div>
             </>
@@ -143,7 +143,7 @@ _This issue was automatically created from the article feedback widget._`;
           )}
         >
           <ThumbsDown className="w-4 h-4" />
-          <span>No, it wasn't helpful</span>
+          <span>No, it wasn&apos;t helpful</span>
         </button>
       </div>
     </div>
@@ -222,7 +222,7 @@ function FeedbackForm({
       </div>
 
       <p className="text-xs text-[var(--text-secondary)] mt-3">
-        This will create a GitHub issue. You'll be redirected to GitHub to submit.
+        This will create a GitHub issue. You&apos;ll be redirected to GitHub to submit.
       </p>
     </div>
   );
