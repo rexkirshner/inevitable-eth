@@ -18,9 +18,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://inevitableeth.com'),
   title: "Inevitable Ethereum",
   description: "A comprehensive guide to Ethereum, the World Computer, and the future of decentralized systems.",
   keywords: ["Ethereum", "blockchain", "cryptocurrency", "web3", "DeFi", "smart contracts"],
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: "Inevitable Ethereum",
     description: "A comprehensive guide to Ethereum, the World Computer, and the future of decentralized systems.",
@@ -50,6 +54,51 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* WebSite Schema for Sitelinks Searchbox */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Inevitable Ethereum',
+              url: 'https://inevitableeth.com',
+              description: 'A comprehensive guide to Ethereum, the World Computer, and the future of decentralized systems.',
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: 'https://inevitableeth.com/search?q={search_term_string}',
+                },
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
+        {/* Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Inevitable Ethereum',
+              url: 'https://inevitableeth.com',
+              logo: 'https://inevitableeth.com/images/inevitable-eth-banner.png',
+              sameAs: [
+                'https://twitter.com/logarithmicrex',
+                'https://github.com/rexkirshner/inevitable-eth',
+              ],
+              founder: {
+                '@type': 'Person',
+                name: 'Rex Kirshner',
+                url: 'https://inevitableeth.com/about',
+              },
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >

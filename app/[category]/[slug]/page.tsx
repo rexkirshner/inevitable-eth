@@ -53,17 +53,29 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       title: `${frontmatter.title} | Inevitable Ethereum`,
       description: frontmatter.description,
       keywords: frontmatter.tags,
+      alternates: {
+        canonical: `/${category}/${slug}`,
+      },
       openGraph: {
         title: frontmatter.title,
         description: frontmatter.description,
-        images: [{ url: ogImage }],
+        images: [{
+          url: ogImage.url,
+          width: ogImage.width,
+          height: ogImage.height,
+        }],
         type: 'article',
+        publishedTime: frontmatter.updated,
+        modifiedTime: frontmatter.updated,
+        authors: ['Rex Kirshner'],
+        tags: frontmatter.tags,
       },
       twitter: {
         card: 'summary_large_image',
         title: frontmatter.title,
         description: frontmatter.description,
-        images: [ogImage],
+        images: [ogImage.url],
+        creator: '@logarithmicrex',
       },
     };
   } catch {

@@ -2,20 +2,29 @@ import dynamic from 'next/dynamic';
 import { getDefaultOgImage } from '@/lib/og-image';
 import type { Metadata } from 'next';
 
+const ogImage = getDefaultOgImage();
+
 export const metadata: Metadata = {
   title: 'Search | Inevitable Ethereum',
   description: 'Search through educational content about Ethereum, finance history, and cryptography.',
+  alternates: {
+    canonical: '/search/',
+  },
   openGraph: {
     title: 'Search Inevitable Ethereum',
     description: 'Search through educational content about Ethereum, finance history, and cryptography',
-    images: [{ url: getDefaultOgImage() }],
+    images: [{
+      url: ogImage.url,
+      width: ogImage.width,
+      height: ogImage.height,
+    }],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Search Inevitable Ethereum',
     description: 'Search through educational content about Ethereum, finance history, and cryptography',
-    images: [getDefaultOgImage()],
+    images: [ogImage.url],
   },
 };
 

@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { getAllContent, getAllCategories } from '@/lib/content';
+import { getAllContent, getAllCategories, getAllTags } from '@/lib/content';
 
 export const dynamic = 'force-static';
 
@@ -26,6 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/tags`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
   ];
 
   // Category pages
@@ -48,5 +54,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...categoryPages, ...articlePages];
+  // Tag pages
+  const allTags = getAllTags();
+  const tagPages = allTags.map((tagInfo) => ({
+    url: `${baseUrl}/tags/${encodeURIComponent(tagInfo.tag)}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...categoryPages, ...articlePages, ...tagPages];
 }

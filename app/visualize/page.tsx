@@ -3,20 +3,26 @@ import { getDefaultOgImage } from '@/lib/og-image';
 import type { Metadata } from 'next';
 import VisualizeClient from './visualize-client';
 
+const ogImage = getDefaultOgImage();
+
 export const metadata: Metadata = {
   title: 'Visualize Pages - Inevitable Ethereum',
   description: 'Interactive visualization of all articles and their relationships',
   openGraph: {
     title: 'Visualize Pages - Inevitable Ethereum',
     description: 'Interactive visualization of all articles and their relationships',
-    images: [{ url: getDefaultOgImage() }],
+    images: [{
+      url: ogImage.url,
+      width: ogImage.width,
+      height: ogImage.height,
+    }],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Visualize Pages - Inevitable Ethereum',
     description: 'Interactive visualization of all articles and their relationships',
-    images: [getDefaultOgImage()],
+    images: [ogImage.url],
   },
 };
 

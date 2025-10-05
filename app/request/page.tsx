@@ -5,6 +5,9 @@ import { Lightbulb } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Request an Article - Inevitable Ethereum',
   description: 'Request new articles on Ethereum, cryptography, finance history, and more. Help shape the content of Inevitable Ethereum.',
+  alternates: {
+    canonical: '/request/',
+  },
   openGraph: {
     title: 'Request an Article - Inevitable Ethereum',
     description: 'Request new articles on Ethereum, cryptography, finance history, and more.',

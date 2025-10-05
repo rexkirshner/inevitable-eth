@@ -37,21 +37,29 @@ export async function generateMetadata({ params }: CategoryPageProps) {
 
   const title = categoryTitles[category as keyof typeof categoryTitles];
   const description = categoryDescriptions[category as keyof typeof categoryDescriptions];
+  const ogImage = getDefaultOgImage();
 
   return {
     title: `${title} | Inevitable Ethereum`,
     description,
+    alternates: {
+      canonical: `/${category}`,
+    },
     openGraph: {
       title: `${title} - Inevitable Ethereum`,
       description,
-      images: [{ url: getDefaultOgImage() }],
+      images: [{
+        url: ogImage.url,
+        width: ogImage.width,
+        height: ogImage.height,
+      }],
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} - Inevitable Ethereum`,
       description,
-      images: [getDefaultOgImage()],
+      images: [ogImage.url],
     },
   };
 }

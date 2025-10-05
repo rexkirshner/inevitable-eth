@@ -7,20 +7,29 @@ import dynamic from 'next/dynamic';
 
 const VisualizeClient = dynamic(() => import('../visualize/visualize-client'));
 
+const ogImage = getDefaultOgImage();
+
 export const metadata: Metadata = {
   title: 'About | Inevitable Ethereum',
   description: 'Learn about Inevitable Ethereum - an educational resource dedicated to understanding Ethereum, finance history, and cryptography.',
+  alternates: {
+    canonical: '/about',
+  },
   openGraph: {
     title: 'About Inevitable Ethereum',
     description: 'An educational resource dedicated to understanding Ethereum, finance history, and cryptography',
-    images: [{ url: getDefaultOgImage() }],
+    images: [{
+      url: ogImage.url,
+      width: ogImage.width,
+      height: ogImage.height,
+    }],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'About Inevitable Ethereum',
     description: 'An educational resource dedicated to understanding Ethereum, finance history, and cryptography',
-    images: [getDefaultOgImage()],
+    images: [ogImage.url],
   },
 };
 
