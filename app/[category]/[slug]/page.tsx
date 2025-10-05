@@ -15,6 +15,7 @@ import { ArticleBookmarkButton } from '@/components/content/article-bookmark-but
 import { ArticlePrerequisites } from '@/components/content/article-prerequisites';
 import { ArticleReadTracker } from '@/components/content/article-read-tracker';
 import { ArticleFeedback } from '@/components/community/article-feedback';
+import { ArticleComments } from '@/components/community/article-comments';
 import type { Metadata } from 'next';
 
 const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
@@ -270,6 +271,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Article Feedback */}
         <ArticleFeedback
+          articleTitle={frontmatter.title}
+          articleSlug={slug}
+          category={category}
+        />
+
+        {/* Comments */}
+        <ArticleComments
           articleTitle={frontmatter.title}
           articleSlug={slug}
           category={category}
