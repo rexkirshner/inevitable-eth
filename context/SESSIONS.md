@@ -2,7 +2,81 @@
 
 **Purpose:** Document all development sessions to enable perfect session continuity and track project evolution.
 
-**Last Session:** Session 14 - 2025-10-04
+**Last Session:** Session 15 - 2025-10-05
+
+---
+
+## Session 15 - SEO Optimization & Article Layout Fix
+**Date:** 2025-10-05
+**Duration:** ~2 hours
+**Focus:** World-class SEO implementation and article content width fix
+
+**Accomplishments:**
+- Conducted comprehensive SEO audit (created SEO_AUDIT.md)
+- Implemented all Priority 1 (critical) and Priority 2 (high-impact) SEO improvements
+- Fixed article content width issue (content now spans full container width)
+- Verified social share images work correctly across platforms
+- SEO grade improved from B+ to A-
+
+**Files Modified:**
+- `app/globals.css:145` - Removed `max-width: 65ch` from `.prose` class to fix content width
+- `SEO_AUDIT.md` (NEW) - Comprehensive SEO audit documentation
+- `app/layout.tsx:6,21-80` - Added metadataBase, canonical URL, WebSite/Organization JSON-LD
+- `app/sitemap.ts:2,29-34,57-66` - Added 52 tag pages to sitemap (200 total URLs)
+- `lib/og-image.ts:5-75` - Refactored to return OgImageInfo with dimensions
+- `app/[category]/[slug]/page.tsx:52-80` - Enhanced metadata with canonical, OG dimensions
+- `app/[category]/page.tsx:40-62` - Added canonical URL, OG image dimensions
+- `app/about/page.tsx:10-33` - Added canonical URL, OG image dimensions
+- `app/page.tsx:8-29` - Added OG image dimensions
+- `app/request/page.tsx:9` - Added canonical URL
+- `app/search/page.tsx:9,16-27` - Added canonical URL, OG image dimensions
+- `app/visualize/page.tsx:6-26` - Added OG image dimensions
+
+**SEO Improvements Implemented:**
+
+**Priority 1 (Critical):**
+1. **metadataBase** - Set to `https://inevitableeth.com` in root layout for absolute URL resolution
+2. **Canonical URLs** - Added to all pages (homepage, articles, categories, static pages) to prevent duplicate content
+3. **JSON-LD Structured Data** - Added WebSite schema with sitelinks searchbox + Organization schema
+4. **Tags Pages in Sitemap** - Added main /tags page + 52 individual tag pages (200 total URLs)
+5. **Enhanced Article Metadata** - Added author info to Open Graph (already had in Article JSON-LD)
+
+**Priority 2 (High-Impact):**
+6. **Image Dimensions in OG Metadata** - Added width/height to all social preview images
+   - Default banner: 1259x512 (actual dimensions)
+   - Article images: 1200x675 (desktop size, 16:9 aspect)
+   - Improves rendering performance and validation
+
+**Decisions Made:**
+- Use 1200x675 for article OG images (desktop size) for optimal social preview quality
+- Keep actual dimensions (1259x512) for default banner
+- Remove `.prose` max-width constraint to match header/content width across all font sizes
+
+**Issues Discovered:**
+- Turbopack CSS caching required `.next` directory deletion to pick up CSS changes
+- Browser hard refresh needed to see CSS updates (Cmd+Shift+R)
+
+**Issues Resolved:**
+- ✅ Article content now spans full container width, matching header width
+- ✅ Social share images verified working with proper dimensions and absolute URLs
+- ✅ All critical SEO issues resolved (metadataBase, canonicals, structured data, sitemap)
+- ✅ **User verified layout fix works correctly** - article content now properly spans full width
+
+**Work In Progress:**
+- None - all tasks completed
+
+**Next Steps:**
+- Consider committing SEO and layout changes (awaiting user approval to push)
+- Optional: Implement remaining Priority 3/4 SEO optimizations from audit
+
+**Commands Run:**
+- `rm -rf .next && npm run dev` - Cleared Turbopack cache to force CSS rebuild
+- `curl http://localhost:3001/_next/static/chunks/...css` - Verified CSS changes applied
+
+**Notes:**
+- SEO improvements position site for excellent search engine discoverability
+- Sitemap now covers 200 URLs (141 articles + 52 tags + 7 static pages)
+- Social sharing fully functional with proper preview images and dimensions
 
 ---
 
