@@ -13,6 +13,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Working with Rex
 
+> **📋 Preferences:** All communication, workflow, and quality preferences are defined in `context/.context-config.json`.
+> The settings below are derived from that source of truth.
+
 ### Workflow Preferences
 
 **Git & Deployment:**
@@ -31,7 +34,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Planning & Communication:**
 - For complex tasks:
-  1. Write a plan to `tasks/todo.md`
+  1. Write a plan to `context/tasks/todo.md`
   2. Check in with user before starting work
   3. Provide high-level explanations of what changed (not verbose code walkthroughs unless asked)
   4. Mark todo items complete as you go
@@ -90,6 +93,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Using temporary workarounds instead of fixing root issues
 - Pushing to GitHub without approval when user requested verification first
 - Assuming a fix works without actually testing it
+
+## Core Development Methodology
+
+1. **Plan First:** Read codebase, think through problem, write plan to `context/tasks/todo.md`
+2. **Track Progress:** Create todo items that can be checked off during work
+3. **Verify Plan:** Check in with user before starting implementation
+4. **Work Incrementally:** Complete todos one by one, marking complete as you go
+5. **Communicate Clearly:** Provide high-level explanation of changes at each step
+6. **Simplicity Above All:** Every change should impact minimal code
+7. **Document Results:** Add review section to todo.md with summary
+8. **No Lazy Coding:** Always look for root causes, never apply band-aids
+9. **Minimal Impact:** Changes affect only necessary code, nothing else
+10. **Full Tracing:** Debug by tracing ENTIRE code flow - no assumptions
+
+**When Debugging:**
+- Trace through the ENTIRE code flow step by step
+- No assumptions - verify what you think you know
+- No shortcuts - follow the data from entry to issue
+- Use breakpoints or logging at each step
+- Check inputs, outputs, and state at every layer
+- Document the flow as you trace it
 
 ## Commands
 
@@ -562,7 +586,7 @@ See `tasks/code-review.md` for comprehensive code audit (conducted 2025-10-02).
 4. Review recent git changes: `git log --oneline -5`
 5. Trace through ENTIRE code flow (no assumptions)
 
-1. First think through the problem, read the codebase for relevant files, and write a plan to tasks/todo.md.
+1. First think through the problem, read the codebase for relevant files, and write a plan to context/tasks/todo.md.
 2. The plan should have a list of todo items that you can check off as you complete them
 3. Before you begin working, check in with me and I will verify the plan.
 4. Then, begin working on the todo items, marking them as complete as you go.
