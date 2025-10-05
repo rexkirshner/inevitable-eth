@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Send, BookPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { GITHUB_REPO_PATH } from '@/lib/constants';
 
 export function ArticleRequestForm() {
   const [title, setTitle] = useState('');
@@ -12,9 +13,6 @@ export function ArticleRequestForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const githubRepo = process.env.NEXT_PUBLIC_GITHUB_REPO || 'https://github.com/rexkirshner/inevitable-eth';
-    const repoPath = githubRepo.replace('https://github.com/', '');
 
     const issueTitle = `Article Request: ${title}`;
     const issueBody = `## Article Request
@@ -37,7 +35,7 @@ ${description}
 
 _This issue was automatically created from the article request form._`;
 
-    const url = `https://github.com/${repoPath}/issues/new?` +
+    const url = `https://github.com/${GITHUB_REPO_PATH}/issues/new?` +
       `title=${encodeURIComponent(issueTitle)}&` +
       `body=${encodeURIComponent(issueBody)}&` +
       `labels=article-request,${category},priority-${priority}`;

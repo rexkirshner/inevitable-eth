@@ -21,6 +21,8 @@ export function Collapsible({
 }: CollapsibleProps) {
   const storageKey = id && rememberState ? `collapsible-${id}` : null;
 
+  // SSR-safe: Check typeof window to prevent hydration issues
+  // This ensures localStorage is only accessed on the client
   const [isOpen, setIsOpen] = useState(() => {
     if (typeof window === 'undefined') return defaultOpen;
     if (!storageKey) return defaultOpen;
@@ -30,12 +32,33 @@ export function Collapsible({
   });
 
   const contentRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState<number>(0);
 
+  // Calculate dynamic height when content changes or opens
+  useEffect(() => {
+    if (contentRef.current) {
+      setHeight(contentRef.current.scrollHeight);
+    }
+  }, [children, isOpen]);
+
+  // Save state to localStorage
   useEffect(() => {
     if (storageKey) {
       localStorage.setItem(storageKey, String(isOpen));
     }
   }, [isOpen, storageKey]);
+
+  // Focus management: move focus to first interactive element when opened
+  useEffect(() => {
+    if (isOpen && contentRef.current) {
+      const firstFocusable = contentRef.current.querySelector<HTMLElement>(
+        'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
+      );
+      if (firstFocusable) {
+        firstFocusable.focus();
+      }
+    }
+  }, [isOpen]);
 
   const toggle = () => {
     setIsOpen(!isOpen);
@@ -68,15 +91,17 @@ export function Collapsible({
       </button>
 
       <div
-        ref={contentRef}
         id={id ? `collapsible-content-${id}` : undefined}
         className={cn(
-          "overflow-hidden transition-all duration-300 ease-in-out",
-          isOpen ? "max-h-[5000px] opacity-100" : "max-h-0 opacity-0"
+          "overflow-hidden transition-all duration-300 ease-in-out"
         )}
+        style={{
+          maxHeight: isOpen ? `${height}px` : '0',
+          opacity: isOpen ? 1 : 0,
+        }}
         aria-hidden={!isOpen}
       >
-        <div className="px-4 py-3 border-t border-[var(--border)] prose prose-sm max-w-none">
+        <div ref={contentRef} className="px-4 py-3 border-t border-[var(--border)] prose prose-sm max-w-none">
           {children}
         </div>
       </div>

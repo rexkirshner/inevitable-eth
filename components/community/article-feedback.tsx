@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ThumbsUp, ThumbsDown, MessageSquare, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { GITHUB_REPO_PATH } from '@/lib/constants';
 
 interface ArticleFeedbackProps {
   articleTitle: string;
@@ -38,9 +39,6 @@ export function ArticleFeedback({ articleTitle, articleSlug, category }: Article
   };
 
   const handleSubmitFeedback = (details: string) => {
-    const githubRepo = process.env.NEXT_PUBLIC_GITHUB_REPO || 'https://github.com/rexkirshner/inevitable-eth';
-    const repoPath = githubRepo.replace('https://github.com/', '');
-
     const issueTitle = `Feedback: "${articleTitle}" was not helpful`;
     const issueBody = `**Article**: [${articleTitle}](${typeof window !== 'undefined' ? window.location.href : ''})
 **Category**: ${category}
@@ -54,7 +52,7 @@ ${details || 'No additional details provided.'}
 
 _This issue was automatically created from the article feedback widget._`;
 
-    const url = `https://github.com/${repoPath}/issues/new?` +
+    const url = `https://github.com/${GITHUB_REPO_PATH}/issues/new?` +
       `title=${encodeURIComponent(issueTitle)}&` +
       `body=${encodeURIComponent(issueBody)}&` +
       `labels=feedback,article-improvement`;

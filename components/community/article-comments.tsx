@@ -2,6 +2,8 @@
 
 import Giscus from '@giscus/react';
 import { useEffect, useState } from 'react';
+import { ErrorBoundary } from './error-boundary';
+import { env } from '@/lib/env';
 
 interface ArticleCommentsProps {
   articleTitle: string;
@@ -41,11 +43,11 @@ export function ArticleComments({ articleTitle: _articleTitle, articleSlug: _art
     };
   }, []);
 
-  // Check if Giscus is configured
-  const repo = process.env.NEXT_PUBLIC_GISCUS_REPO;
-  const repoId = process.env.NEXT_PUBLIC_GISCUS_REPO_ID;
-  const giscusCategory = process.env.NEXT_PUBLIC_GISCUS_CATEGORY || 'General';
-  const categoryId = process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID;
+  // Check if Giscus is configured (using validated environment variables)
+  const repo = env.NEXT_PUBLIC_GISCUS_REPO;
+  const repoId = env.NEXT_PUBLIC_GISCUS_REPO_ID;
+  const giscusCategory = env.NEXT_PUBLIC_GISCUS_CATEGORY || 'General';
+  const categoryId = env.NEXT_PUBLIC_GISCUS_CATEGORY_ID;
 
   if (!repo || !repoId || !categoryId) {
     return (
@@ -109,20 +111,30 @@ NEXT_PUBLIC_GISCUS_CATEGORY_ID=DIC_xxx`}
       >
         Discussion
       </h3>
-      <Giscus
-        repo={repo as `${string}/${string}`}
-        repoId={repoId}
-        category={giscusCategory}
-        categoryId={categoryId}
-        mapping="pathname"
-        strict="0"
-        reactionsEnabled="1"
-        emitMetadata="0"
-        inputPosition="top"
-        theme={theme === 'dark' ? 'dark' : 'light'}
-        lang="en"
-        loading="lazy"
-      />
+      <ErrorBoundary
+        fallback={
+          <div className="p-4 border border-[var(--border)] rounded-lg bg-[var(--surface)]">
+            <p className="text-sm text-[var(--text-secondary)]">
+              Comments are temporarily unavailable. Please try refreshing the page.
+            </p>
+          </div>
+        }
+      >
+        <Giscus
+          repo={repo as `${string}/${string}`}
+          repoId={repoId}
+          category={giscusCategory}
+          categoryId={categoryId}
+          mapping="pathname"
+          strict="0"
+          reactionsEnabled="1"
+          emitMetadata="0"
+          inputPosition="top"
+          theme={theme === 'dark' ? 'dark' : 'light'}
+          lang="en"
+          loading="lazy"
+        />
+      </ErrorBoundary>
     </div>
   );
 }
