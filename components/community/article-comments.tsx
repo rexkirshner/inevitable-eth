@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { ErrorBoundary } from './error-boundary';
 import { env } from '@/lib/env';
 
+// Trigger rebuild with Giscus environment variables
+
 interface ArticleCommentsProps {
   articleTitle: string;
   articleSlug: string;
