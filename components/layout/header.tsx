@@ -114,6 +114,14 @@ export function Header() {
             </li>
             <li>
               <Link
+                href="/request"
+                className="text-[var(--text)] hover:text-[var(--link)] transition-colors"
+              >
+                Request Article
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/about"
                 className="text-[var(--text-secondary)] hover:text-[var(--link)] transition-colors"
               >
