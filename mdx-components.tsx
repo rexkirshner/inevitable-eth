@@ -3,6 +3,7 @@ import { Infobox } from '@/components/mdx/infobox';
 import { Callout } from '@/components/mdx/callout';
 import { Figure } from '@/components/mdx/figure';
 import { References } from '@/components/mdx/references';
+import { Collapsible } from '@/components/mdx/collapsible';
 import { OptimizedImage } from '@/components/content/optimized-image';
 import { CodeBlock, InlineCode } from '@/components/mdx/code-block';
 
@@ -12,6 +13,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Callout,
     Figure,
     References,
+    Collapsible,
     img: (props) => <OptimizedImage {...props} alt={props.alt || ''} />,
     pre: ({ children, ...props }: any) => {
       // Extract code content and className from children
