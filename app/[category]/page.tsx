@@ -21,6 +21,12 @@ const categoryTitles = {
   ethereum: 'Ethereum',
 };
 
+const featuredArticles = {
+  background: 'background',
+  ethereum: 'world-computer',
+  concepts: null,
+};
+
 export async function generateStaticParams() {
   const categories = getAllCategories();
   return categories.map((category) => ({
@@ -75,11 +81,20 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const title = categoryTitles[category as keyof typeof categoryTitles];
   const description = categoryDescriptions[category as keyof typeof categoryDescriptions];
 
-  // Group articles by difficulty
-  const introArticles = articles.filter(a => a.frontmatter.difficulty === 'intro');
-  const intermediateArticles = articles.filter(a => a.frontmatter.difficulty === 'intermediate');
-  const advancedArticles = articles.filter(a => a.frontmatter.difficulty === 'advanced');
-  const uncategorizedArticles = articles.filter(a => !a.frontmatter.difficulty);
+  // Extract featured article if one exists for this category
+  const featuredSlug = featuredArticles[category as keyof typeof featuredArticles];
+  const featuredArticle = featuredSlug ? articles.find(a => a.slug === featuredSlug) : null;
+
+  // Filter out featured article from other groups
+  const remainingArticles = featuredArticle
+    ? articles.filter(a => a.slug !== featuredSlug)
+    : articles;
+
+  // Group remaining articles by difficulty
+  const introArticles = remainingArticles.filter(a => a.frontmatter.difficulty === 'intro');
+  const intermediateArticles = remainingArticles.filter(a => a.frontmatter.difficulty === 'intermediate');
+  const advancedArticles = remainingArticles.filter(a => a.frontmatter.difficulty === 'advanced');
+  const uncategorizedArticles = remainingArticles.filter(a => !a.frontmatter.difficulty);
 
   return (
     <div className="mx-auto max-w-[1000px] px-4 py-8">
@@ -97,6 +112,28 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <div className="mb-6 text-sm text-[var(--text-secondary)]">
         Showing {articles.length} {articles.length === 1 ? 'article' : 'articles'}
       </div>
+
+      {/* Featured article */}
+      {featuredArticle && (
+        <section className="mb-8 p-6 border-2 border-[var(--link)] bg-[var(--surface)] rounded-lg">
+          <div className="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-[var(--link)]">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <h2 className="text-sm font-semibold text-[var(--link)] uppercase tracking-wide">
+              Featured Overview
+            </h2>
+          </div>
+          <ArticleListItem
+            category={category}
+            slug={featuredArticle.slug}
+            title={featuredArticle.frontmatter.title}
+            description={featuredArticle.frontmatter.description}
+            readingTime={featuredArticle.frontmatter.readingTime}
+            updated={featuredArticle.frontmatter.updated}
+          />
+        </section>
+      )}
 
       {/* Articles grouped by difficulty */}
       <div className="space-y-8">
