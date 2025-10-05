@@ -14,6 +14,7 @@ import { FontSizeAdjuster } from '@/components/content/font-size-adjuster';
 import { ArticleBookmarkButton } from '@/components/content/article-bookmark-button';
 import { ArticlePrerequisites } from '@/components/content/article-prerequisites';
 import { ArticleReadTracker } from '@/components/content/article-read-tracker';
+import { ArticleFeedback } from '@/components/community/article-feedback';
 import type { Metadata } from 'next';
 
 const TableOfContents = dynamic(() => import('@/components/layout/table-of-contents').then(mod => ({ default: mod.TableOfContents })));
@@ -266,6 +267,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </div>
           </div>
         )}
+
+        {/* Article Feedback */}
+        <ArticleFeedback
+          articleTitle={frontmatter.title}
+          articleSlug={slug}
+          category={category}
+        />
 
         {/* Related Articles */}
         <RelatedArticles articles={relatedArticles} />
