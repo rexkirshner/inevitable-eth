@@ -6,23 +6,32 @@
 
 ---
 
-## Session 16 - Giscus Setup & UI Polish
+## Session 16 - Giscus Setup, UI Polish & Content Organization
 **Date:** 2025-10-05
-**Duration:** ~30 minutes
-**Focus:** Giscus comments configuration and Table of Contents improvements
+**Duration:** ~1.5 hours
+**Focus:** Giscus comments integration, Table of Contents improvements, category page enhancements
 
 **Accomplishments:**
-- Successfully configured Giscus comments system (verified working with live comment test)
-- Added "Feedback and Discussion" section heading to article pages
-- Fixed Table of Contents to include non-article headings (Feedback & Discussion, Related Articles)
-- Resolved Table of Contents sticky positioning issue - now properly floats on scroll
-- Removed duplicate headings from TOC (filtered out article titles within Related Articles cards)
+- ✅ Successfully configured Giscus comments system (verified working with live comment test)
+- ✅ Resolved Giscus deployment issues (environment variables, CSP headers)
+- ✅ Added "Feedback and Discussion" section heading to article pages
+- ✅ Fixed Table of Contents to include non-article headings (Feedback & Discussion, Related Articles)
+- ✅ Resolved Table of Contents sticky positioning issue - now properly floats on scroll
+- ✅ Removed duplicate headings from TOC (filtered out article titles within Related Articles cards)
+- ✅ Moved Background overview article from concepts to background category
+- ✅ Added "Getting Started" featured article sections to category pages
+- ✅ Background and Ethereum categories now feature their overview articles prominently
 
 **Files Modified:**
-- `.env.local` - Added 4 Giscus environment variables (repo, repo ID, category, category ID)
-- `app/[category]/[slug]/page.tsx:284-301` - Wrapped feedback/comments in "Feedback and Discussion" section with h2 heading
-- `components/content/related-articles.tsx:18-19` - Added ID to heading, moved border from top to bottom
-- `components/layout/table-of-contents.tsx:21-33,83-84` - Fixed to extract from `<main>` instead of `<article>`, filter headings without IDs, fixed sticky positioning
+- `.env.local` - Added 4 Giscus environment variables
+- `.env.example:12-17` - Added Giscus variables (safe to commit, public repo IDs)
+- `public/_headers:2` - Updated CSP to allow giscus.app (script-src, style-src, connect-src, frame-src)
+- `app/[category]/[slug]/page.tsx:284-301` - Wrapped feedback/comments in "Feedback and Discussion" section with h2
+- `components/content/related-articles.tsx:18-19` - Added ID to heading, moved border
+- `components/layout/table-of-contents.tsx:21-33,83-84` - Extract from `<main>`, filter headings without IDs, fixed sticky
+- `components/community/article-comments.tsx:8` - Added rebuild trigger comment
+- `content/concepts/background.mdx` → `content/background/background.mdx` - Moved article, updated frontmatter category
+- `app/[category]/page.tsx:24-28,84-141` - Added featured article logic and "Getting Started" section
 
 **Giscus Configuration:**
 - Repo: rexkirshner/inevitable-eth
@@ -37,32 +46,55 @@
 - Remove fixed height from aside wrapper to fix sticky positioning issue
 
 **Issues Resolved:**
-- ✅ Giscus comments now working (user verified with test comment)
+- ✅ Giscus comments now working (user verified with test comment on live site after deployment)
+- ✅ Giscus environment variables issue - Required fresh build with env vars at build time (not runtime)
+- ✅ Giscus CSP blocking issue - Added giscus.app to Content Security Policy
 - ✅ "Feedback and Discussion" appears in Table of Contents sidebar
 - ✅ "Related Articles" appears in TOC (not individual article titles)
 - ✅ Table of Contents now sticks properly when scrolling (floating nav)
 - ✅ Removed extra border line before Related Articles section
+- ✅ Background article correctly categorized and featured on /background page
+- ✅ World Computer article featured on /ethereum page
 
 **Technical Details:**
-- Table of Contents sticky fix: removed `h-screen` from aside, added `max-h-[calc(100vh-5rem)] overflow-y-auto` to nav
-- Heading ID filtering: `.filter(heading => heading.id)` prevents showing h3 titles from Related Articles cards
-- Section organization: Feedback widget + Comments wrapped in single semantic section with shared heading
+- **Giscus deployment fix:** Next.js static exports require NEXT_PUBLIC_* env vars at build time
+  - "Retry deployment" in Cloudflare only re-serves existing build
+  - Needed fresh git push to trigger new build with environment variables baked in
+- **CSP headers:** Added giscus.app to script-src, style-src, connect-src, and frame-src directives
+- **Table of Contents sticky fix:** Removed `h-screen` from aside, added `max-h-[calc(100vh-5rem)] overflow-y-auto` to nav
+- **Heading ID filtering:** `.filter(heading => heading.id)` prevents showing h3 titles from Related Articles cards
+- **Section organization:** Feedback widget + Comments wrapped in single semantic section with shared heading
+- **Featured articles:** Defined in `featuredArticles` object, extracted before difficulty grouping, displayed in highlighted "Getting Started" box
 
 **Work In Progress:**
 - None - all tasks completed
 
 **Next Steps:**
-- Commit changes: "feat: Configure Giscus comments and improve article page UI"
-- Push to GitHub (awaiting user approval)
+- Monitor Cloudflare deployment to ensure Giscus loads correctly on live site
+- Consider adding more featured/overview articles for other sections if needed
 
 **User Feedback:**
-- "ok I just made a comment, and it looks like it worked!" - Giscus integration verified
+- "ok I just made a comment, and it looks like it worked!" - Giscus integration verified locally
 - "perfect! works great!" - Table of Contents floating behavior confirmed
+- User requested featured article section refinements (removed icon, changed title, removed bullet)
+- User requested Background article be moved to background category and featured
+
+**Commits Created:** 7 total
+1. `3e5789e` - feat: Configure Giscus comments and improve article page UI
+2. `8427e3e` - docs: Add Giscus environment variables to .env.example
+3. `60dc20b` - chore: Trigger rebuild with Giscus environment variables
+4. `4549907` - fix: Update CSP headers to allow Giscus iframe
+5. `1da7985` - fix: Move Background article to correct category
+6. `d8cea20` - feat: Add featured overview articles to category pages
+7. `ba6b302` - refine: Update featured article section styling
 
 **Notes:**
 - Giscus requires one-time GitHub Discussions setup (user completed)
 - Comments are article-specific using pathname mapping
 - All UI improvements enhance navigation and community engagement
+- Learned: Cloudflare Pages "retry deployment" ≠ rebuild from source
+- Next.js static exports need env vars at build time, not runtime
+- Featured article pattern can be expanded to other categories as overview articles are created
 
 ---
 
