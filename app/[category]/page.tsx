@@ -116,22 +116,27 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {/* Featured article */}
       {featuredArticle && (
         <section className="mb-8 p-6 border-2 border-[var(--link)] bg-[var(--surface)] rounded-lg">
-          <div className="flex items-center gap-2 mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-[var(--link)]">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-            </svg>
-            <h2 className="text-sm font-semibold text-[var(--link)] uppercase tracking-wide">
-              Featured Overview
-            </h2>
+          <h2 className="text-sm font-semibold text-[var(--link)] uppercase tracking-wide mb-4">
+            Getting Started
+          </h2>
+          <div>
+            <a href={`/${category}/${featuredArticle.slug}`} className="block hover:bg-[var(--background)] rounded p-3 -m-3 transition-colors">
+              <h3 className="text-lg font-medium text-[var(--link)] mb-2 hover:underline">
+                {featuredArticle.frontmatter.title}
+              </h3>
+              <p className="text-sm text-[var(--text-secondary)] mb-3">
+                {featuredArticle.frontmatter.description}
+              </p>
+              <div className="flex items-center gap-4 text-xs text-[var(--text-secondary)]">
+                {featuredArticle.frontmatter.readingTime && (
+                  <span>{featuredArticle.frontmatter.readingTime} min read</span>
+                )}
+                {featuredArticle.frontmatter.updated && (
+                  <span>Updated: {featuredArticle.frontmatter.updated}</span>
+                )}
+              </div>
+            </a>
           </div>
-          <ArticleListItem
-            category={category}
-            slug={featuredArticle.slug}
-            title={featuredArticle.frontmatter.title}
-            description={featuredArticle.frontmatter.description}
-            readingTime={featuredArticle.frontmatter.readingTime}
-            updated={featuredArticle.frontmatter.updated}
-          />
         </section>
       )}
 
