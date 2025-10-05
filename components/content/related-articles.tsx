@@ -15,8 +15,8 @@ export function RelatedArticles({ articles }: RelatedArticlesProps) {
   }
 
   return (
-    <aside className="mt-12 pt-8 border-t border-[var(--border)]">
-      <h2 className="text-2xl font-normal mb-6" style={{ fontFamily: '"Linux Libertine", Georgia, Times, serif' }}>
+    <aside className="mt-12">
+      <h2 id="related-articles" className="text-2xl font-normal mb-6 pb-2 border-b border-[var(--border)]" style={{ fontFamily: '"Linux Libertine", Georgia, Times, serif' }}>
         Related Articles
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -18,16 +18,19 @@ export function TableOfContents({ className }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
 
   useEffect(() => {
-    // Extract headings from the article
-    const article = document.querySelector('article');
-    if (!article) return;
+    // Extract headings from the main content (article + sections after it)
+    const main = document.querySelector('main');
+    if (!main) return;
 
-    const headings = article.querySelectorAll('h2, h3, h4');
-    const items: TocItem[] = Array.from(headings).map(heading => ({
-      id: heading.id,
-      text: heading.textContent || '',
-      level: parseInt(heading.tagName[1]),
-    }));
+    const headings = main.querySelectorAll('h2, h3, h4');
+    // Filter out headings that don't have IDs (like those inside Related Articles cards)
+    const items: TocItem[] = Array.from(headings)
+      .filter(heading => heading.id) // Only include headings with IDs
+      .map(heading => ({
+        id: heading.id,
+        text: heading.textContent || '',
+        level: parseInt(heading.tagName[1]),
+      }));
 
     setToc(items);
 
@@ -77,8 +80,8 @@ export function TableOfContents({ className }: TableOfContentsProps) {
   };
 
   return (
-    <aside className={cn('w-64 overflow-y-auto', className)}>
-      <nav className="sticky top-20 p-4" aria-label="Table of contents">
+    <aside className={cn('w-64', className)}>
+      <nav className="sticky top-20 p-4 max-h-[calc(100vh-5rem)] overflow-y-auto" aria-label="Table of contents">
         <h2 className="text-sm font-semibold text-[var(--text)] mb-3 pb-2 border-b border-[var(--border)]">
           Contents
         </h2>

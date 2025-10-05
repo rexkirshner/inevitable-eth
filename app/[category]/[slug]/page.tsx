@@ -281,19 +281,24 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </div>
         )}
 
-        {/* Article Feedback */}
-        <ArticleFeedback
-          articleTitle={frontmatter.title}
-          articleSlug={slug}
-          category={category}
-        />
+        {/* Feedback and Discussion */}
+        <div className="mt-12">
+          <h2 id="feedback-and-discussion" className="text-2xl font-normal mb-6 pb-2 border-b border-[var(--border)]" style={{ fontFamily: '"Linux Libertine", Georgia, Times, serif' }}>
+            Feedback and Discussion
+          </h2>
 
-        {/* Comments */}
-        <ArticleComments
-          articleTitle={frontmatter.title}
-          articleSlug={slug}
-          category={category}
-        />
+          <ArticleFeedback
+            articleTitle={frontmatter.title}
+            articleSlug={slug}
+            category={category}
+          />
+
+          <ArticleComments
+            articleTitle={frontmatter.title}
+            articleSlug={slug}
+            category={category}
+          />
+        </div>
 
         {/* Related Articles */}
         <RelatedArticles articles={relatedArticles} />

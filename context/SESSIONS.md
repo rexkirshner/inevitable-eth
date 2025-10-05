@@ -2,7 +2,67 @@
 
 **Purpose:** Document all development sessions to enable perfect session continuity and track project evolution.
 
-**Last Session:** Session 15 - 2025-10-05
+**Last Session:** Session 16 - 2025-10-05
+
+---
+
+## Session 16 - Giscus Setup & UI Polish
+**Date:** 2025-10-05
+**Duration:** ~30 minutes
+**Focus:** Giscus comments configuration and Table of Contents improvements
+
+**Accomplishments:**
+- Successfully configured Giscus comments system (verified working with live comment test)
+- Added "Feedback and Discussion" section heading to article pages
+- Fixed Table of Contents to include non-article headings (Feedback & Discussion, Related Articles)
+- Resolved Table of Contents sticky positioning issue - now properly floats on scroll
+- Removed duplicate headings from TOC (filtered out article titles within Related Articles cards)
+
+**Files Modified:**
+- `.env.local` - Added 4 Giscus environment variables (repo, repo ID, category, category ID)
+- `app/[category]/[slug]/page.tsx:284-301` - Wrapped feedback/comments in "Feedback and Discussion" section with h2 heading
+- `components/content/related-articles.tsx:18-19` - Added ID to heading, moved border from top to bottom
+- `components/layout/table-of-contents.tsx:21-33,83-84` - Fixed to extract from `<main>` instead of `<article>`, filter headings without IDs, fixed sticky positioning
+
+**Giscus Configuration:**
+- Repo: rexkirshner/inevitable-eth
+- Category: General
+- Mapping: pathname (article-specific discussions)
+- Theme: Auto-detects light/dark mode
+
+**Decisions Made:**
+- Add section heading "Feedback and Discussion" to group feedback widget and comments together
+- Include section headings (Feedback & Discussion, Related Articles) in Table of Contents
+- Filter out headings without IDs to prevent showing individual article titles in TOC
+- Remove fixed height from aside wrapper to fix sticky positioning issue
+
+**Issues Resolved:**
+- ✅ Giscus comments now working (user verified with test comment)
+- ✅ "Feedback and Discussion" appears in Table of Contents sidebar
+- ✅ "Related Articles" appears in TOC (not individual article titles)
+- ✅ Table of Contents now sticks properly when scrolling (floating nav)
+- ✅ Removed extra border line before Related Articles section
+
+**Technical Details:**
+- Table of Contents sticky fix: removed `h-screen` from aside, added `max-h-[calc(100vh-5rem)] overflow-y-auto` to nav
+- Heading ID filtering: `.filter(heading => heading.id)` prevents showing h3 titles from Related Articles cards
+- Section organization: Feedback widget + Comments wrapped in single semantic section with shared heading
+
+**Work In Progress:**
+- None - all tasks completed
+
+**Next Steps:**
+- Commit changes: "feat: Configure Giscus comments and improve article page UI"
+- Push to GitHub (awaiting user approval)
+
+**User Feedback:**
+- "ok I just made a comment, and it looks like it worked!" - Giscus integration verified
+- "perfect! works great!" - Table of Contents floating behavior confirmed
+
+**Notes:**
+- Giscus requires one-time GitHub Discussions setup (user completed)
+- Comments are article-specific using pathname mapping
+- All UI improvements enhance navigation and community engagement
 
 ---
 
