@@ -398,9 +398,40 @@ See `tasks/code-review.md` for comprehensive code audit (conducted 2025-10-02).
 - Metadata via `export const metadata` in pages/layouts
 - Dynamic routes: `[param]/page.tsx`
 
-## Critical Path (As of 2025-10-03 Session 12)
+## Critical Path (As of 2025-10-04 Session 14)
 
-**Current Status:** Phases 1-8 Complete ✅ | All UI Polish Complete ✅ | Production Ready 🚀
+**Current Status:** Phases 1-8 Complete ✅ | Phase 9.1-9.3 Complete ✅ | Community Features Shipped 🚀
+
+**Completed in Session 14 (Autonomous Development - Phase 8.2 & 9.1-9.3):**
+- ✅ **Collapsible Sections Component** (Phase 8.2)
+  - Created `components/mdx/collapsible.tsx` for expandable content in MDX articles
+  - Features: localStorage state persistence, smooth CSS animations, ARIA accessibility
+  - Registered in `mdx-components.tsx` for use in any .mdx file
+  - Location: components/mdx/collapsible.tsx (87 lines)
+- ✅ **Article Feedback Widget** (Phase 9.1)
+  - Created `components/community/article-feedback.tsx` - "Was this helpful?" engagement
+  - Yes/No buttons → thank you message or optional feedback form
+  - Creates GitHub issue with pre-filled template (labels: feedback, article-improvement)
+  - LocalStorage tracking prevents repeated prompts per article
+  - Integrated into app/[category]/[slug]/page.tsx (after article content)
+- ✅ **Article Request System** (Phase 9.2)
+  - Created `app/request/page.tsx` - Dedicated request page with comprehensive FAQ
+  - Created `components/community/article-request-form.tsx` - Full-featured form
+  - Form fields: title, category, priority, description
+  - Creates GitHub issue with structured labels (article-request, {category}, priority-{level})
+  - Added "Request Article" link to header and mobile menu navigation
+- ✅ **Giscus Comments System** (Phase 9.3)
+  - Created `components/community/article-comments.tsx` - GitHub Discussions-powered comments
+  - Installed @giscus/react package
+  - Automatic dark mode support (MutationObserver + system preferences)
+  - Graceful fallback with setup instructions when not configured
+  - Environment variable configuration (4 NEXT_PUBLIC_GISCUS_* vars)
+- ✅ **Code Quality**
+  - Fixed ESLint errors (10 apostrophes, 1 unused props warning)
+  - Comprehensive code review via /code-review (Grade: A-)
+  - Build verification: 156 static pages generated successfully
+  - 5 commits created locally (awaiting user review before push)
+  - All features follow GitHub integration pattern (no database)
 
 **Completed in Session 12 (Visualization Fixes & Deployment Prep):**
 - ✅ **Fixed Visualization Positioning on About Page**
