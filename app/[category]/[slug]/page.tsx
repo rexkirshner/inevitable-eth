@@ -307,8 +307,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <ArticleNavigation prev={prev} next={next} />
       </main>
 
-      {/* Right TOC */}
-      {frontmatter.toc && <TableOfContents />}
+      {/* Right TOC (hidden on mobile) */}
+      {frontmatter.toc && (
+        <div className="hidden lg:block">
+          <TableOfContents />
+        </div>
+      )}
     </div>
     </>
   );
