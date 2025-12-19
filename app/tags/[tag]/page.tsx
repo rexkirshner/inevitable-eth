@@ -32,6 +32,9 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   return {
     title: `${decodedTag} Articles | Inevitable Ethereum`,
     description: `Explore ${articles.length} article${articles.length !== 1 ? 's' : ''} about ${decodedTag}. Learn about Ethereum, cryptography, finance, and more.`,
+    alternates: {
+      canonical: `/tags/${encodeURIComponent(decodedTag)}`,
+    },
   };
 }
 
