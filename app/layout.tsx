@@ -56,6 +56,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* RSS Feed Autodiscovery */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Inevitable Ethereum RSS Feed"
+          href="https://inevitableeth.com/feed.xml"
+        />
         {/* WebSite Schema for Sitelinks Searchbox */}
         <script
           type="application/ld+json"
