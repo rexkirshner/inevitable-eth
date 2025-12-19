@@ -81,10 +81,13 @@ export default function VisualizeClient({ articles, initialMode = 'hierarchical-
     d3.select(svgRef.current).selectAll('*').remove();
 
     // Use actual container dimensions, with sensible fallbacks
-    // clientHeight can return small values (not 0) when CSS hasn't fully computed
+    // When embedded (hideControls), trust the container dimensions
+    // When standalone, fall back to window dimensions if container is too small
     const width = svgRef.current.clientWidth || window.innerWidth;
     const rawHeight = svgRef.current.clientHeight;
-    const height = rawHeight > 200 ? rawHeight : (window.innerHeight - 160); // Account for header/footer
+    const height = hideControls
+      ? (rawHeight || width) // For embedded: use container height, or width for square containers
+      : (rawHeight > 200 ? rawHeight : (window.innerHeight - 160)); // For standalone: fallback to window
 
     if (mode === 'hierarchical-tree') {
       // Traditional vertical tree layout
@@ -500,10 +503,15 @@ export default function VisualizeClient({ articles, initialMode = 'hierarchical-
           .style('font-weight', '400');
       }
     }
-  }, [articles, mode]);
+  }, [articles, mode, hideControls, hideLabels]);
+
+  // Only apply min-height when not embedded (hideControls indicates embedded mode)
+  const containerClass = hideControls
+    ? "w-full h-full bg-white flex flex-col"
+    : "w-full min-h-[calc(100vh-160px)] bg-white flex flex-col";
 
   return (
-    <div className="w-full min-h-[calc(100vh-160px)] bg-white flex flex-col">
+    <div className={containerClass}>
       {/* Tabs */}
       {!hideControls && (
         <div className="flex justify-center gap-0 p-4 bg-gray-50 border-b border-gray-200">
