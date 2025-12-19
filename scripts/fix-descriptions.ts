@@ -23,7 +23,7 @@ function extractDescription(content: string): string | null {
   const contentWithoutFrontmatter = content.replace(/^---[\s\S]*?---\n+/m, '');
 
   // Remove images, convert links to plain text, and clean markdown artifacts
-  let cleaned = contentWithoutFrontmatter
+  const cleaned = contentWithoutFrontmatter
     .replace(/!\[.*?\]\(.*?\)/g, '') // Remove images
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Convert [text](url) to just text
     .replace(/^#+\s+/gm, '') // Remove headers
