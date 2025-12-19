@@ -104,6 +104,28 @@ export default function RootLayout({
             }),
           }}
         />
+        {/* Person Schema for Rex Kirshner */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Person',
+              name: 'Rex Kirshner',
+              url: 'https://rexkirshner.com',
+              sameAs: [
+                'https://twitter.com/logarithmicrex',
+                'https://linkedin.com/in/rexkirshner',
+                'https://github.com/rexkirshner',
+              ],
+              worksFor: {
+                '@type': 'Organization',
+                name: 'Scratch Space',
+                url: 'https://scratchspace.dev',
+              },
+            }),
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
