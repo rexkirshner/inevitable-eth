@@ -119,7 +119,19 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-6 border-t border-[var(--border)]">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[var(--text-secondary)]">
+          <div className="flex flex-col items-center gap-2 text-xs text-[var(--text-secondary)]">
+            <p>
+              © {currentYear} Inevitable Ethereum, a{' '}
+              <a
+                href="https://scratchspace.dev/"
+                className="text-[var(--link)] hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Scratch Space
+              </a>
+              {' '}project
+            </p>
             <p>
               Content licensed under{' '}
               <a
@@ -131,36 +143,6 @@ export function Footer() {
                 CC BY-SA 4.0
               </a>
             </p>
-            <p>
-              Built with{' '}
-              <a
-                href="https://nextjs.org"
-                className="text-[var(--link)] hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Next.js
-              </a>
-              {', '}
-              <a
-                href="https://mdxjs.com"
-                className="text-[var(--link)] hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                MDX
-              </a>
-              {', and '}
-              <a
-                href="https://tailwindcss.com"
-                className="text-[var(--link)] hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Tailwind CSS
-              </a>
-            </p>
-            <p>© {currentYear} Inevitable Ethereum</p>
           </div>
         </div>
       </div>
