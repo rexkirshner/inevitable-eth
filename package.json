@@ -13,7 +13,8 @@
     "check-links": "tsx scripts/check-broken-links.ts",
     "optimize-images": "tsx scripts/optimize-images.ts",
     "validate-images": "tsx scripts/validate-images.ts",
-    "build-search-index": "tsx scripts/build-search-index.ts"
+    "build-search-index": "tsx scripts/build-search-index.ts",
+    "check-alt-text": "tsx scripts/check-image-alt.ts"
   },
   "dependencies": {
     "@giscus/react": "^3.1.0",
