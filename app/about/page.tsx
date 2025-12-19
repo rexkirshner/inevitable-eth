@@ -10,14 +10,14 @@ const VisualizeClient = dynamic(() => import('../visualize/visualize-client'));
 const ogImage = getDefaultOgImage();
 
 export const metadata: Metadata = {
-  title: 'About | Inevitable Ethereum',
-  description: 'Learn about Inevitable Ethereum - an educational resource dedicated to understanding Ethereum, finance history, and cryptography.',
+  title: 'About | Inevitable Ethereum by Rex Kirshner',
+  description: 'Learn about Inevitable Ethereum - an educational resource by Rex Kirshner dedicated to understanding Ethereum, finance history, and cryptography. A Scratch Space project.',
   alternates: {
     canonical: '/about',
   },
   openGraph: {
-    title: 'About Inevitable Ethereum',
-    description: 'An educational resource dedicated to understanding Ethereum, finance history, and cryptography',
+    title: 'About Inevitable Ethereum by Rex Kirshner',
+    description: 'An educational resource by Rex Kirshner dedicated to understanding Ethereum, finance history, and cryptography. A Scratch Space project.',
     images: [{
       url: ogImage.url,
       width: ogImage.width,
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Inevitable Ethereum',
-    description: 'An educational resource dedicated to understanding Ethereum, finance history, and cryptography',
+    title: 'About Inevitable Ethereum by Rex Kirshner',
+    description: 'An educational resource by Rex Kirshner dedicated to understanding Ethereum, finance history, and cryptography. A Scratch Space project.',
     images: [ogImage.url],
   },
 };
