@@ -117,7 +117,7 @@ The following could be run for deeper analysis:
 | **P1** | RSS autodiscovery missing | Med - Feed not discoverable | No `<link rel="alternate" type="application/rss+xml">` in head | Add to `app/layout.tsx` | S | Low | ✅ Fixed |
 | **P1** | Sitemap lastmod accuracy | Low - Misleading freshness signals | Static pages use `new Date()` | Use build timestamp or omit for static pages | S | Low | ✅ Fixed |
 | **P2** | FAQ schema for articles | Med - Rich snippet opportunity | Articles have Q&A-style content but no FAQ schema | Add FAQ JSON-LD for articles with FAQs | M | Low | Open |
-| **P2** | Missing OG images on tag pages | Low - Social sharing quality | Tag pages use default banner instead of topic-relevant image | Generate or select topic-specific images | M | Low | Open |
+| **P2** | Missing OG images on tag pages | Low - Social sharing quality | Tag pages use default banner instead of topic-relevant image | Generate or select topic-specific images | M | Low | ✅ Won't fix (banner is appropriate) |
 | **P2** | Image alt text validation | Med - Accessibility/SEO | MDX images rely on author-provided alt | Add build-time validation for missing alt | M | Low | Open |
 | **P2** | Anchor text optimization | Low - Internal link equity | Some "Read more" / "View all" generic anchors | Use descriptive anchor text | M | Low | ✅ Fixed |
 | **P3** | Cloudflare preview indexation | Med - Duplicate content risk | Preview deployments may be indexable | Add `X-Robots-Tag: noindex` header for preview branches | S | Med | ✅ Documented |
