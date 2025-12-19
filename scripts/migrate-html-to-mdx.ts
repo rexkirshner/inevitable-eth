@@ -150,13 +150,6 @@ function formatDateToYYYYMMDD(isoDate?: string): string | undefined {
   }
 }
 
-function generateSlugFromTitle(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
 export async function migrateHtmlToMdx(
   sourceDir: string,
   targetDir: string
