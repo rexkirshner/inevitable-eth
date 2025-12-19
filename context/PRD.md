@@ -1,8 +1,8 @@
 # InevitableETH.com Complete Rebuild - Product Requirements Document
 
-**Version:** 4.5
-**Date:** 2025-10-04
-**Status:** Phase 1-8 Complete ✅ | Phase 9.1-9.3 Complete ✅ | Production Ready v1+ 🚀
+**Version:** 4.6
+**Date:** 2025-12-19
+**Status:** Phases 1-9.3 Complete ✅ | SEO Optimized ✅ | Live on Cloudflare Pages 🚀
 **Strategy:** Ship polished v1 first, defer complex community features until validated
 
 ---
@@ -1421,6 +1421,44 @@ inevitable-eth/
   - `9a96bc8` - feat: Add Giscus comments system (Phase 9.3)
   - `34edac2` - fix: Resolve ESLint errors in new community features
 
+### 2025-10-05 - Session 15 (SEO Optimization & Article Layout Fix)
+**SEO Implementation & Content Width Fix:**
+- ✅ **Comprehensive SEO Audit** - Created SEO_AUDIT.md
+- ✅ **Priority 1 Fixes (Critical)**
+  - Added `metadataBase` to root layout for absolute URLs
+  - Canonical URLs on all pages
+  - JSON-LD structured data: WebSite + Organization schemas
+  - Tags pages added to sitemap (200 total URLs)
+  - Author info in Open Graph metadata
+- ✅ **Priority 2 Fixes (High-Impact)**
+  - OG image dimensions (1200x675 articles, 1259x512 banner)
+  - Social preview images verified working
+- ✅ **Content Layout Fix**
+  - Removed `max-width: 65ch` from `.prose` class
+  - Article content now spans full container width
+- ✅ **SEO Grade: B+ → A-**
+- 📝 **Commits:**
+  - Multiple commits for SEO improvements
+
+### 2025-10-05 - Session 16 (Giscus Setup, UI Polish & Content Organization)
+**Community Features Live & Content Polish:**
+- ✅ **Giscus Comments Working**
+  - Configured environment variables
+  - Updated CSP headers for giscus.app
+  - Verified with live comment test on production
+  - Auto dark mode via MutationObserver
+- ✅ **Table of Contents Improvements**
+  - Added "Feedback and Discussion" section heading
+  - TOC extracts from `<main>` element, not just article
+  - Fixed sticky positioning issue
+  - Filter out headings without IDs
+- ✅ **Category Page Enhancements**
+  - Featured article sections ("Getting Started")
+  - Background overview article moved to correct category
+  - Ethereum "World Computer" featured prominently
+- ✅ **7 Commits Created**
+- 🎯 **Site fully functional with comments on production!**
+
 ---
 
 ## Notes & Decisions
@@ -1458,16 +1496,16 @@ inevitable-eth/
 
 ---
 
-**Last Updated**: 2025-10-04 (v4.5 - Session 14 Complete: Phase 8.2 & 9.1-9.3 Community Features)
-**Current Phase**: Phases 1-8 Complete ✅ | Phase 9.1-9.3 Complete ✅ | Production Ready v1+ 🚀
-**Build Status**: 156 static pages | 498 images optimized | All features working ✅ | Community features shipped ✅
-**New in Session 14**: Collapsible sections (MDX), article feedback widget, article request system, Giscus comments
-**Performance**: LCP 2.6s | Performance 93-98 | A11y 96+ | SEO 100 | All new features optimized
-**Quality**: 4 new features | 4 new components | Code review A- | Full TypeScript strict mode | GitHub Issues integration
-**Deployment**: Cloudflare Pages ready ✅ | Static export verified ✅ | Production ready v1+
-**Documentation**: Session 14 complete | Phase 8.2 & 9.1-9.3 documented | PRD updated to v4.5
+**Last Updated**: 2025-12-19 (v4.6 - Session 16 Complete: SEO Optimizations & Giscus Live)
+**Current Phase**: Phases 1-9.3 Complete ✅ | SEO Optimized ✅ | Live on Cloudflare Pages 🚀
+**Build Status**: 156 static pages | 200 sitemap URLs | 498 images optimized | Community features live ✅
+**New in Session 15-16**: SEO improvements (metadataBase, canonicals, JSON-LD), Giscus comments live, TOC improvements, featured articles
+**Performance**: LCP 2.6s | Performance 93-98 | A11y 96+ | SEO A- | All features optimized
+**Quality**: Community features working | Code review A- | Full TypeScript strict mode | GitHub Issues integration
+**Deployment**: Live on Cloudflare Pages ✅ | Giscus comments verified ✅ | Production v1+
+**Documentation**: Session 16 complete | SEO audit complete | PRD updated to v4.6
 **Next Up**: Phase 10 (Database-backed community), Enhanced code blocks, Learning tools
-**v1+ Status**: Full community features - Comments, feedback, article requests, all GitHub-backed (no database)
+**v1+ Status**: Full community features live - Comments, feedback, article requests, all GitHub-backed (no database)
 **Post-Launch**: Continue with remaining Phase 9 items, then Phase 10+ based on user validation
 
 ---

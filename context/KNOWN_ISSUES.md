@@ -1,52 +1,44 @@
 # Known Issues, Limitations & Technical Debt
 
-**Last Updated:** 2025-10-02 Session 6
-**Status:** No blocking issues. Site is deployment-ready.
+**Last Updated:** 2025-12-19
+**Status:** No blocking issues. Site is live on Cloudflare Pages.
 
 ---
 
 ## 🟢 No Blocking Issues
 
-**Current Status:** All critical bugs fixed. No blockers for deployment.
+**Current Status:** Site is live. All critical bugs fixed. Community features working.
 
 - ✅ All 141 articles rendering correctly
 - ✅ All 498 images loading (desktop variants fixed)
 - ✅ Search working
 - ✅ Dark mode working
 - ✅ Mobile responsive
-- ✅ Build succeeds (153 pages)
+- ✅ Build succeeds (156 pages)
 - ✅ Security headers configured
+- ✅ Giscus comments working (Session 16)
+- ✅ Google Analytics tracking (Session 11)
+- ✅ SEO optimizations complete (Session 15)
 
 ---
 
 ## 🟡 Non-Critical Warnings
 
-### 1. Build Warning: Missing `metadataBase`
+### 1. ~~Build Warning: Missing `metadataBase`~~ ✅ RESOLVED
 
-**Severity:** Low
-**Impact:** None for static export
-**Status:** Monitor
+**Status:** Fixed in Session 15
 
-**Warning Message:**
-```
-Warning: metadata should have metadataBase property for absolute URLs in Open Graph images
-```
-
-**Context:**
-- Only matters if using absolute URLs in OG images
-- We use relative paths (`/images/...`)
-- Works fine for static export
-
-**Fix (if needed):**
+**Resolution:**
+Added `metadataBase` to root layout:
 ```typescript
 // app/layout.tsx
 export const metadata: Metadata = {
   metadataBase: new URL('https://inevitableeth.com'),
-  // ... rest of metadata
+  // ...
 };
 ```
 
-**Decision:** Don't fix unless OG images don't render correctly on social media platforms. Test after deployment.
+Also added canonical URLs to all pages and OG image dimensions for proper social previews.
 
 ---
 
@@ -368,19 +360,20 @@ npm run build:cloudflare
 
 ---
 
-### 2. Third-Party Scripts
+### 2. Third-Party Scripts ✅ CONFIGURED
 
-**Current:** No third-party scripts (no analytics, no ads, no tracking)
+**Current integrations:**
 
-**If adding analytics (Plausible/PostHog):**
-- Ensure privacy-focused
-- Update CSP headers to allow analytics domain
-- Add to privacy policy
+**Google Analytics (GA4)** - Added Session 11
+- Tracking ID: G-9K8VQGCQ5D
+- Script in `app/layout.tsx`
+- Standard GA4 configuration
 
-**If adding comments (Giscus):**
+**Giscus Comments** - Added Session 14, Configured Session 16
 - Runs in iframe (isolated)
-- Verify CSP allows GitHub Discussions domain
+- CSP headers updated in `public/_headers` to allow giscus.app
 - Users authenticate via GitHub (we don't handle auth)
+- Dark mode synced automatically via MutationObserver
 
 ---
 

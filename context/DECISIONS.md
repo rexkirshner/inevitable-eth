@@ -2,7 +2,7 @@
 
 **Purpose:** Document why we made specific technical choices to inform future decisions and help new contributors understand the codebase.
 
-**Last Updated:** 2025-10-02
+**Last Updated:** 2025-12-19
 
 ---
 
@@ -16,6 +16,10 @@
 6. [Security](#security)
 7. [Search](#search)
 8. [Images](#images)
+9. [Navigation & Discovery](#navigation--discovery)
+10. [Community Features](#community-features)
+11. [SEO & Metadata](#seo--metadata)
+12. [Analytics](#analytics)
 
 ---
 
@@ -582,6 +586,246 @@ export function extractFirstImage(content: string): string | null {
 - @vercel/og: Requires server runtime, can't use with static export
 - Cloudflare Workers: Additional complexity, not needed
 - Pre-generated OG images: Manual work, hard to maintain
+
+---
+
+## Navigation & Discovery
+
+### Breadcrumbs with Wikipedia-Style Separators
+
+**Decision:** Use ChevronRight icon separators for breadcrumbs (not `/` or `>`)
+
+**Why:**
+- Wikipedia uses similar visual hierarchy
+- Icons are more visually pleasing than text characters
+- Clear visual separation between navigation levels
+- Consistent with lucide-react icon usage elsewhere
+
+**Implementation:** `components/layout/breadcrumbs.tsx` with JSON-LD BreadcrumbList schema
+
+---
+
+### Tag-Based Related Articles
+
+**Decision:** Show 3 related articles based on shared tags, not manual curation
+
+**Why:**
+- Automatic discovery reduces maintenance burden
+- Encourages exploration of related topics
+- Manual `related:[]` frontmatter still supported for overrides
+- Algorithm: count shared tags, sort by overlap, take top 3
+
+**Trade-offs:**
+- ❌ Less editorial control over recommendations
+- ✅ Zero maintenance, scales with content
+- ✅ Fallback to manual `related:[]` when specified
+
+**Implementation:** `getRelatedContent()` in `lib/content.ts`
+
+---
+
+### Featured Articles on Category Pages
+
+**Decision:** Feature specific overview articles at top of category pages (Session 16)
+
+**Why:**
+- Provides clear entry points for new readers
+- Highlights foundational content
+- Improves discoverability of key concepts
+- Wikipedia-style "main article" pattern
+
+**Implementation:**
+- `featuredArticles` object in `app/[category]/page.tsx`
+- Featured articles excluded from difficulty grouping
+- "Getting Started" section with description and link
+
+---
+
+## Community Features
+
+### GitHub Issues for User Feedback (Not Database)
+
+**Decision:** Use GitHub Issues for all community features instead of database
+
+**Why:**
+- No infrastructure to maintain
+- Built-in moderation tools
+- Transparent and public
+- Voting via 👍 reactions
+- Labels for organization
+- Perfect for technical audience familiar with GitHub
+
+**Trade-offs:**
+- ❌ Requires GitHub account to participate
+- ❌ Less polished UX than custom forms
+- ✅ Zero backend complexity
+- ✅ No database costs or maintenance
+- ✅ Community already on GitHub
+
+**Features using this pattern:**
+1. Article feedback widget → creates Issue with `feedback` label
+2. Article request form → creates Issue with `article-request` label
+3. "Edit on GitHub" links → direct to file in repo
+
+---
+
+### Giscus for Comments (GitHub Discussions Backend)
+
+**Decision:** Use Giscus for article comments (Session 14, configured Session 16)
+
+**Why:**
+- GitHub Discussions backend (no database)
+- Familiar interface for developers
+- Reactions and threaded replies
+- Automatic dark mode sync
+- Lazy loading for performance
+- Free and open source
+
+**Configuration:**
+- Repository: rexkirshner/inevitable-eth
+- Category: General
+- Mapping: pathname (article-specific discussions)
+- Theme: Auto-detects light/dark via MutationObserver
+
+**CSP Requirements (Session 16):**
+```
+script-src: giscus.app
+style-src: giscus.app
+connect-src: giscus.app
+frame-src: giscus.app
+```
+
+**Trade-offs:**
+- ❌ Requires GitHub account to comment
+- ✅ No moderation needed (GitHub handles it)
+- ✅ Scales infinitely
+- ✅ SEO-friendly (content indexed by Google)
+
+---
+
+### LocalStorage for Client-Side State
+
+**Decision:** Use localStorage for user preferences (not cookies or server-side)
+
+**Why:**
+- No backend required
+- Persists across sessions
+- GDPR-friendly (no tracking consent needed)
+- Simple implementation
+
+**Uses:**
+- Theme preference (light/dark)
+- Article feedback tracking (prevent re-prompts)
+- Collapsible section states
+- Reading progress (articles marked as read)
+- Font size preference
+- Bookmarked articles
+
+**Trade-offs:**
+- ❌ Lost when user clears browser data
+- ❌ Not synced across devices
+- ✅ Zero backend complexity
+- ✅ Instant, no network latency
+
+---
+
+## SEO & Metadata
+
+### metadataBase for Absolute URLs
+
+**Decision:** Set metadataBase in root layout (Session 15)
+
+**Why:**
+- Next.js requires absolute URLs for OG images
+- Prevents build warnings
+- Ensures consistent URL generation
+- Required for social media preview cards
+
+**Implementation:**
+```typescript
+// app/layout.tsx
+export const metadata: Metadata = {
+  metadataBase: new URL('https://inevitableeth.com'),
+  // ...
+}
+```
+
+---
+
+### Canonical URLs on All Pages
+
+**Decision:** Add canonical URLs to every page (Session 15)
+
+**Why:**
+- Prevents duplicate content issues
+- Consolidates SEO value to preferred URL
+- Helps search engines understand site structure
+- Best practice for any website
+
+**Implementation:** Added `alternates.canonical` to all page metadata
+
+---
+
+### JSON-LD Structured Data
+
+**Decision:** Use multiple schema types for rich snippets
+
+**Schemas implemented:**
+1. **Article** - For all content pages (title, author, dates, image)
+2. **BreadcrumbList** - For navigation breadcrumbs
+3. **WebSite** - With sitelinks searchbox
+4. **Organization** - For site attribution
+
+**Why:**
+- Google rich snippets improve CTR
+- Better understanding of content structure
+- Enables features like sitelinks search
+- SEO best practice
+
+---
+
+### OG Image Dimensions
+
+**Decision:** Include explicit width/height in OG metadata (Session 15)
+
+**Why:**
+- Improves social media preview rendering
+- Prevents layout shift during image load
+- Facebook/Twitter/LinkedIn best practices
+- Passes Open Graph validators
+
+**Sizes used:**
+- Default banner: 1259x512 (actual dimensions)
+- Article images: 1200x675 (16:9, optimal for social)
+
+---
+
+## Analytics
+
+### Google Analytics (GA4)
+
+**Decision:** Use Google Analytics for usage tracking (Session 11)
+
+**Why:**
+- Industry standard
+- Free tier sufficient for our needs
+- Integration with other Google tools
+- Detailed user behavior insights
+
+**Tracking ID:** G-9K8VQGCQ5D
+
+**Implementation:** Script in `app/layout.tsx`
+
+**Trade-offs:**
+- ❌ Privacy concerns (mitigated by cookie notice)
+- ❌ Blocked by ad blockers
+- ✅ Rich analytics features
+- ✅ No cost
+
+**Alternative considered:**
+- Plausible (privacy-focused, costs money)
+- PostHog (more complex, better for product analytics)
+- No analytics (lose valuable insights)
 
 ---
 

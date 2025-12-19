@@ -1,6 +1,6 @@
 # Architecture Documentation
 
-**Last Updated:** 2025-10-04
+**Last Updated:** 2025-12-19
 **Project:** Inevitable Ethereum
 **Stack:** Next.js 15 (App Router), TypeScript, MDX, Tailwind CSS
 
@@ -40,13 +40,25 @@ inevitable-eth/
 │   │   ├── header.tsx            # Two-tier header (logo + nav)
 │   │   ├── footer.tsx            # Four-column footer
 │   │   ├── sidebar.tsx           # Collapsible navigation tree
-│   │   └── table-of-contents.tsx # Auto-generated ToC
+│   │   ├── table-of-contents.tsx # Auto-generated ToC
+│   │   ├── breadcrumbs.tsx       # Wikipedia-style breadcrumbs
+│   │   └── mobile-menu.tsx       # Slide-in mobile navigation
 │   ├── mdx/                      # MDX components
 │   │   ├── infobox.tsx           # Wikipedia-style info boxes
 │   │   ├── callout.tsx           # Warning/info/tip boxes
 │   │   ├── figure.tsx            # Images with captions
-│   │   └── references.tsx        # Citation system
+│   │   ├── references.tsx        # Citation system
+│   │   ├── collapsible.tsx       # Expandable sections
+│   │   └── code-block.tsx        # Syntax highlighted code
 │   ├── content/                  # Content display components
+│   │   ├── related-articles.tsx  # Tag-based related content
+│   │   ├── article-navigation.tsx # Prev/Next navigation
+│   │   ├── reading-progress.tsx  # Scroll progress indicator
+│   │   └── edit-on-github.tsx    # GitHub edit links
+│   ├── community/                # Community features
+│   │   ├── article-feedback.tsx  # "Was this helpful?" widget
+│   │   ├── article-comments.tsx  # Giscus comments integration
+│   │   └── article-request-form.tsx # Request new articles
 │   ├── ui/                       # UI primitives (shadcn/ui)
 │   └── analytics/                # Google Analytics
 │
@@ -141,26 +153,29 @@ inevitable-eth/
 
 **Static Site Generation (SSG):**
 - All pages pre-rendered at build time
-- 153 static pages generated
+- 156 static pages generated
 - `export const dynamic = 'force-static'` enforced on dynamic routes
 
 **Key Routes:**
 - `/` - Homepage (Wikipedia Main Page style)
-- `/[category]` - Category index pages (difficulty grouping)
-- `/[category]/[slug]` - Article pages (three-column layout)
+- `/[category]` - Category index pages (difficulty grouping, featured articles)
+- `/[category]/[slug]` - Article pages (three-column layout, comments, feedback)
 - `/search` - Client-side search (Fuse.js)
 - `/tags` - Tag cloud
 - `/tags/[tag]` - Articles by tag
 - `/about` - About page with D3.js visualization
 - `/random` - Random article redirect
+- `/request` - Article request form
 - `/feed.xml` - RSS/Atom feed (all 141 articles)
 
 **Metadata & SEO:**
 - Dynamic metadata via `generateMetadata()` in each page
-- JSON-LD structured data for articles
-- Open Graph + Twitter Card metadata
+- `metadataBase` set to https://inevitableeth.com for absolute URLs
+- Canonical URLs on all pages
+- JSON-LD structured data: Article, BreadcrumbList, WebSite, Organization
+- Open Graph + Twitter Card metadata with explicit dimensions
 - OG images (first article image or default banner)
-- Sitemap (`app/sitemap.ts`) - all 141 articles
+- Sitemap (`app/sitemap.ts`) - 200 URLs (141 articles + 52 tags + 7 static pages)
 - Robots.txt (`app/robots.ts`)
 
 ### 3. Styling System
@@ -239,12 +254,14 @@ inevitable-eth/
 
 **Headers:**
 ```
-Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' giscus.app; style-src 'self' 'unsafe-inline' giscus.app; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' giscus.app; frame-src giscus.app
 X-Frame-Options: DENY
 X-Content-Type-Options: nosniff
 Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: geolocation=(), microphone=(), camera=()
 ```
+
+**Note:** Giscus (comments) requires script-src, style-src, connect-src, and frame-src permissions for giscus.app domain.
 
 ### 7. Performance
 
@@ -513,13 +530,20 @@ import { cn } from '@/lib/utils';
 
 ## Future Enhancements
 
+**Implemented (since initial architecture):**
+- ✅ Comments/discussions (Giscus) - Session 14/16
+- ✅ Article feedback widget - Session 14
+- ✅ Article request system - Session 14
+- ✅ Google Analytics - Session 11
+- ✅ Reading progress tracking - Session 9
+- ✅ Tag exploration pages - Session 9
+
 **Planned:**
 - Automated testing (unit, integration, E2E)
 - Contributor guidelines
 - CMS integration (optional)
 - Interactive learning modules
 - User accounts & progress tracking
-- Comments/discussions (Giscus)
 - Translations (i18n)
 
 **Not Planned:**
