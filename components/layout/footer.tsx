@@ -119,31 +119,18 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-6 border-t border-[var(--border)]">
-          <div className="flex flex-col items-center gap-2 text-xs text-[var(--text-secondary)]">
-            <p>
-              © {currentYear} Inevitable Ethereum, a{' '}
-              <a
-                href="https://scratchspace.dev/"
-                className="text-[var(--link)] hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Scratch Space
-              </a>
-              {' '}project
-            </p>
-            <p>
-              Content licensed under{' '}
-              <a
-                href="https://creativecommons.org/licenses/by-sa/4.0/"
-                className="text-[var(--link)] hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                CC BY-SA 4.0
-              </a>
-            </p>
-          </div>
+          <p className="text-center text-xs text-[var(--text-secondary)]">
+            © {currentYear} Inevitable Ethereum, a{' '}
+            <a
+              href="https://scratchspace.dev/"
+              className="text-[var(--link)] hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Scratch Space
+            </a>
+            {' '}project
+          </p>
         </div>
       </div>
     </footer>
