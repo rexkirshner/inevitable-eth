@@ -12,10 +12,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    turbo: {
-      root: __dirname,
-    },
+  // Turbopack configuration (moved from deprecated experimental.turbo)
+  turbopack: {
+    root: __dirname,
   },
   // Note: async headers() doesn't work with static export
   // Security headers are configured in public/_headers for Cloudflare Pages
