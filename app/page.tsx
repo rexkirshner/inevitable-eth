@@ -83,7 +83,7 @@ export default function Home() {
                 href="/ethereum/world-computer"
                 className="text-sm text-[var(--link)] hover:underline inline-block"
               >
-                Read more →
+                Read about Ethereum: The World Computer →
               </Link>
             </div>
           </section>
@@ -110,7 +110,7 @@ export default function Home() {
               href="/background"
               className="text-sm text-[var(--link)] hover:underline inline-block mt-2"
             >
-              View all →
+              View all Background articles →
             </Link>
           </section>
         </div>
@@ -139,7 +139,7 @@ export default function Home() {
               href="/concepts"
               className="text-sm text-[var(--link)] hover:underline inline-block mt-2"
             >
-              View all →
+              View all Concepts articles →
             </Link>
           </section>
 
@@ -165,7 +165,7 @@ export default function Home() {
               href="/ethereum"
               className="text-sm text-[var(--link)] hover:underline inline-block mt-2"
             >
-              View all →
+              View all Ethereum articles →
             </Link>
           </section>
         </div>
