@@ -1,13 +1,11 @@
 ---
 name: update-context-system
-description: Update Claude Context System to latest version from GitHub
+description: Update AI Context System to latest version from GitHub
 ---
 
 # /update-context-system Command
 
-Update your project's Claude Context System to the latest version from GitHub. Safely updates commands and optionally updates context file templates.
-
-**Full guide:** `.claude/docs/update-guide.md` - Philosophy, troubleshooting, best practices
+Update your project's AI Context System to the latest version from GitHub using the automated installer script.
 
 ## When to Use This Command
 
@@ -15,37 +13,18 @@ Update your project's Claude Context System to the latest version from GitHub. S
 - When new features or bug fixes are released
 - Before initializing new projects (get latest templates)
 
-**See:** `.claude/docs/update-guide.md` - "When To Update"
-
 **Run periodically** to stay up to date with improvements.
 
 ## What This Command Does
 
-1. Fetches latest version from GitHub
-2. Updates all slash commands (`.claude/commands/*.md`)
-3. Detects changes to context file templates
-4. Optionally updates context files with new sections
-5. Reports everything that changed
-
-## Command Options
-
-### Default (Interactive Mode)
-```
-/update-context-system
-```
-- Updates commands automatically
-- Shows diffs for context file changes
-- Asks for approval before applying each change
-- Safe, controlled updates
-
-### Accept All Mode
-```
-/update-context-system --accept-all
-```
-- Updates commands automatically
-- Applies all context file updates without review
-- Fast, fully automated
-- Use when you trust all updates
+1. Downloads latest installer from GitHub
+2. Checks if update is needed (compares versions)
+3. Backs up existing installation
+4. Updates all slash commands (`.claude/commands/*.md`)
+5. Updates scripts (validation, helpers)
+6. Updates templates for reference
+7. Updates configuration schemas
+8. Reports everything that changed
 
 ## Important: How to Execute This Command
 
@@ -67,7 +46,24 @@ Each bash code block in this file should be run using the Bash tool. This is an 
 
 ## Execution Steps
 
-### Step 0: Verify Working Directory
+### Step 0: Load Shared Functions
+
+**ACTION:** Source the common functions library:
+
+```bash
+# Load shared utilities (v2.3.0+)
+if [ -f "scripts/common-functions.sh" ]; then
+  source scripts/common-functions.sh
+else
+  echo "⚠️  Warning: common-functions.sh not found (using legacy mode)"
+fi
+```
+
+**Why this matters:** Provides access to `download_with_retry()` for robust network operations and `get_system_version()` for version checking.
+
+---
+
+### Step 0.5: Verify Working Directory
 
 **CRITICAL:** Ensure we're in the correct project directory before proceeding.
 
@@ -107,652 +103,544 @@ echo "Project: $(pwd)"
 echo ""
 ```
 
-### Step 1: Check Current Version and Download Latest
+### Step 1: Check Current Version
 
-**ACTION:** Use the Bash tool to execute these steps:
+**ACTION:** Use the Bash tool to check the current version using shared function:
 
-**Step 1a: Get current version**
 ```bash
-CURRENT_VERSION=$(grep -m 1 '"version":' context/.context-config.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
-echo "📦 Current version: $CURRENT_VERSION"
-echo "🔍 Checking for updates from GitHub..."
+CURRENT_VERSION=$(get_system_version)
+log_info "📦 Current version: $CURRENT_VERSION"
+log_info "🔍 Checking for updates from GitHub..."
 ```
 
-**Step 1b: Download and extract latest**
-```bash
-rm -rf /tmp/claude-context-update
-mkdir -p /tmp/claude-context-update
-curl -f -L https://github.com/rexkirshner/claude-context-system/archive/refs/heads/main.zip -o /tmp/claude-context-update/latest.zip
+### Step 2: Run Installer Script
 
-# Verify download succeeded
-if [ ! -f /tmp/claude-context-update/latest.zip ] || [ ! -s /tmp/claude-context-update/latest.zip ]; then
-  echo "❌ ERROR: Download failed. Check your internet connection and try again."
-  rm -rf /tmp/claude-context-update
+**ACTION:** Use the Bash tool to download and run the installer:
+
+```bash
+# Download the latest installer with retry logic
+log_info "Downloading latest installer from GitHub..."
+if download_with_retry \
+  "https://raw.githubusercontent.com/rexkirshner/ai-context-system/main/install.sh" \
+  "/tmp/claude-context-install.sh" \
+  3 \
+  10; then
+  log_success "✅ Installer downloaded"
+
+  # Make it executable
+  chmod +x /tmp/claude-context-install.sh
+
+  # Run the installer with --yes flag for non-interactive mode
+  /tmp/claude-context-install.sh --yes
+
+  # Clean up
+  rm -f /tmp/claude-context-install.sh
+else
+  show_error $EXIT_NETWORK "Failed to download installer" \
+    "Check your internet connection" \
+    "Verify GitHub is accessible" \
+    "Try again later if GitHub is experiencing issues"
   exit 1
 fi
-
-unzip -q /tmp/claude-context-update/latest.zip -d /tmp/claude-context-update
 ```
 
-**Step 1c: Get latest version and compare**
+The installer will:
+- Check if you already have the latest version (and exit if you do)
+- Back up your existing installation
+- Download all latest files
+- Update commands, templates, scripts, and configuration
+- Verify the installation
+- Report what was updated
+
+**After the installer completes:**
+- Review the output to see what was updated
+- Installer will show version change (if any)
+- Installer will list all updated files
+
+---
+
+### Step 2.3: Update Configuration Version
+
+**ACTION:** Update the version fields in `.context-config.json` to match the new system version:
+
 ```bash
-LATEST_VERSION=$(grep -m 1 '"version":' /tmp/claude-context-update/claude-context-system-main/config/.context-config.template.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
-CURRENT_VERSION=$(grep -m 1 '"version":' context/.context-config.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
+echo "🔄 Updating configuration version..."
 
-echo "🔍 Latest version from GitHub: $LATEST_VERSION"
-echo ""
+# Detect new system version
+SYSTEM_VERSION=$(cat VERSION 2>/dev/null || echo "unknown")
 
-if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
-  echo "✅ Already Up to Date"
-  echo ""
-  echo "Current version: $CURRENT_VERSION"
-  echo "Latest version: $LATEST_VERSION"
-  echo ""
-  echo "Your Claude Context System is already running the latest version."
-  echo "No updates were performed. All commands are current."
+if [ "$SYSTEM_VERSION" != "unknown" ] && [ -f "context/.context-config.json" ]; then
+  # Update both version and configVersion fields
+  # macOS uses different sed syntax than Linux
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"$SYSTEM_VERSION\"/g" context/.context-config.json
+    sed -i '' "s/\"configVersion\": \"[^\"]*\"/\"configVersion\": \"$SYSTEM_VERSION\"/g" context/.context-config.json
+  else
+    sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"$SYSTEM_VERSION\"/g" context/.context-config.json
+    sed -i "s/\"configVersion\": \"[^\"]*\"/\"configVersion\": \"$SYSTEM_VERSION\"/g" context/.context-config.json
+  fi
 
-  rm -rf /tmp/claude-context-update
-  echo "STOP_NO_UPDATE"
+  echo "✅ Updated config version to $SYSTEM_VERSION"
 else
-  echo "📦 Update Available"
-  echo "  Current: $CURRENT_VERSION"
-  echo "  Latest:  $LATEST_VERSION"
-  echo ""
-  echo "Proceeding with update..."
-  echo "PROCEED_WITH_UPDATE"
+  echo "⚠️  Could not update config version (VERSION file or config missing)"
 fi
 ```
 
-**After running the above:**
-- If output contains "STOP_NO_UPDATE": Exit immediately, do not proceed to Step 3
-- If output contains "PROCEED_WITH_UPDATE": Continue to Step 3
+**Why this matters:** Ensures the configuration file accurately reflects the upgraded system version, preventing version mismatch warnings in `/review-context`.
 
-**CRITICAL:** If versions match, exit BEFORE updating commands. Do not download, do not copy files, do not modify anything. Only proceed if latest > current.
+---
 
-The version check MUST use string comparison (`[ "$CURRENT_VERSION" = "$LATEST_VERSION" ]`) and exit immediately if they match.
+### Step 2.5: Archive Feedback and Create Fresh File
 
-### Step 3: Update Slash Commands
+**v2.3.1: Feedback System**
 
-**ACTION:** Use the Bash tool to update the commands:
+**ACTION:** Archive existing feedback (if has content) and create fresh feedback file:
 
 ```bash
-# Capture project root before any directory changes
-PROJECT_ROOT=$(pwd)
+log_info ""
+log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_info "  Feedback System (v2.3.1+)"
+log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_info ""
 
-# Backup existing commands
-cp -r .claude/commands .claude/commands.backup
+# v3.0.0 Migration: Rename old feedback file if it exists
+if [ -f "context/claude-context-feedback.md" ] && [ ! -f "context/context-feedback.md" ]; then
+  log_info "🔄 Migrating feedback file (v2.x → v3.0)..."
 
-# Update with latest (using absolute path)
-cp /tmp/claude-context-update/claude-context-system-main/.claude/commands/* "$PROJECT_ROOT/.claude/commands/"
+  # Check if old file has actual content
+  CONTENT_LINES=$(wc -l < "context/claude-context-feedback.md" | tr -d ' ')
 
-# Return to project root (deterministic)
-cd "$PROJECT_ROOT"
+  if [ "$CONTENT_LINES" -gt 10 ]; then
+    # Has content - archive it
+    CURRENT_VERSION=$(get_system_version)
+    ARCHIVE_DATE=$(date +%Y-%m-%d)
+    mkdir -p artifacts/feedback
 
-# Report
-echo "✅ Updated commands:"
-ls .claude/commands/*.md | sed 's/.*\//  - /'
-```
+    ARCHIVE_FILE="artifacts/feedback/feedback-v${CURRENT_VERSION}-${ARCHIVE_DATE}.md"
+    mv "context/claude-context-feedback.md" "$ARCHIVE_FILE"
 
-**Commands updated:**
-- init-context.md
-- migrate-context.md
-- save-context.md
-- review-context.md
-- code-review.md
-- update-context-system.md (this command!)
-
-### Step 3.5: Reload This Command (Self-Update)
-
-**CRITICAL:** The update-context-system.md command file was just updated in Step 3. The newly downloaded version may have improved logic for detecting and applying template updates.
-
-To ensure we use the **LATEST** command logic for remaining steps, we must reload this command now.
-
-**ACTION:** Use the Read tool to read the newly updated command file:
-
-```
-Read file: .claude/commands/update-context-system.md
-```
-
-**After reading the new file:**
-
-1. **Check if Step 4 logic has changed** - Compare what you just read with the Step 4 instructions you were originally following
-2. **If Step 4 is different:** Continue execution using the **NEWLY READ** Step 4 instructions from the updated file
-3. **If Step 4 is the same:** Continue with current instructions (no functional change)
-
-**Example scenarios:**
-
-- **Scenario A:** Old Step 4 used section-based detection (`sed -n '/^## Section/'`), new Step 4 uses content-based detection (`grep -A N '^**Marker:**'`)
-  - **Action:** Use the new content-based approach for remaining execution
-
-- **Scenario B:** Step 4 logic is identical in both versions
-  - **Action:** Continue normally (no change needed)
-
-**Why this matters:**
-
-Without this reload step, you'd be executing outdated Step 4 logic even though the new file was downloaded. This reload ensures:
-- Bug fixes in Step 4 take effect immediately (don't need two runs)
-- New template detection features work on first run
-- Self-updating command actually updates its own behavior
-
-**After reload, proceed to Step 4 below** (using the version from the newly read file if different).
-
-### Step 4: Detect Template Content Changes
-
-**IMPORTANT:** This is a general-purpose template synchronization system that compares ALL sections in template files against project files.
-
-**Philosophy:**
-- Check every section in every template file
-- If section exists and is identical → Skip
-- If section exists but differs → Ask user to approve update
-- If section is missing from project → Ask user to approve adding it
-- **ALWAYS ask user for approval** - never auto-apply (safety first)
-- **Never touch project-specific sections** - use explicit blacklist
-
-**Template files to check:**
-1. `CLAUDE.template.md` → `context/CLAUDE.md`
-2. `CODE_STYLE.template.md` → `context/CODE_STYLE.md` (if exists)
-3. `ARCHITECTURE.template.md` → `context/ARCHITECTURE.md` (if exists)
-
-**Project-specific sections (NEVER update):**
-- CLAUDE.md: Project Overview, Commands, Architecture, Development Status, Important Notes, Critical Path, Examples from Past Sessions
-- CODE_STYLE.md: Project-specific rules, File Structure, Component Patterns, project examples
-- ARCHITECTURE.md: Overview, System Architecture, Data Flow, Components, Dependencies (anything describing actual project)
-
-**System sections (updatable with approval):**
-- CLAUDE.md: Working with You, Communication Style, Core Development Methodology
-- CODE_STYLE.md: General Principles, Code Quality Standards, Testing Requirements, Documentation Standards
-- ARCHITECTURE.md: Documentation Guidelines, Best Practices
-
-**ACTION:** Use the Bash tool to run this entire script as ONE command:
-
-```bash
-cd /tmp/claude-context-update/claude-context-system-main
-
-echo "🔍 Scanning template files for system section updates..."
-echo ""
-
-# Project-specific section blacklist (regex patterns)
-BLACKLIST_CLAUDE="(Project Overview|Commands|Architecture|Development Status|Important Notes|Critical Path|Examples from Past Sessions)"
-BLACKLIST_CODE_STYLE="(File Structure|Component Patterns)"
-BLACKLIST_ARCHITECTURE="(Overview|System Architecture|Data Flow|Components|Dependencies)"
-
-# Function to extract all ## sections from a file
-get_sections() {
-  local file="$1"
-  grep '^## ' "$file" | sed 's/^## //'
-}
-
-# Function to extract a specific section (## to next ##)
-extract_section() {
-  local file="$1"
-  local section="$2"
-  awk -v section="$section" '
-    /^## / {
-      if (found == 1) exit;
-      if ($0 ~ "^## " section "$") { found=1; print; next; }
-    }
-    found == 1 { print }
-  ' "$file"
-}
-
-UPDATES_FOUND=0
-
-# Check CLAUDE.template.md
-echo "📄 Checking CLAUDE.template.md..."
-cd - > /dev/null
-
-if [ -f "context/CLAUDE.md" ]; then
-  cd /tmp/claude-context-update/claude-context-system-main
-  TEMPLATE_SECTIONS=$(get_sections "templates/CLAUDE.template.md")
-
-  while IFS= read -r section; do
-    # Skip if blacklisted (project-specific)
-    if echo "$section" | grep -qE "$BLACKLIST_CLAUDE"; then
-      continue
-    fi
-
-    cd - > /dev/null
-
-    # Check if section exists in project
-    if grep -q "^## $section$" context/CLAUDE.md; then
-      # Section exists - compare content
-      cd /tmp/claude-context-update/claude-context-system-main
-      TEMPLATE_CONTENT=$(extract_section "templates/CLAUDE.template.md" "$section")
-      cd - > /dev/null
-      CURRENT_CONTENT=$(extract_section "context/CLAUDE.md" "$section")
-
-      if [ "$TEMPLATE_CONTENT" != "$CURRENT_CONTENT" ]; then
-        echo "  ✨ CHANGED: $section"
-        UPDATES_FOUND=$((UPDATES_FOUND + 1))
-        echo "SECTION_CHANGED|CLAUDE.md|$section"
-      fi
+    log_success "✅ Archived v2.x feedback to $ARCHIVE_FILE"
+    log_info "   (Your old feedback preserved)"
+  else
+    # Just template - remove it (with deletion protection)
+    if confirm_deletion "context/claude-context-feedback.md"; then
+      rm -f "context/claude-context-feedback.md"
+      log_verbose "Removed empty v2.x feedback file"
     else
-      # Section missing from project
-      echo "  ➕ MISSING: $section"
-      UPDATES_FOUND=$((UPDATES_FOUND + 1))
-      echo "SECTION_MISSING|CLAUDE.md|$section"
+      log_warn "⚠️  Kept context/claude-context-feedback.md (deletion cancelled)"
     fi
-
-    cd /tmp/claude-context-update/claude-context-system-main
-  done <<< "$TEMPLATE_SECTIONS"
-fi
-
-cd - > /dev/null
-echo ""
-
-# Summary
-if [ $UPDATES_FOUND -gt 0 ]; then
-  echo "📝 Found $UPDATES_FOUND section update(s) across template files"
-  echo ""
-  echo "Markers output above (SECTION_CHANGED or SECTION_MISSING)"
-  echo "Claude will ask for approval for each change"
-else
-  echo "✅ All system sections are up to date"
-fi
-```
-
-**After the script completes, you MUST take these actions immediately:**
-
-**For EACH marker line (SECTION_CHANGED or SECTION_MISSING):**
-
-The marker format is: `SECTION_CHANGED|<filename>|<section name>` or `SECTION_MISSING|<filename>|<section name>`
-
-**CRITICAL:** You MUST ask the user for approval for EACH section update. Process them ONE AT A TIME.
-
-**For SECTION_CHANGED markers:**
-
-1. **Extract both versions for comparison:**
-   - **ACTION:** Use Read tool to read the template section:
-     ```bash
-     cd /tmp/claude-context-update/claude-context-system-main
-     awk -v section="<section name>" '/^## / { if (found == 1) exit; if ($0 ~ "^## " section "$") { found=1; print; next; } } found == 1 { print }' templates/CLAUDE.template.md > /tmp/template-section.txt
-     ```
-   - **ACTION:** Use Read tool to read the current project section:
-     ```bash
-     awk -v section="<section name>" '/^## / { if (found == 1) exit; if ($0 ~ "^## " section "$") { found=1; print; next; } } found == 1 { print }' context/CLAUDE.md > /tmp/current-section.txt
-     ```
-   - **ACTION:** Use Read tool to read both `/tmp/template-section.txt` and `/tmp/current-section.txt`
-
-2. **Show diff to user and ask for approval:**
-   ```
-   📝 Template Update: <section name> in <filename>
-
-   The template version of this section has changed.
-
-   [Show both versions or key differences]
-
-   Apply this update? [Y/n]
-
-   Note: Your project-specific content will be preserved.
-   ```
-
-3. **If user approves (Y or yes):**
-   - **ACTION:** Use Edit tool to replace the section:
-     ```
-     file_path: context/<filename>
-     old_string: [entire current section including "## <section name>" header]
-     new_string: [entire template section from /tmp/template-section.txt]
-     ```
-   - Report: "✅ Updated '<section name>' in context/<filename>"
-
-4. **If user declines (n or no):**
-   - Report: "⏭️ Skipped '<section name>' update - keeping current version"
-
-**For SECTION_MISSING markers:**
-
-1. **Extract template section:**
-   - **ACTION:** Use Read tool to read `/tmp/template-section.txt` (from previous extraction)
-   - Or run extraction if not already done
-
-2. **Ask user for approval:**
-   ```
-   ➕ New Section Available: <section name> in <filename>
-
-   The template includes a system section that's missing from your project.
-
-   [Show section content preview]
-
-   Add this section to your project? [Y/n]
-   ```
-
-3. **If user approves (Y or yes):**
-   - **ACTION:** Determine best insertion point (after last ## section or at end)
-   - **ACTION:** Use Edit tool to add the section
-   - Report: "✅ Added '<section name>' to context/<filename>"
-
-4. **If user declines (n or no):**
-   - Report: "⏭️ Skipped adding '<section name>' - not needed for this project"
-
-**If NO markers appear (script shows "All system sections are up to date"):**
-
-Report:
-```
-✅ All system sections are up to date
-   No template changes to apply
-```
-
-**CRITICAL NOTES:**
-- Process markers sequentially - do not batch them
-- ALWAYS ask user before making changes
-- Show clear before/after or diff when possible
-- Never assume user wants the update
-- If unsure, ask for clarification
-
-### Step 5: Detect Context File Template Changes
-
-Check which templates have changed:
-
-```bash
-# For each template, check if different from current
-cd /tmp/claude-context-update/claude-context-system-main
-
-# Check CLAUDE template
-if [ -f templates/CLAUDE.template.md ]; then
-  # Extract just the "system" sections we might want to update
-  # (Communication Style, Core Methodology, etc.)
-fi
-```
-
-**Sections we can safely update in CLAUDE.md:**
-- "Core Development Methodology" (system section)
-- Communication preferences template (system section)
-- Reference to .context-config.json (system section)
-
-**Sections we should NOT touch:**
-- Project Overview (project-specific)
-- Commands (project-specific)
-- Architecture (project-specific)
-- Examples from Past Sessions (project-specific)
-
-**Identify available updates:**
-```
-Available template updates:
-- CLAUDE.md: Core Development Methodology section updated
-- CODE_STYLE.md: New anti-patterns added
-- templates/: 2 new templates available
-```
-
-### Step 6: Detect User Modifications (Conflict Check)
-
-**Before applying updates, check if user has customized system sections:**
-
-```bash
-# For each section we want to update, check if it's been modified
-cd /tmp/claude-context-update/claude-context-system-main
-
-# Extract Core Development Methodology from template
-TEMPLATE_HASH=$(sed -n '/^## Core Development Methodology/,/^## /p' templates/CLAUDE.template.md | md5sum | cut -d' ' -f1)
-
-# Extract from current project (if exists)
-if grep -q "^## Core Development Methodology" context/CLAUDE.md 2>/dev/null; then
-  CURRENT_HASH=$(sed -n '/^## Core Development Methodology/,/^## /p' context/CLAUDE.md | md5sum | cut -d' ' -f1)
-
-  # Compare with original v1.0.0 template hash
-  ORIGINAL_HASH="[known hash for v1.0.0]"
-
-  if [ "$CURRENT_HASH" != "$ORIGINAL_HASH" ] && [ "$CURRENT_HASH" != "$TEMPLATE_HASH" ]; then
-    echo "⚠️  CUSTOMIZATION DETECTED"
-    echo "You've modified Core Development Methodology section"
-    echo "Template has also been updated"
-    echo ""
-    echo "Options:"
-    echo "1. Keep your customizations (skip update)"
-    echo "2. Apply template update (overwrite customizations)"
-    echo "3. Merge manually (show both versions)"
   fi
 fi
+
+# Check if feedback file exists and has actual content (not just template)
+if [ -f "context/context-feedback.md" ]; then
+  # Count lines in Feedback Entries section (between "## Feedback Entries" and "## Examples")
+  # Fresh template has ~7 lines, template with entries has 15+
+  CONTENT_LINES=$(awk '/^## Feedback Entries$/,/^## Examples/' \
+    context/context-feedback.md | wc -l | tr -d ' ')
+
+  if [ "$CONTENT_LINES" -gt 10 ]; then  # Has actual entries beyond template
+    # Get current version for archive filename
+    CURRENT_VERSION=$(get_system_version)
+    ARCHIVE_DATE=$(date +%Y-%m-%d)
+
+    # Create archive directory if needed
+    mkdir -p artifacts/feedback
+
+    # Archive with version and date
+    ARCHIVE_FILE="artifacts/feedback/feedback-v${CURRENT_VERSION}-${ARCHIVE_DATE}.md"
+    mv context/context-feedback.md "$ARCHIVE_FILE"
+
+    log_success "✅ Archived feedback to $ARCHIVE_FILE"
+    log_info "   (Feedback from v${CURRENT_VERSION} preserved)"
+  else
+    log_verbose "Feedback file exists but appears to be just template (no entries)"
+    # Deletion protection for potentially sensitive files
+    if confirm_deletion "context/context-feedback.md"; then
+      rm -f context/context-feedback.md
+      log_verbose "Removed empty feedback file"
+    else
+      log_warn "⚠️  Kept context/context-feedback.md (deletion cancelled)"
+    fi
+  fi
+fi
+
+# Create fresh feedback file from template
+if [ ! -f "context/context-feedback.md" ]; then
+  if [ -f "templates/context-feedback.template.md" ]; then
+    cp templates/context-feedback.template.md context/context-feedback.md
+    log_success "✅ Created fresh feedback file"
+    log_info ""
+    log_info "📝 Please share your upgrade experience:"
+    log_info "   - Any issues during update?"
+    log_info "   - New features working well?"
+    log_info "   - Add feedback to context/context-feedback.md"
+  else
+    log_warn "⚠️  Template not found - will be created on next /init-context"
+  fi
+fi
+
+log_info ""
 ```
 
-**Conflict scenarios:**
+**Why this matters:**
+- Preserves your previous feedback (archived with version number)
+- Gives you fresh file for new feedback
+- Tracks what version you were using when you had issues
+- Helps identify version-specific problems
 
-1. **No conflict:** Current matches original template → Safe to update
-2. **User customized:** Current differs from original → Warn before updating
-3. **Both changed:** User customized AND template updated → Require manual merge
+---
 
-**Handle conflicts:**
+### Step 3: Show What's New (v3.3.0+)
 
-```
-⚠️  Conflict Detected in context/CLAUDE.md
+**ACTION:** Display what's new in the upgraded version:
 
-Section: Core Development Methodology
-Status: You've customized this section, and template has updates
+```bash
+log_info ""
+log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_info "  🎉 What's New in v3.3.0"
+log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_info ""
 
---- YOUR VERSION ---
-**When Debugging:**
-Trace code flows carefully. Use debugger breakpoints.
-Always check database state.
+CURRENT_VERSION=$(get_system_version)
 
---- TEMPLATE UPDATE ---
-**When Debugging:**
-Trace through the ENTIRE code flow step by step. No assumptions. No shortcuts. Follow the data from entry point to the issue.
+# Show what's new for v3.3.0 upgrades
+if [[ "$CURRENT_VERSION" == "3.3.0" ]]; then
+  echo "✨ You now have these new features:"
+  echo ""
+  echo "1️⃣  Template Markers (Template Protection)"
+  echo "   • HTML comment markers protect critical sections"
+  echo "   • <!-- TEMPLATE SECTION: KEEP ALL --> preserves structure"
+  echo "   • <!-- TEMPLATE: READ-ONLY --> prevents modifications"
+  echo "   • Prevents 80-90% of template deletion errors"
+  echo ""
+  echo "2️⃣  Documentation Staleness Detection"
+  echo "   • /save-full warns when CONTEXT.md is >7 days old"
+  echo "   • /save-full warns when README.md is >14 days old"
+  echo "   • /review-context shows color-coded staleness 🟢🟡🔴"
+  echo "   • Proactive reminders prevent documentation drift"
+  echo ""
+  echo "3️⃣  Decision Documentation Guidance"
+  echo "   • CLAUDE.md now has decision capture prompts"
+  echo "   • 5 categories of decisions with examples"
+  echo "   • DECISIONS.md format guidance with metrics"
+  echo "   • Better architectural decision preservation"
+  echo ""
+  echo "4️⃣  Deletion Protection"
+  echo "   • Interactive confirmation before file deletion"
+  echo "   • Shows file details and requires explicit 'yes'"
+  echo "   • Default: keep file (safe by default)"
+  echo "   • Zero data loss from accidental deletions"
+  echo ""
+  echo "📖 Detailed documentation: .claude/docs/update-guide.md"
+  echo ""
+  echo "🎯 To adopt template markers (recommended):"
+  echo "   Run /update-templates to add markers to your context files"
+  echo ""
+  echo "🎯 To use staleness detection:"
+  echo "   Already active! Next /save-full will check documentation currency"
+  echo ""
+fi
 
---- RECOMMENDATION ---
-Your version includes custom debugging steps (database state check).
-Template update adds emphasis on thoroughness.
-
-Choose action:
-1. Keep yours (recommended if you've added project-specific guidance)
-2. Use template (recommended if you want latest best practices)
-3. Merge both (manually combine in next step)
-4. Show full diff
-
-Your choice [1/2/3/4]:
-```
-
-### Step 7: Apply Updates (Based on Mode)
-
-#### If `--accept-all` flag:
-
-**Check for conflicts first:**
-- If conflicts detected: Show warning, require manual resolution
-- If no conflicts: Proceed with auto-apply
-
-```
-⚠️  Cannot use --accept-all with conflicts
-
-Conflicts detected in:
-- context/CLAUDE.md (Core Development Methodology customized)
-- context/CODE_STYLE.md (Git workflow customized)
-
-Please run without --accept-all to resolve conflicts interactively.
-Or resolve manually and re-run.
-```
-
-**If no conflicts, auto-apply all updates:**
-1. Add/update Core Development Methodology in context/CLAUDE.md
-2. Add/update system sections in context/CODE_STYLE.md
-3. Update context/.context-config.json version
-4. Report what was changed
-
-```
-🚀 Applying all updates automatically...
-
-✅ Updated context/CLAUDE.md:
-   - Core Development Methodology section updated
-   - Communication preferences updated
-
-✅ Updated context/CODE_STYLE.md:
-   - Added new anti-patterns section
-
-✅ Updated context/.context-config.json:
-   - Version: 1.0.0 → 1.2.0
+log_info "📦 Current version: $CURRENT_VERSION"
+log_info ""
 ```
 
-#### If interactive mode (default):
+### Step 4: Check Version and Migration Path
 
-**Show each update and ask:**
+**ACTION:** Check current version to determine if migration is needed:
+
+```bash
+if [[ "$CURRENT_VERSION" == "2.1.0" ]]; then
+  echo "🔄 Migration to v2.2.1 available!"
+  echo ""
+  echo "✨ v2.2.1 includes organization features + bug fixes:"
+  echo "   - Bug fixes: Git push protection, large file handling, subdirectory support"
+  echo "   - ORGANIZATION.md guidelines (in reference/ folder)"
+  echo "   - /organize-docs command (interactive cleanup wizard)"
+  echo "   - Organization validation (0-100 scoring)"
+  echo "   - Cleanup reminders (gentle, skippable)"
+  echo ""
+  echo "Migration time: 5 minutes (automatic) + 10-15 minutes (optional cleanup)"
+  echo "Difficulty: Easy (non-breaking, opt-in features)"
+  echo ""
+  echo "📖 Full migration guide:"
+  echo "   reference/MIGRATION_GUIDE_v2.1_to_v2.2.md"
+  echo "   https://github.com/rexkirshner/ai-context-system/blob/main/MIGRATION_GUIDE_v2.1_to_v2.2.md"
+  echo ""
+  echo "🎯 Quick adoption (optional):"
+  echo "   1. cp reference/ORGANIZATION.md ./ORGANIZATION.md"
+  echo "   2. Add /organize-docs to context/.context-config.json enabled commands"
+  echo "   3. Run /validate-context to check organization score"
+  echo "   4. Run /organize-docs if score < 90"
+  echo ""
+elif [[ "$CURRENT_VERSION" == "2.0.0" ]]; then
+  echo "🔄 Migration to v2.1.0 available!"
+  echo ""
+  echo "⚠️  v2.1.0 includes file consolidation:"
+  echo "   - QUICK_REF.md merged into STATUS.md (auto-generated section)"
+  echo "   - Creates CLAUDE.md at project root (auto-loaded)"
+  echo "   - Reduces file count: 6 → 5 files"
+  echo "   - Adds automated staleness detection"
+  echo ""
+  echo "Migration time: 10-15 minutes"
+  echo "Difficulty: Easy (mostly automatic)"
+  echo ""
+  echo "📖 Full migration guide:"
+  echo "  https://github.com/rexkirshner/ai-context-system/blob/main/MIGRATION_GUIDE_v2.0_to_v2.1.md"
+  echo ""
+  echo "Quick migration (copy-paste to terminal):"
+  echo "  curl -sL https://raw.githubusercontent.com/rexkirshner/ai-context-system/main/MIGRATION_GUIDE_v2.0_to_v2.1.md | grep -A 100 'Run in terminal:' | bash"
+  echo ""
+elif [[ "$CURRENT_VERSION" == "1.9.0" ]]; then
+  echo "🔄 Migration to v2.0.0 available!"
+  echo ""
+  echo "⚠️  v2.0.0 includes major file structure changes:"
+  echo "   - CLAUDE.md → CONTEXT.md"
+  echo "   - Creates STATUS.md (single source of truth)"
+  echo "   - Creates DECISIONS.md, SESSIONS.md (structured)"
+  echo "   - Auto-generates Quick Reference"
+  echo ""
+  echo "Migration options:"
+  echo "  1. MANUAL: Follow MIGRATION_GUIDE.md (recommended)"
+  echo "  2. AUTOMATED: Use migration script (backup first)"
+  echo ""
+  echo "For manual migration, see:"
+  echo "  https://github.com/rexkirshner/ai-context-system/blob/main/MIGRATION_GUIDE.md"
+  echo ""
+elif [[ "$CURRENT_VERSION" < "1.9.0" ]]; then
+  echo "🔄 Multi-step migration required..."
+  echo ""
+  echo "Your version: $CURRENT_VERSION"
+  echo "Latest version: 2.2.1"
+  echo ""
+  echo "Migration path:"
+  echo "  1. Upgrade to v1.9.0 first"
+  echo "  2. Then upgrade to v2.0.0"
+  echo "  3. Then upgrade to v2.1.0"
+  echo "  4. Finally upgrade to v2.2.1"
+  echo ""
+  echo "Start with:"
+  echo "  https://github.com/rexkirshner/ai-context-system/releases"
+  echo ""
+else
+  echo "✅ Already on latest version structure"
+fi
+```
+
+**About v2.0.0 Migration:**
+
+Automated migration with dry-run, backup, and rollback is planned for v2.1. For now, v2.0.0 migration is manual:
+
+1. Read [MIGRATION_GUIDE.md](https://github.com/rexkirshner/ai-context-system/blob/main/MIGRATION_GUIDE.md)
+2. Backup your `context/` folder
+3. Follow the step-by-step migration process
+4. Verify with `/validate-context`
+
+**Why manual for now?**
+- v2.0.0 focuses on getting the new structure right
+- Automated migration requires extensive testing (10+ real projects)
+- Manual migration ensures you understand changes
+- v2.1 will add full automation with safety features
+
+### Step 5: Review Template Updates (Optional)
+
+After the installer completes, you may want to review if any template files have significant updates that should be applied to your context files.
+
+**ACTION:** Check for template changes:
+
+```bash
+echo ""
+echo "📋 Reviewing template updates..."
+echo ""
+
+# Compare templates with your context files (if they exist)
+if [ -f "context/CONTEXT.md" ] && [ -f "templates/CONTEXT.template.md" ]; then
+  echo "ℹ️  CONTEXT.md template available in templates/"
+  echo "   Review templates/CONTEXT.template.md for new sections you might want to add"
+fi
+
+if [ -f "context/STATUS.md" ] && [ -f "templates/STATUS.template.md" ]; then
+  echo "ℹ️  STATUS.md template available in templates/"
+  echo "   Review templates/STATUS.template.md for structural improvements"
+fi
+
+if [ -f "context/DECISIONS.md" ] && [ -f "templates/DECISIONS.template.md" ]; then
+  echo "ℹ️  DECISIONS.md template available in templates/"
+  echo "   Review templates/DECISIONS.template.md for new guidelines"
+fi
+
+echo ""
+echo "💡 Tip: Compare templates with your context files manually to identify"
+echo "   useful additions. Your project-specific content remains untouched."
+```
+
+Templates are reference files - you choose what to adopt.
+
+### Step 5.5: CLAUDE.md Migration Check (v3.6.0+)
+
+**CRITICAL:** Check if user needs to migrate CLAUDE.md from old location to project root.
+
+**ACTION:** Detect old location and offer migration:
+
+```bash
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "🔍 CLAUDE.md Location Check (v3.6.0)"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+
+OLD_CLAUDE="context/claude.md"
+NEW_CLAUDE="CLAUDE.md"
+MIGRATION_NEEDED=false
+
+# Case 1: Old location exists, new doesn't - offer migration
+if [ -f "$OLD_CLAUDE" ] && [ ! -f "$NEW_CLAUDE" ]; then
+  MIGRATION_NEEDED=true
+  echo "⚠️  Found CLAUDE.md at old location: context/claude.md"
+  echo ""
+  echo "Starting v3.6.0, CLAUDE.md should be at project root for auto-loading by Claude Code."
+  echo ""
+  echo "Options:"
+  echo "  1. MOVE existing file (preserves your customizations)"
+  echo "  2. CREATE fresh file (uses new v3.6.0 template)"
+  echo "  3. SKIP (I'll handle it manually)"
+  echo ""
+  read -p "Choose option [1/2/3]: " -n 1 -r MIGRATE_CHOICE
+  echo ""
+
+  case "$MIGRATE_CHOICE" in
+    1)
+      echo ""
+      echo "Moving context/claude.md → ./CLAUDE.md..."
+      mv "$OLD_CLAUDE" "$NEW_CLAUDE"
+      echo "✅ Moved successfully!"
+      echo ""
+      echo "💡 Tip: Review ./CLAUDE.md - the v3.6.0 template has new sections"
+      echo "   you may want to add (Project Identity, Critical Rules, etc.)"
+      echo "   See: templates/CLAUDE.md.template"
+      ;;
+    2)
+      echo ""
+      echo "Creating fresh CLAUDE.md from v3.6.0 template..."
+      if [ -f "templates/CLAUDE.md.template" ]; then
+        cp "templates/CLAUDE.md.template" "$NEW_CLAUDE"
+        echo "✅ Created ./CLAUDE.md from template"
+        echo ""
+        echo "⚠️  Your old file remains at context/claude.md"
+        echo "   Review it for any customizations to merge, then delete it:"
+        echo "   rm context/claude.md"
+      else
+        echo "❌ Template not found. Run /update-context-system again."
+      fi
+      ;;
+    3|*)
+      echo ""
+      echo "Skipped. To migrate manually:"
+      echo "  mv context/claude.md ./CLAUDE.md"
+      echo ""
+      echo "Or create fresh from template:"
+      echo "  cp templates/CLAUDE.md.template ./CLAUDE.md"
+      ;;
+  esac
+
+# Case 2: Both exist - warn about duplicate
+elif [ -f "$OLD_CLAUDE" ] && [ -f "$NEW_CLAUDE" ]; then
+  echo "⚠️  Both locations exist:"
+  echo "   - ./CLAUDE.md (correct - auto-loaded)"
+  echo "   - context/claude.md (old - not auto-loaded)"
+  echo ""
+  echo "Recommendation:"
+  echo "  1. Review context/claude.md for any unique customizations"
+  echo "  2. Merge any customizations into ./CLAUDE.md"
+  echo "  3. Delete the old file: rm context/claude.md"
+
+# Case 3: Only new location exists - good!
+elif [ -f "$NEW_CLAUDE" ]; then
+  echo "✅ CLAUDE.md is at correct location (project root)"
+
+# Case 4: Neither exists - create new
+else
+  echo "ℹ️  No CLAUDE.md found. Creating from template..."
+  if [ -f "templates/CLAUDE.md.template" ]; then
+    cp "templates/CLAUDE.md.template" "$NEW_CLAUDE"
+    echo "✅ Created ./CLAUDE.md from template"
+    echo "   📝 Customize with your project details"
+  else
+    echo "⚠️  Template not found. CLAUDE.md will be created by /init-context"
+  fi
+fi
+
+echo ""
+```
+
+**Why this matters:** CLAUDE.md at project root is auto-loaded by Claude Code at every conversation start. The old location `context/claude.md` is NOT auto-loaded, meaning critical project context wasn't available by default.
+
+### Step 6: Generate Update Report
+
+Provide a clear summary to the user:
 
 ```
-📝 Update available for context/CLAUDE.md
-
-Section: Core Development Methodology
-Change: Updated debugging guidance
-
---- OLD ---
-**When Debugging:**
-Trace through code flows carefully.
-
---- NEW ---
-**When Debugging:**
-Trace through the ENTIRE code flow step by step. No assumptions. No shortcuts. Follow the data from entry point to the issue.
-
-Apply this update? [Y/n/diff]
-- Y: Apply update
-- n: Skip this update
-- diff: Show full diff
-
-User response: Y
-
-✅ Applied update to context/CLAUDE.md
-```
-
-**For each template update:**
-1. Show section name and brief change summary
-2. Show before/after snippet
-3. Ask: Apply? [Y/n/diff]
-4. If Y: Use Edit tool to apply change
-5. If n: Skip, note in report
-6. If diff: Show full diff, then ask again
-
-### Step 8: Update Version in Config
-
-**ACTION:** Use the Edit tool to update the version in context/.context-config.json
-
-After determining LATEST_VERSION from Step 1, use the Edit tool:
-```
-file_path: context/.context-config.json
-old_string: "version": "1.0.0"  (or whatever CURRENT_VERSION was)
-new_string: "version": "1.1.1"  (or whatever LATEST_VERSION is)
-```
-
-Then report:
-```
-✅ Updated version: 1.0.0 → 1.1.1
-```
-
-### Step 9: Generate Update Report
-
-Provide clear summary:
-
-```
-✅ Claude Context System Updated
+✅ AI Context System Updated
 
 ## Version
-1.0.0 → 1.2.0
+[OLD_VERSION] → [NEW_VERSION]
 
-## Commands Updated (5)
-- ✅ init-context.md
-- ✅ migrate-context.md
-- ✅ save-context.md
-- ✅ review-context.md
-- ✅ code-review.md
+## What Was Updated
 
-## Context Files Updated (2)
-- ✅ context/CLAUDE.md
-  - Core Development Methodology section updated
-  - Communication preferences clarified
-- ✅ context/CODE_STYLE.md
-  - Added new anti-patterns section
+**System Files:**
+- Slash commands (.claude/commands/) - v2.0.0 command prompts
+- Helper scripts (scripts/) - v1.9.0 automation (v2.0 migration in v2.1)
+- Templates (templates/) - v2.0.0 file structure
+- Configuration schemas (config/) - v2.0.0 schema
 
-## Context Files Skipped (1)
-- ⏭️ context/ARCHITECTURE.md (no template updates)
+**Your Project Files:**
+- Version number in context/.context-config.json
+- No changes to your context documentation (CONTEXT.md, STATUS.md, etc.)
 
-## New Features
-- Added /update-context-system command (this one!)
-- Improved /migrate-context with augmentation verification
-- Enhanced /code-review with SEO section
+## Template Updates Available
 
-## Breaking Changes
-None
+Review templates/ directory for new reference content you may want to adopt:
+- templates/CONTEXT.template.md
+- templates/STATUS.template.md (includes Quick Reference section at top in v2.1)
+- templates/DECISIONS.template.md
+- templates/SESSIONS.template.md
+- templates/CODE_MAP.template.md (optional)
 
 ## Next Steps
-1. Review updated sections in context/CLAUDE.md
-2. Run /save-context to capture the update
+
+1. Review template files if desired
+2. Run /save-context to document this update
 3. Continue working with latest system!
 
 ---
 
-📚 Full changelog: https://github.com/rexkirshner/claude-context-system/releases
+📚 Full changelog: https://github.com/rexkirshner/ai-context-system/releases
 ```
 
-### Step 10: Cleanup
+## Important Notes
 
-**CRITICAL:** This MUST be the final step. Do not run cleanup before template detection steps.
+### What Gets Updated
 
-**ACTION:** Use the Bash tool to clean up:
+- ✅ All slash commands (always)
+- ✅ Scripts and templates (reference files)
+- ✅ Configuration schemas
+- ✅ Version number in config
+- ❌ Never: Your context documentation (you choose what to update)
+- ❌ Never: Project-specific content
 
-```bash
-# Remove temp directory (contains downloaded templates)
-rm -rf /tmp/claude-context-update
+### Safety
 
-# Remove command backup if successful
-rm -rf .claude/commands.backup
+- Installer creates backups before updating
+- Your context files (CONTEXT.md, STATUS.md, etc.) are never touched
+- Templates are references - you decide what to adopt
+- Can restore from backup if needed: `.claude-backup-[timestamp]/`
 
-echo "✅ Cleanup complete"
-```
+### Version Management
 
-**Why cleanup is last:**
-- Steps 4-7 need /tmp/claude-context-update to access template files
-- Running cleanup earlier causes template detection to fail (directory not found)
-- This was a critical bug in v1.2.5 and earlier
-
-## Template Section Mapping
-
-These are the "system" sections we can safely update:
-
-### context/CLAUDE.md
-**Safe to update (system sections):**
-- Core Development Methodology
-- Communication Style template
-- Testing & Verification template
-- Config reference block
-
-**Never touch (project sections):**
-- Project Overview
-- Commands
-- Architecture
-- Critical Path
-- Examples from Past Sessions
-
-### context/CODE_STYLE.md
-**Safe to update (system sections):**
-- Core development principles
-- Anti-patterns
-- Git workflow rules
-
-**Never touch (project sections):**
-- Language-specific conventions
-- Project-specific patterns
-- Custom testing requirements
-
-### context/.context-config.json
-**Safe to update:**
-- version number
-- Add new preference fields (don't remove existing)
-
-**Never touch:**
-- project.name, project.type
-- Any user-customized preferences
-
-## Update Detection Strategy
-
-**How to detect if a section needs updating:**
-
-1. **Hash comparison:**
-   ```bash
-   # Get hash of current section
-   sed -n '/^## Core Development Methodology/,/^## /p' context/CLAUDE.md | md5sum
-
-   # Compare with template
-   sed -n '/^## Core Development Methodology/,/^## /p' templates/CLAUDE.template.md | md5sum
-   ```
-
-2. **If hashes differ:**
-   - Section has been updated
-   - Show diff and offer to apply
-
-3. **If section missing entirely:**
-   - Auto-add (this is an improvement, not a change)
+- Version stored in `context/.context-config.json`
+- Format: `major.minor.patch` (e.g., "1.8.0")
+- Check GitHub releases for changelog
 
 ## Error Handling
 
@@ -761,108 +649,75 @@ These are the "system" sections we can safely update:
 ❌ Cannot reach GitHub
 - Check internet connection
 - Try again later
-- Manual update: download from https://github.com/rexkirshner/claude-context-system
+- Manual update: download from https://github.com/rexkirshner/ai-context-system
 ```
 
-**If commands backup fails:**
+**If installer fails:**
 ```
-❌ Could not backup existing commands
-- Ensure .claude/commands/ is writable
-- Check disk space
-- Update cancelled for safety
-```
-
-**If template extraction fails:**
-```
-⚠️ Could not extract template updates
-- Commands updated successfully
-- Context file updates skipped
-- Manually check templates/ folder
-```
-
-**If Edit tool fails:**
-```
-❌ Could not apply update to context/CLAUDE.md
-- Changes saved to context/CLAUDE.md.update
-- Review and apply manually
-- Or re-run /update-context-system
-```
-
-## Important Notes
-
-### Version Numbers
-- Version stored in `context/.context-config.json`
-- Format: `major.minor.patch` (e.g., "1.2.3")
-- Check GitHub releases for changelog
-
-### Backup Safety
-- Commands backed up to `.claude/commands.backup` during update
-- Restore if needed: `mv .claude/commands.backup .claude/commands`
-- Backup removed on successful completion
-
-### What Gets Updated
-- ✅ All slash commands (always)
-- ✅ System sections in context files (if changed)
-- ✅ Version number in config
-- ❌ Never: project-specific content
-- ❌ Never: custom user modifications
-
-### Accept All Safety
-- `--accept-all` only updates predefined system sections
-- Never overwrites project-specific content
-- Safe to use if you trust system updates
-- Review changelog first: https://github.com/rexkirshner/claude-context-system/releases
-
-## Usage Examples
-
-### Check and update interactively
-```
-/update-context-system
-
-> 📦 Update available: v1.0.0 → v1.2.0
->
-> Commands to update: 5
-> Context sections to update: 2
->
-> Apply updates? [Y/n]
-```
-
-### Accept all updates
-```
-/update-context-system --accept-all
-
-> 🚀 Applying all updates...
-> ✅ Updated 5 commands
-> ✅ Updated 2 context sections
-> ✅ Version: 1.0.0 → 1.2.0
-```
-
-### Check version only
-If already up to date:
-```
-/update-context-system
-
-> ✅ Already Up to Date
->
-> Current version: 1.2.0
-> Latest version: 1.2.0
->
-> Your Claude Context System is already running the latest version.
-> No updates were performed. All commands are current.
+❌ Installation failed
+- Check error output above
+- Your original files are backed up in .claude-backup-[timestamp]/
+- Restore if needed: cp -r .claude-backup-*/.claude .
 ```
 
 ## Success Criteria
 
 Update succeeds when:
-- All commands updated successfully
-- Version number incremented
+- Installer completes without errors
+- All files verified
+- Version number updated in config
 - Update report generated
-- No errors during process
-- User informed of all changes
+- User informed of changes
 
 **Perfect update:**
-- Commands auto-updated
-- Context improvements applied
-- Project-specific content untouched
+- System files auto-updated
+- Project content untouched
 - Clear report of what changed
 - Ready to continue work immediately
+
+---
+
+**💬 Feedback**: Any feedback on the update process? (Add to `context/context-feedback.md`)
+
+- Did the update go smoothly?
+- Any errors or warnings?
+- New features working as expected?
+- Was feedback properly archived?
+
+---
+
+## Session Start: Git Workflow Reminder
+
+**After completing the update**, present this copy-paste prompt to the user:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 COPY-PASTE PROMPT FOR THIS SESSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+For this session, please follow these git workflow rules:
+
+1. **Commit liberally and often** - Create git commits whenever you complete a logical unit of work (fixing a bug, adding a feature, refactoring a section, etc.)
+
+2. **NEVER push to GitHub without explicit permission** - You may stage files (git add) and commit locally (git commit), but ONLY push to remote (git push) when I explicitly say "push to github" or similar.
+
+3. **Permission does NOT carry forward** - If I say "commit and push" for one change, that permission applies ONLY to that specific commit. Future commits require NEW explicit permission to push.
+
+Think of it as: Local commits are safe and encouraged. Remote pushes require explicit approval each time.
+
+Understood?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Why this matters:**
+- Standardizes git workflow expectations across all AI assistants
+- Prevents accidental pushes to remote repository
+- Encourages frequent local commits (good practice)
+- User controls when work is published to team
+
+**User action:** Copy the prompt above and paste it into your session to set ground rules with the AI.
+
+---
+
+**Version:** 3.6.0
+**Updated:** v3.0.4 - Added git workflow reminder for session start

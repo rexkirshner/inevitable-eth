@@ -1,11 +1,11 @@
 ---
 name: migrate-context
-description: Migrate existing project to Claude Context System while preserving all content
+description: Migrate existing project to AI Context System while preserving all content
 ---
 
 # /migrate-context Command
 
-Migrate an existing project with documentation to the Claude Context System. This command preserves ALL existing content while organizing it into the standard structure and augmenting with new sections.
+Migrate an existing project with documentation to the AI Context System. This command preserves ALL existing content while organizing it into the standard structure and augmenting with new sections.
 
 ## When to Use This Command
 
@@ -13,11 +13,11 @@ Migrate an existing project with documentation to the Claude Context System. Thi
 - Projects with docs scattered across root directory
 - Projects with artifacts (code reviews, lighthouse reports) in wrong locations
 - Converting from other documentation systems
-- Want to adopt Claude Context System without losing existing work
+- Want to adopt AI Context System without losing existing work
 
 **Do NOT use if:**
 - Project has no documentation (use `/init-context` instead)
-- Already using Claude Context System
+- Already using AI Context System
 
 ## What This Command Does
 
@@ -32,7 +32,91 @@ Migrate an existing project with documentation to the Claude Context System. Thi
 
 ## Execution Steps
 
-### Step 0: Verify Working Directory and .claude Location
+### Step 0: Detect Project Maturity (Auto-Route to Correct Command)
+
+**ACTION:** Check if project is actually new/empty. If yes, suggest /init-context instead.
+
+```bash
+echo "🔍 Scanning for existing documentation..."
+echo ""
+
+# Detect existing documentation files
+EXISTING_DOCS=()
+
+# Common documentation files
+[ -f "README.md" ] && [ -s "README.md" ] && EXISTING_DOCS+=("README.md")
+[ -f "ARCHITECTURE.md" ] && EXISTING_DOCS+=("ARCHITECTURE.md")
+[ -f "CONTRIBUTING.md" ] && EXISTING_DOCS+=("CONTRIBUTING.md")
+[ -f "docs/architecture.md" ] && EXISTING_DOCS+=("docs/architecture.md")
+[ -f "docs/README.md" ] && EXISTING_DOCS+=("docs/README.md")
+
+# Check for docs directory with content
+if [ -d "docs/" ] && [ "$(find docs/ -type f -name '*.md' 2>/dev/null | head -1)" ]; then
+  EXISTING_DOCS+=("docs/ directory")
+fi
+
+# Check for existing architecture/design docs
+[ -f "DESIGN.md" ] && EXISTING_DOCS+=("DESIGN.md")
+[ -f "PRD.md" ] && EXISTING_DOCS+=("PRD.md")
+[ -f "ROADMAP.md" ] && EXISTING_DOCS+=("ROADMAP.md")
+
+# Check for code review or artifact files (common in mature projects)
+[ -d "code-reviews/" ] && EXISTING_DOCS+=("code-reviews/")
+[ -d "lighthouse/" ] && EXISTING_DOCS+=("lighthouse/")
+
+# If project has <2 docs, it's probably new
+if [ ${#EXISTING_DOCS[@]} -lt 2 ]; then
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "🔀 WRONG COMMAND DETECTED"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo ""
+
+  if [ ${#EXISTING_DOCS[@]} -eq 0 ]; then
+    echo "ℹ️  No existing documentation detected"
+  else
+    echo "ℹ️  Only found: ${EXISTING_DOCS[0]}"
+  fi
+
+  echo ""
+  echo "This appears to be a NEW project without significant documentation."
+  echo "You should use /init-context instead of /migrate-context"
+  echo ""
+  echo "📌 Difference:"
+  echo "   /init-context    - Creates fresh templates (for NEW projects)"
+  echo "   /migrate-context - Preserves existing docs (for MATURE projects)"
+  echo ""
+  echo "Options:"
+  echo "  [Y] Switch to /init-context (recommended)"
+  echo "  [n] Continue with /migrate-context (unnecessary complexity)"
+  echo ""
+  read -p "Switch to /init-context? [Y/n] " -r
+  echo ""
+
+  if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+    echo "✅ Switching to /init-context..."
+    echo ""
+    # Note: In actual execution, use: claude /init-context
+    exit 0
+  else
+    echo "⚠️  Continuing with /migrate-context (will work, but adds complexity)"
+    echo ""
+  fi
+else
+  echo "✅ Found ${#EXISTING_DOCS[@]} documentation files - migration is appropriate"
+  for doc in "${EXISTING_DOCS[@]}"; do
+    echo "   📄 $doc"
+  done
+  echo ""
+fi
+```
+
+**Why this matters:** /migrate-context is complex and designed for projects with existing documentation to preserve. For new projects, /init-context is simpler and faster.
+
+**Threshold:** <2 documentation files triggers the warning (suggests project is too new for migration).
+
+---
+
+### Step 0.5: Verify Working Directory and .claude Location
 
 **CRITICAL:** The `.claude/` directory MUST be in your actual project root, not in a parent container folder.
 
@@ -67,8 +151,8 @@ if [ ! -d "$CURRENT_DIR/.claude" ]; then
   echo "This migration requires the toolkit (.claude/ and scripts/) to be installed first."
   echo ""
   echo "Install with:"
-  echo "  cp -r /path/to/claude-context-system/.claude ."
-  echo "  cp -r /path/to/claude-context-system/scripts ."
+  echo "  cp -r /path/to/ai-context-system/.claude ."
+  echo "  cp -r /path/to/ai-context-system/scripts ."
   echo ""
   read -p "Continue anyway? [y/N] " -n 1 -r
   echo
@@ -115,7 +199,7 @@ ls -la
 
 Look for:
 - **Context docs (root):** CLAUDE.md, PRD.md, DECISIONS.md, KNOWN_ISSUES.md, ARCHITECTURE.md, CODE_STYLE.md, SESSIONS.md, README.md, DEPLOYMENT.md
-- **Task files:** tasks/, todo.md, next-steps.md
+- **Task files (v1.x legacy):** tasks/, todo.md, next-steps.md (v2.0+ uses STATUS.md instead)
 - **Code reviews:** *code-review*.md, *review*.md
 - **Lighthouse reports:** lighthouse-*.json
 - **Other artifacts:** bundle-analysis/, coverage/, performance reports
@@ -137,16 +221,19 @@ Create inventory:
 
 ### Step 2: Create Folder Structure
 
-Create the complete Claude Context System structure:
+Create the complete AI Context System structure:
 
 ```bash
-mkdir -p context/tasks
+mkdir -p context
 mkdir -p artifacts/code-reviews
 mkdir -p artifacts/lighthouse
 mkdir -p artifacts/performance
 mkdir -p artifacts/security
 mkdir -p artifacts/bundle-analysis
 mkdir -p artifacts/coverage
+
+# Note: context/tasks/ only created if user explicitly wants to preserve legacy task files
+# v2.0+ uses STATUS.md instead of tasks/next-steps.md and tasks/todo.md
 ```
 
 ### Step 3: Move Existing Files
@@ -166,8 +253,22 @@ mv DEPLOYMENT.md context/ 2>/dev/null || true
 mv *DEPLOYMENT.md context/ 2>/dev/null || true  # Catches CLOUDFLARE_DEPLOYMENT.md, etc.
 mv TROUBLESHOOTING.md context/ 2>/dev/null || true
 
-# Task files (comprehensive - move ALL .md files from tasks/)
-mv tasks/*.md context/tasks/ 2>/dev/null || true
+# Task files (v1.x legacy - only if they exist and user wants to preserve)
+# v2.0+ uses STATUS.md instead of tasks/next-steps.md and tasks/todo.md
+# Ask user before moving to avoid recreating deprecated structure
+if [ -d "tasks" ] && [ -n "$(ls -A tasks/*.md 2>/dev/null)" ]; then
+  echo "⚠️  Found tasks/ directory with .md files"
+  echo "v2.0+ uses STATUS.md instead of tasks/next-steps.md and tasks/todo.md"
+  read -p "Preserve legacy task files in context/tasks/ for reference? [y/N] " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    mkdir -p context/tasks
+    mv tasks/*.md context/tasks/ 2>/dev/null || true
+    echo "✅ Legacy task files preserved in context/tasks/"
+  else
+    echo "⏭️  Skipping task files (content should be migrated to STATUS.md)"
+  fi
+fi
 ```
 
 **Move artifacts to artifacts/:**
@@ -224,13 +325,13 @@ If NOT found, use Edit tool to add after the "Working with You" section (or afte
 ```markdown
 ## Core Development Methodology
 
-1. **Plan First:** Read codebase, think through problem, write plan to `context/tasks/todo.md`
-2. **Track Progress:** Create todo items that can be checked off during work
+1. **Plan First:** Read codebase, think through problem, use TodoWrite tool for task tracking
+2. **Track Progress:** Create todo items with TodoWrite that can be checked off during work
 3. **Verify Plan:** Check in with user before starting implementation
 4. **Work Incrementally:** Complete todos one by one, marking complete as you go
 5. **Communicate Clearly:** Provide high-level explanation of changes at each step
 6. **Simplicity Above All:** Every change should impact minimal code
-7. **Document Results:** Add review section to todo.md with summary
+7. **Document Results:** Update STATUS.md with current state, run /save to capture session
 8. **No Lazy Coding:** Always look for root causes, never apply band-aids
 9. **Minimal Impact:** Changes affect only necessary code, nothing else
 10. **Full Tracing:** Debug by tracing ENTIRE code flow - no assumptions
@@ -270,19 +371,19 @@ For EACH occurrence found, use Edit tool to update the path:
 **Example Edit #1:**
 ```
 old_string: "Write a plan to `tasks/todo.md`"
-new_string: "Write a plan to `context/tasks/todo.md`"
+new_string: "Use TodoWrite tool for task tracking"
 ```
 
 **Example Edit #2:**
 ```
 old_string: "1. Write a plan to `tasks/todo.md`"
-new_string: "1. Write a plan to `context/tasks/todo.md`"
+new_string: "1. **Plan First:** Read codebase, think through problem, use TodoWrite tool for task tracking"
 ```
 
 **Example Edit #3:**
 ```
-old_string: "Continue from next-steps.md"
-new_string: "Continue from context/tasks/next-steps.md"
+old_string: "Add review section to todo.md"
+new_string: "Update STATUS.md with current state, run /save to capture session"
 ```
 
 **Process:**
@@ -382,7 +483,7 @@ Use SESSIONS.template.md and create first entry:
 ```markdown
 # Session History
 
-## Session 1 - Migration to Claude Context System
+## Session 1 - Migration to AI Context System
 **Date:** [DATE]
 **Focus:** Project migration
 
@@ -390,7 +491,7 @@ Use SESSIONS.template.md and create first entry:
 - Migrated existing documentation to context/ folder
 - Moved artifacts to proper locations
 - Created missing documentation files
-- Established Claude Context System structure
+- Established AI Context System structure
 
 **Files Modified:**
 - Moved: CLAUDE.md, PRD.md, DECISIONS.md, KNOWN_ISSUES.md → context/
@@ -400,20 +501,18 @@ Use SESSIONS.template.md and create first entry:
 - Created: .context-config.json
 
 **State at End:**
-- Claude Context System fully migrated
+- AI Context System fully migrated
 - All existing content preserved
 - Ready to use /save-context for future sessions
 
 ---
 ```
 
-#### Create context/tasks/next-steps.md (if missing)
+#### Create context/STATUS.md (if missing)
 
-Analyze git status and recent work to create actionable next steps.
+Use STATUS.template.md to create single source of truth for current state.
 
-#### Create context/tasks/todo.md (if missing)
-
-Use todo.template.md to create empty template ready for next session.
+**Note:** v2.0+ uses STATUS.md instead of tasks/next-steps.md and tasks/todo.md. If migrating from v1.x and user wants to keep legacy task files, preserve them in context/tasks/ for reference only.
 
 ### Step 6: Create Configuration
 
@@ -421,7 +520,7 @@ Create `context/.context-config.json`:
 
 ```json
 {
-  "version": "1.6.2",
+  "version": "1.7.0",
   "owner": "[Your Name]",
   "project": {
     "name": "[PROJECT_NAME]",
@@ -532,7 +631,7 @@ grep -q "context/tasks/todo.md" context/CLAUDE.md && echo "✅ Task paths update
 Create comprehensive report of what was done:
 
 ```markdown
-✅ Migration to Claude Context System Complete
+✅ Migration to AI Context System Complete
 
 ## Files Moved
 
@@ -542,9 +641,10 @@ Create comprehensive report of what was done:
 - DECISIONS.md (reformatted)
 - KNOWN_ISSUES.md (categorized)
 
-### Tasks → context/tasks/
-- tasks/next-steps.md → context/tasks/next-steps.md
-- tasks/todo.md → context/tasks/todo.md
+### Legacy Task Files (if preserving)
+- tasks/next-steps.md → context/tasks/next-steps.md (v1.x legacy)
+- tasks/todo.md → context/tasks/todo.md (v1.x legacy)
+- **Note:** v2.0+ uses STATUS.md instead; these preserved for reference only
 
 ### Artifacts → artifacts/
 - lighthouse-homepage.json → artifacts/lighthouse/
@@ -572,20 +672,20 @@ Create comprehensive report of what was done:
 - context/DECISIONS.md: Added proper formatting (if needed)
 - context/KNOWN_ISSUES.md: Added categorization (if needed)
 
-## Structure After Migration
+## Structure After Migration (v2.0)
 
 context/
-├── .context-config.json
-├── CLAUDE.md ✏️ augmented
-├── PRD.md ✏️ augmented
-├── ARCHITECTURE.md ⭐ new
+├── .context-config.json ⭐ new
+├── CONTEXT.md ✏️ augmented (or CLAUDE.md renamed)
+├── STATUS.md ⭐ new (single source of truth, includes auto-generated Quick Reference section at top)
 ├── DECISIONS.md ✏️ augmented
-├── CODE_STYLE.md ⭐ new
-├── KNOWN_ISSUES.md ✏️ augmented
-├── SESSIONS.md ⭐ new
-└── tasks/
-    ├── next-steps.md ➡️ moved
-    └── todo.md ➡️ moved
+├── SESSIONS.md ⭐ new (structured format)
+├── PRD.md ✏️ augmented (if exists)
+├── ARCHITECTURE.md ⭐ new/✏️ augmented (if exists)
+└── CODE_STYLE.md ⭐ new/✏️ augmented (if exists)
+
+**Note:** v2.0+ eliminates tasks/ directory. STATUS.md replaces next-steps.md and todo.md.
+If user wants to preserve legacy task files, they'll be in context/tasks/ for reference only.
 
 artifacts/
 ├── code-reviews/
@@ -613,11 +713,11 @@ artifacts/
 2. Verify context/.context-config.json settings
 3. Check new ARCHITECTURE.md and CODE_STYLE.md
 4. Run /save-context to capture current state
-5. Use Claude Context System going forward!
+5. Use AI Context System going forward!
 
 ---
 
-**Ready!** Your project is now fully migrated to Claude Context System.
+**Ready!** Your project is now fully migrated to AI Context System.
 All existing content preserved, enhanced with new structure.
 ```
 
@@ -735,28 +835,28 @@ Migration succeeds when:
 
 ```bash
 # Check if we're in a nested installation (common pattern)
-if [ -d "../claude-context-system" ]; then
+if [ -d "../ai-context-system" ]; then
   echo "🧹 Removing installation files..."
-  rm -rf ../claude-context-system
+  rm -rf ../ai-context-system
   echo "✅ Installation files removed"
-elif [ -d "./claude-context-system" ]; then
+elif [ -d "./ai-context-system" ]; then
   echo "🧹 Removing installation files..."
-  rm -rf ./claude-context-system
+  rm -rf ./ai-context-system
   echo "✅ Installation files removed"
 else
   echo "⏭️  No installation files found (already clean)"
 fi
 
 # Also check for downloaded zip
-if [ -f "../claude-context-system.zip" ]; then
-  rm -f ../claude-context-system.zip
+if [ -f "../ai-context-system.zip" ]; then
+  rm -f ../ai-context-system.zip
   echo "✅ Removed installation zip"
 fi
 ```
 
 **What gets removed:**
-- `claude-context-system/` directory (GitHub repo contents)
-- `claude-context-system.zip` (if exists)
+- `ai-context-system/` directory (GitHub repo contents)
+- `ai-context-system.zip` (if exists)
 
 **What gets kept:**
 - `.claude/` directory (slash commands)

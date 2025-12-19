@@ -195,6 +195,8 @@ Use specialized checklists for thoroughness:
 
 ### Step 6: Generate Comprehensive Report
 
+**MANDATORY: You MUST save the report to a file. Do NOT just display it in chat.**
+
 Create detailed report in `artifacts/code-reviews/session-[N]-review.md`:
 
 ```markdown
@@ -363,6 +365,34 @@ Create detailed report in `artifacts/code-reviews/session-[N]-review.md`:
 - [✅] Report is actionable
 ```
 
+**CRITICAL REQUIREMENT**: You MUST save the report to a file. This is NOT optional.
+
+**ACTION REQUIRED - Do this NOW after completing your analysis:**
+
+1. Create the directory: `mkdir -p artifacts/code-reviews`
+2. Determine the session number from SESSIONS.md
+3. Use the Write tool to save the complete report to `artifacts/code-reviews/session-[N]-review.md`
+
+The report file MUST contain:
+- All findings from your analysis (not a summary)
+- Actual issue details, file locations, and line numbers
+- The complete markdown structure shown in Step 6
+- Real values replacing all `[N]`, `[YYYY-MM-DD]`, and other placeholders
+
+**DO NOT:**
+- Skip saving the file
+- Only display the report in chat
+- Save a template with unfilled placeholders
+- Save a summary instead of the full report
+
+**Example filename:** `artifacts/code-reviews/session-14-review.md`
+
+After saving, confirm with:
+```
+✅ Report saved to: artifacts/code-reviews/session-[N]-review.md
+📄 You can view the detailed report at: artifacts/code-reviews/session-[N]-review.md
+```
+
 ### Step 7: Report Completion
 
 **Console output:**
@@ -392,6 +422,282 @@ Create detailed report in `artifacts/code-reviews/session-[N]-review.md`:
 
 ⚠️ Remember: NO changes were made during review.
 All issues documented for fixing later.
+```
+
+### Step 8: Integration & Actionability
+
+**IMPORTANT**: This step makes findings actionable by integrating with the context system and generating tasks.
+
+#### 8.1: Prepare Issues JSON
+
+Create a JSON file with all issues found in the review:
+
+```bash
+# Create JSON from review findings
+cat > artifacts/code-reviews/session-[N]-issues.json <<'EOF'
+[
+  {
+    "id": "C1",
+    "severity": "CRITICAL",
+    "message": "[Issue description]",
+    "file": "path/to/file.ts",
+    "line": 123,
+    "category": "Security",
+    "impact": "[Why this matters]"
+  },
+  // ... all issues from review
+]
+EOF
+```
+
+**Include all issues** from the review report (Critical, High, Medium, Low).
+
+#### 8.2: Load Helper Functions
+
+```bash
+# Source the code review helpers
+source scripts/code-review-helpers.sh
+source scripts/common-functions.sh
+```
+
+#### 8.3: Smart Grouping & TodoWrite Tasks
+
+Offer to create TodoWrite tasks from findings:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 ACTIONABLE TASKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Found 42 issues (3 critical, 5 high, 34 medium/low)
+
+Create TodoWrite tasks for critical and high priority issues? (Y/n) >
+```
+
+If user says Yes:
+
+```bash
+# Group similar issues
+group_similar_issues \
+  "artifacts/code-reviews/session-[N]-issues.json" \
+  "artifacts/code-reviews/session-[N]-grouped.json"
+
+# Generate TodoWrite tasks (CRITICAL + HIGH)
+generate_todowrite_tasks \
+  "artifacts/code-reviews/session-[N]-grouped.json" \
+  "HIGH" \
+  "artifacts/code-reviews/session-[N]-tasks.md"
+```
+
+Then display the generated tasks:
+
+```
+🧠 Smart grouping detected:
+   - 25 similar errors: Missing @testing-library/jest-dom type definitions
+   - 12 similar errors: Unused imports
+   - 5 unique errors
+
+Creating 7 grouped tasks:
+
+Critical Issues (3):
+✅ [pending] Fix SQL injection in search API (api/search.ts:123)
+✅ [pending] Add rate limiting to auth endpoints (3 files affected)
+✅ [pending] Remove hardcoded secrets from config (config.ts:89)
+
+High Priority (4):
+✅ [pending] Fix missing type definitions for @testing-library/jest-dom (25 files)
+✅ [pending] Remove unused imports (12 files)
+✅ [pending] Add error handling to async operations (api/users.ts:456)
+✅ [pending] Fix Decimal type handling (utils/math.ts:78)
+
+Total: 7 actionable tasks created from 42 findings
+
+💡 Run /save to persist tasks to SESSIONS.md
+```
+
+#### 8.4: Context Integration
+
+Offer to add critical findings to context system:
+
+```
+Add critical issues to context/KNOWN_ISSUES.md? (Y/n) >
+```
+
+If user says Yes:
+
+```bash
+# Find context directory
+CONTEXT_DIR=$(find_context_dir)
+
+# Add critical issues to KNOWN_ISSUES.md
+add_to_known_issues \
+  "artifacts/code-reviews/session-[N]-issues.json" \
+  "$CONTEXT_DIR/KNOWN_ISSUES.md" \
+  "[N]" \
+  "../artifacts/code-reviews/session-[N]-review.md" \
+  "CRITICAL"
+```
+
+Show confirmation:
+
+```
+✅ Added 3 critical issues to KNOWN_ISSUES.md:
+   - SQL injection vulnerability in search API
+   - Missing rate limiting on auth endpoints
+   - Hardcoded secrets in configuration
+```
+
+Then offer STATUS.md update:
+
+```
+Update context/STATUS.md with review summary? (Y/n) >
+```
+
+If user says Yes:
+
+```bash
+# Update STATUS.md
+update_status_summary \
+  "$CONTEXT_DIR/STATUS.md" \
+  "[N]" \
+  "[Grade]" \
+  "[Critical count]" \
+  "[High count]" \
+  "[Medium count]" \
+  "../artifacts/code-reviews/session-[N]-review.md"
+```
+
+Show confirmation:
+
+```
+✅ Updated STATUS.md under "Recent Changes":
+
+### Code Review - Session [N] (YYYY-MM-DD)
+**Grade:** B (needs improvement before production)
+**Critical Issues:** 3 🔴
+**High Priority:** 5 ⚠️
+**Full Report:** [Code Review Details](../artifacts/code-reviews/session-[N]-review.md)
+```
+
+#### 8.5: Review History Tracking
+
+Automatically create/update review history:
+
+```bash
+# Update INDEX.md (always run, no prompt needed)
+create_review_history \
+  "artifacts/code-reviews/INDEX.md" \
+  "[N]" \
+  "[Grade]" \
+  "[Critical count]" \
+  "[High count]" \
+  "[Medium count]" \
+  "[Low count]" \
+  "[Files reviewed]" \
+  "session-[N]-review.md"
+```
+
+#### 8.6: Comparison with Previous Review
+
+If previous review exists, show comparison:
+
+```bash
+# Find latest previous review
+PREVIOUS_REVIEW=$(find_latest_review)
+
+if [ -n "$PREVIOUS_REVIEW" ]; then
+  # Compare with previous
+  compare_with_previous \
+    "artifacts/code-reviews/session-[N]-issues.json" \
+    "$PREVIOUS_REVIEW" \
+    "artifacts/code-reviews/session-[N]-comparison.json"
+
+  # Display comparison (read the JSON and format nicely)
+fi
+```
+
+Example output if previous review exists:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 COMPARISON WITH PREVIOUS REVIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Previous Review: Session 8 (2025-11-15) - 2 days ago
+
+Grade:     A  → B+  ⚠️ Slight regression
+Critical:  2  → 3   ⚠️ +1 new critical issue
+High:      2  → 5   ⚠️ +3 new high priority
+Medium:    8  → 7   ✅ 1 resolved
+Low:       5  → 5   ━ No change
+
+✅ RESOLVED ISSUES (3):
+
+Medium Priority (3):
+  ✅ M1: Console.log statements in production code
+     Fixed in: Session 11 (2025-11-16)
+     Time to fix: 1 day
+
+  ✅ M2: Missing JSDoc comments
+     Fixed in: Session 12 (2025-11-17)
+
+  ✅ M3: Unused imports
+     Fixed in: Session 12 (2025-11-17)
+
+⚠️ STILL OPEN (10):
+  ⚠️ H1: Missing error handling (Age: 2 days)
+  ⚠️ H2: Input validation gaps (Age: 2 days)
+  ... (see full report for details)
+
+🆕 NEW ISSUES (7):
+  🔴 C3: Hardcoded secrets in config (NEW)
+  ⚠️ H3: SQL injection in search (NEW)
+  ⚠️ H4: Missing rate limiting (NEW)
+  ... (4 more new issues)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📈 Progress Summary:
+  - Issues resolved: 3
+  - Issues still open: 10
+  - New issues found: 7
+  - Net change: +4 issues (regression)
+  - Grade change: A → B+ (slight decline)
+
+⚠️ Action Recommended: Address new critical and high priority issues
+before quality degrades further.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### Step 8 Completion
+
+After all integration steps:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ REVIEW INTEGRATION COMPLETE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 Files Created/Updated:
+  ✅ artifacts/code-reviews/session-[N]-review.md (full report)
+  ✅ artifacts/code-reviews/session-[N]-issues.json (issues data)
+  ✅ artifacts/code-reviews/session-[N]-grouped.json (smart grouping)
+  ✅ artifacts/code-reviews/session-[N]-tasks.md (TodoWrite tasks)
+  ✅ artifacts/code-reviews/INDEX.md (history updated)
+  ✅ context/KNOWN_ISSUES.md (critical issues added)
+  ✅ context/STATUS.md (review summary added)
+
+📋 Next Steps:
+  1. Review generated TodoWrite tasks
+  2. Run /save to persist tasks to SESSIONS.md
+  3. Begin fixing critical issues in a new session
+  4. Re-run /code-review after fixes to track progress
+
+⏱️  Review took: [duration]
+💾 All findings preserved in context system for future AI sessions
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 ## Important Guidelines
@@ -441,3 +747,31 @@ User runs this when they have time. Be thorough:
 ✅ User knows what to fix and in what order
 
 **See:** `.claude/docs/code-review-guide.md` - "Success Criteria"
+
+---
+
+**💬 Feedback**: Any feedback on the code review? (Add to `context/context-feedback.md`)
+
+- Were the findings accurate and helpful?
+- Any false positives or missed issues?
+- Was the review thorough enough?
+- Suggestions for improving review quality?
+
+---
+
+## Final Checklist Before Completing
+
+Before saying the review is complete, verify:
+
+- [ ] **Report file saved** to `artifacts/code-reviews/session-[N]-review.md`
+- [ ] Report contains actual findings (not placeholders)
+- [ ] All critical and high priority issues documented
+- [ ] Grade assigned with justification
+- [ ] No code changes were made
+
+**If the report file does not exist, the review is NOT complete.**
+
+---
+
+**Version:** 3.6.0
+**Updated:** v3.6.0 - Strengthened requirement to save report file to artifacts/
