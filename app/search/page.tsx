@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Search | Inevitable Ethereum',
   description: 'Search through educational content about Ethereum, finance history, and cryptography.',
   alternates: {
-    canonical: '/search/',
+    canonical: '/search',
   },
   openGraph: {
     title: 'Search Inevitable Ethereum',
