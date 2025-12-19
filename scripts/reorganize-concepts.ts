@@ -56,9 +56,6 @@ const parentMapping: Record<string, string> = {
   'power-law': 'blockchain',
 };
 
-// Articles that should keep their current parent (already have parents)
-const keepParent = ['scaling', 'example', 'erasure-code', 'verify', 'open', 'commit'];
-
 function updateFrontmatter(filePath: string, newParent: string) {
   const content = fs.readFileSync(filePath, 'utf-8');
   const lines = content.split('\n');
