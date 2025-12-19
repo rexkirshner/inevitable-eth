@@ -130,11 +130,12 @@ export default function VisualizeClient({ articles, initialMode = 'hierarchical-
         });
 
       node.append('text')
-        .attr('dy', '0.31em')
+        .attr('dy', d => d.children ? '0.31em' : '-0.5em')
         .attr('x', d => d.children ? -6 : 6)
         .attr('text-anchor', d => d.children ? 'end' : 'start')
+        .attr('transform', d => d.children ? null : 'rotate(45)')
         .text(d => d.data.name)
-        .style('font-size', d => d.depth <= 1 ? '14px' : '11px')
+        .style('font-size', d => d.depth <= 1 ? '14px' : '10px')
         .style('font-weight', d => d.depth <= 1 ? 'bold' : 'normal')
         .style('fill', '#333')
         .style('cursor', d => d.data.url ? 'pointer' : 'default')
