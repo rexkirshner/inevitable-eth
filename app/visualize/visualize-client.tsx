@@ -1,4 +1,15 @@
 'use client';
+
+/**
+ * D3.js Visualization Component
+ *
+ * ESLint rules disabled for this file due to D3.js patterns:
+ * - no-explicit-any: D3's type definitions use 'any' extensively for selections and data binding
+ * - no-unused-vars: D3 callback patterns often have unused parameters (e.g., datum, index)
+ * - exhaustive-deps: D3 effects require specific dependency arrays that don't match React's expectations
+ *
+ * These are intentional and necessary for D3 integration, not code quality issues.
+ */
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, react-hooks/exhaustive-deps */
 
 import { useEffect, useRef, useState } from 'react';
