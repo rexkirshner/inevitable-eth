@@ -42,7 +42,7 @@ turndownService.addRule('images', {
 // Custom rule for figure elements
 turndownService.addRule('figure', {
   filter: 'figure',
-  replacement: (content, node) => {
+  replacement: (content) => {
     return '\n' + content + '\n';
   }
 });
