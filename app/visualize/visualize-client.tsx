@@ -80,10 +80,11 @@ export default function VisualizeClient({ articles, initialMode = 'hierarchical-
     const treeData = buildTree();
     d3.select(svgRef.current).selectAll('*').remove();
 
-    // Use actual container dimensions instead of window dimensions
-    // This ensures the visualization fits properly when embedded in smaller containers
+    // Use actual container dimensions, with sensible fallbacks
+    // clientHeight can return small values (not 0) when CSS hasn't fully computed
     const width = svgRef.current.clientWidth || window.innerWidth;
-    const height = svgRef.current.clientHeight || (window.innerHeight - 80); // Account for tabs
+    const rawHeight = svgRef.current.clientHeight;
+    const height = rawHeight > 200 ? rawHeight : (window.innerHeight - 160); // Account for header/footer
 
     if (mode === 'hierarchical-tree') {
       // Traditional vertical tree layout
@@ -501,7 +502,7 @@ export default function VisualizeClient({ articles, initialMode = 'hierarchical-
   }, [articles, mode]);
 
   return (
-    <div className="w-full h-full bg-white flex flex-col">
+    <div className="w-full min-h-[calc(100vh-160px)] bg-white flex flex-col">
       {/* Tabs */}
       {!hideControls && (
         <div className="flex justify-center gap-0 p-4 bg-gray-50 border-b border-gray-200">
