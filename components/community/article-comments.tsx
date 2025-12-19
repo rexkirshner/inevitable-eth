@@ -8,11 +8,19 @@ import { env } from '@/lib/env';
 // Trigger rebuild with Giscus environment variables
 
 interface ArticleCommentsProps {
+  /** Article title - available for future mapping strategies */
   articleTitle: string;
+  /** Article slug - available for future mapping strategies */
   articleSlug: string;
+  /** Content category - available for future mapping strategies */
   category: string;
 }
 
+/**
+ * Giscus-powered comments component.
+ * Props are passed for potential future mapping strategies (currently uses pathname).
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Props reserved for future Giscus mapping strategies
 export function ArticleComments({ articleTitle: _articleTitle, articleSlug: _articleSlug, category: _category }: ArticleCommentsProps) {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
