@@ -22,6 +22,7 @@ export const metadata: Metadata = {
   title: "Inevitable Ethereum",
   description: "A comprehensive guide to Ethereum, the World Computer, and the future of decentralized systems.",
   keywords: ["Ethereum", "blockchain", "cryptocurrency", "web3", "DeFi", "smart contracts"],
+  authors: [{ name: "Rex Kirshner", url: "https://rexkirshner.com" }],
   alternates: {
     canonical: '/',
   },
