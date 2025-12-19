@@ -800,6 +800,65 @@ export const metadata: Metadata = {
 
 ---
 
+### Sitemap lastModified Strategy (Session 17)
+
+**Decision:** Omit `lastModified` for static utility pages, keep for dynamic content pages
+
+**Why:**
+- Static pages (/about, /search, /visualize, /request) rarely change
+- Using `new Date()` at build time is misleading - suggests fresh content
+- Dynamic pages (homepage, categories, tags) change when content added - build date is accurate
+- Article pages use frontmatter `updated` field - most accurate
+
+**Implementation:**
+```typescript
+// Dynamic pages - use build date
+const dynamicPages = [{ url: baseUrl, lastModified: new Date(), ... }];
+
+// Static utility pages - omit lastModified entirely
+const staticPages = [{ url: `${baseUrl}/about`, ... }]; // No lastModified
+```
+
+**Trade-offs:**
+- ✅ More accurate freshness signals to search engines
+- ✅ Prevents unnecessary recrawls of static pages
+
+---
+
+### Tag Page OG Images (Session 17)
+
+**Decision:** Use default banner for all tag pages (won't implement topic-specific images)
+
+**Why:**
+- Tag pages are index/listing pages, not content
+- Effort to generate/curate topic images not worth marginal benefit
+- Default banner provides consistent branding
+- Article pages already use article-specific images
+
+**Alternative considered:**
+- Generate OG images at build time with tag name overlaid
+- Select representative article image per tag
+
+**Why rejected:** Medium effort, low impact, uncertain ROI
+
+---
+
+### FAQ Schema (Session 17)
+
+**Decision:** Won't implement FAQ JSON-LD schema for articles
+
+**Why:**
+- Requires identifying which articles have FAQ-style content
+- Manual curation needed for question/answer pairs
+- Google doesn't guarantee showing FAQ rich snippets
+- Uncertain ROI given the content work required
+
+**When to reconsider:**
+- If Google provides clearer guidance on FAQ eligibility
+- If content is restructured with explicit FAQ sections
+
+---
+
 ## Analytics
 
 ### Google Analytics (GA4)
