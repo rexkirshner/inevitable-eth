@@ -1,5 +1,22 @@
+# Security and SEO headers for Cloudflare Pages
+#
+# IMPORTANT: Preview Deployment Indexation
+# =========================================
+# Cloudflare Pages creates preview URLs (e.g., branch-name.project.pages.dev)
+# that could be indexed by search engines, causing duplicate content issues.
+#
+# This _headers file cannot add host-based rules. To prevent preview indexation:
+#
+# Option 1 (Recommended): Cloudflare Dashboard
+#   1. Go to Pages project → Settings → Headers
+#   2. Add rule: URL pattern "*.pages.dev/*" → X-Robots-Tag: noindex
+#
+# Option 2: Cloudflare Workers (for complex routing)
+#
+# Production domain (inevitableeth.com) should NOT have noindex.
+
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; style-src 'self' 'unsafe-inline' https://giscus.app; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://giscus.app; frame-src https://giscus.app; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://giscus.app; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://giscus.app https://www.google-analytics.com; frame-src https://giscus.app; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
