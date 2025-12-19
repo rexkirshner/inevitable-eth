@@ -91,10 +91,15 @@ export default function RootLayout({
                 'https://twitter.com/logarithmicrex',
                 'https://github.com/rexkirshner/inevitable-eth',
               ],
+              parentOrganization: {
+                '@type': 'Organization',
+                name: 'Scratch Space',
+                url: 'https://scratchspace.dev',
+              },
               founder: {
                 '@type': 'Person',
                 name: 'Rex Kirshner',
-                url: 'https://inevitableeth.com/about',
+                url: 'https://rexkirshner.com',
               },
             }),
           }}
