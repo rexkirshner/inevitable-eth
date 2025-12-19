@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { getAllContent } from '../lib/content';
+import { getAllContent, getContentBySlug } from '../lib/content';
 
 const OUTPUT_PATH = path.join(process.cwd(), 'public/search-index.json');
 
@@ -39,7 +39,7 @@ async function buildSearchIndex() {
   for (const article of allContent) {
     try {
       // Get full article content to extract headings
-      const { content } = require('../lib/content').getContentBySlug(
+      const { content } = getContentBySlug(
         article.category,
         article.slug
       );
