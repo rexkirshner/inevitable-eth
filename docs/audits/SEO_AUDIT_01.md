@@ -33,12 +33,16 @@
 | **P1** | Sitemap missing /visualize, /request | ✅ Fixed | `87e48b7` |
 | **P1** | RSS autodiscovery missing | ✅ Fixed | `ba6fb4a` |
 | **P1** | Sitemap lastmod accuracy | ✅ Fixed | `87e48b7` |
+| **P2** | Anchor text optimization | ✅ Fixed | `e54a828` |
+| **P3** | Cloudflare preview indexation | ✅ Documented | `eab69bc` |
 
 **Summary of Changes:**
 - `app/tags/[tag]/page.tsx`: Added `alternates.canonical` with URL-encoded tag
 - `app/search/page.tsx`: Changed canonical from `/search/` to `/search`
 - `app/sitemap.ts`: Added /visualize and /request; reorganized into dynamicPages (with lastModified) and staticPages (without lastModified)
 - `app/layout.tsx`: Added `<link rel="alternate" type="application/rss+xml">` for RSS autodiscovery
+- `app/page.tsx`: Replaced generic "Read more" and "View all" with descriptive anchor text
+- `public/_headers`: Added documentation for Cloudflare preview noindex configuration; updated CSP for Google Analytics
 
 ---
 
@@ -115,8 +119,8 @@ The following could be run for deeper analysis:
 | **P2** | FAQ schema for articles | Med - Rich snippet opportunity | Articles have Q&A-style content but no FAQ schema | Add FAQ JSON-LD for articles with FAQs | M | Low | Open |
 | **P2** | Missing OG images on tag pages | Low - Social sharing quality | Tag pages use default banner instead of topic-relevant image | Generate or select topic-specific images | M | Low | Open |
 | **P2** | Image alt text validation | Med - Accessibility/SEO | MDX images rely on author-provided alt | Add build-time validation for missing alt | M | Low | Open |
-| **P2** | Anchor text optimization | Low - Internal link equity | Some "Read more" / "View all" generic anchors | Use descriptive anchor text | M | Low | Open |
-| **P3** | Cloudflare preview indexation | Med - Duplicate content risk | Preview deployments may be indexable | Add `X-Robots-Tag: noindex` header for preview branches | S | Med | Open |
+| **P2** | Anchor text optimization | Low - Internal link equity | Some "Read more" / "View all" generic anchors | Use descriptive anchor text | M | Low | ✅ Fixed |
+| **P3** | Cloudflare preview indexation | Med - Duplicate content risk | Preview deployments may be indexable | Add `X-Robots-Tag: noindex` header for preview branches | S | Med | ✅ Documented |
 
 ---
 
