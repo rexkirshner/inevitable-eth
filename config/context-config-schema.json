@@ -1,0 +1,574 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Claude Context Configuration",
+  "description": "Configuration schema for AI Context System",
+  "type": "object",
+  "required": ["version", "owner", "preferences"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of config format"
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Name of project owner"
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Project name"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["web-app", "cli", "library", "api", "mobile", "desktop", "other"]
+        },
+        "initialized": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        }
+      }
+    },
+    "preferences": {
+      "type": "object",
+      "required": ["documentation", "workflow", "communication"],
+      "properties": {
+        "documentation": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "default": "context/"
+            },
+            "autoCreate": {
+              "type": "boolean",
+              "default": true
+            },
+            "updateFrequency": {
+              "type": "string",
+              "enum": ["every-session", "daily", "manual"]
+            },
+            "includeTimestamps": {
+              "type": "boolean",
+              "default": true
+            },
+            "gitTracking": {
+              "type": "boolean",
+              "default": true
+            },
+            "pruneInterval": {
+              "type": "string",
+              "enum": ["weekly", "monthly", "quarterly", "never"]
+            }
+          }
+        },
+        "workflow": {
+          "type": "object",
+          "properties": {
+            "requirePlanApproval": {
+              "type": "boolean",
+              "default": true
+            },
+            "requirePushApproval": {
+              "type": "boolean",
+              "default": true
+            },
+            "preferSimpleChanges": {
+              "type": "boolean",
+              "default": true
+            },
+            "noTemporaryFixes": {
+              "type": "boolean",
+              "default": true
+            },
+            "fullCodeFlowTracing": {
+              "type": "boolean",
+              "default": true
+            },
+            "testBeforeCommit": {
+              "type": "boolean",
+              "default": true
+            },
+            "useTodoList": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        },
+        "communication": {
+          "type": "object",
+          "properties": {
+            "summaryStyle": {
+              "type": "string",
+              "enum": ["high-level", "detailed", "minimal"]
+            },
+            "verbosity": {
+              "type": "string",
+              "enum": ["concise", "normal", "verbose"]
+            },
+            "includeLineNumbers": {
+              "type": "boolean",
+              "default": true
+            },
+            "skipPreamble": {
+              "type": "boolean",
+              "default": true
+            },
+            "useEmojis": {
+              "type": "boolean",
+              "default": false
+            },
+            "explainComplex": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "codeReview": {
+          "type": "object",
+          "properties": {
+            "thoroughnessLevel": {
+              "type": "string",
+              "enum": ["basic", "standard", "comprehensive"]
+            },
+            "makeNoChanges": {
+              "type": "boolean",
+              "default": true
+            },
+            "timeConstraintWarning": {
+              "type": "boolean",
+              "default": true
+            },
+            "separateFixSession": {
+              "type": "boolean",
+              "default": true
+            },
+            "focusAreas": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "simplicity",
+                  "root-causes",
+                  "security",
+                  "performance",
+                  "testing",
+                  "accessibility",
+                  "seo",
+                  "architecture"
+                ]
+              }
+            }
+          }
+        },
+        "sessionManagement": {
+          "type": "object",
+          "properties": {
+            "autoSaveInterval": {
+              "type": ["number", "null"],
+              "minimum": 5,
+              "description": "Auto-save interval in minutes, or null for manual"
+            },
+            "captureCommandHistory": {
+              "type": "boolean",
+              "default": true
+            },
+            "trackFileChanges": {
+              "type": "boolean",
+              "default": true
+            },
+            "preserveWIPState": {
+              "type": "boolean",
+              "default": true
+            },
+            "detailedSessionLogs": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        }
+      }
+    },
+    "commands": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^/[a-z-]+$"
+          }
+        },
+        "aliases": {
+          "type": "object",
+          "patternProperties": {
+            "^/[a-z-]+$": {
+              "type": "string",
+              "pattern": "^/[a-z-]+$"
+            }
+          }
+        },
+        "customCommands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "description"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^/[a-z-]+$"
+              },
+              "description": {
+                "type": "string"
+              },
+              "prompt": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "documentation": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "autoGenerate": {
+          "type": "boolean",
+          "default": true
+        },
+        "templates": {
+          "type": "object",
+          "properties": {
+            "useDefaults": {
+              "type": "boolean",
+              "default": true
+            },
+            "customPath": {
+              "type": ["string", "null"]
+            }
+          }
+        }
+      }
+    },
+    "git": {
+      "type": "object",
+      "properties": {
+        "autoCommit": {
+          "type": "boolean",
+          "default": false
+        },
+        "requireApprovalForPush": {
+          "type": "boolean",
+          "default": true
+        },
+        "commitMessageFormat": {
+          "type": "string",
+          "enum": ["standard", "conventional", "custom"]
+        },
+        "includeCoAuthor": {
+          "type": "boolean",
+          "default": true
+        },
+        "branchStrategy": {
+          "type": "string",
+          "enum": ["feature", "main", "develop", "custom"]
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "properties": {
+        "codeStyle": {
+          "type": "object",
+          "properties": {
+            "simplicityFirst": {
+              "type": "boolean"
+            },
+            "noTemporaryFixes": {
+              "type": "boolean"
+            },
+            "rootCauseOnly": {
+              "type": "boolean"
+            },
+            "minimalImpact": {
+              "type": "boolean"
+            },
+            "fullCodeTracing": {
+              "type": "boolean"
+            }
+          }
+        },
+        "testing": {
+          "type": "object",
+          "properties": {
+            "requireTests": {
+              "type": "boolean"
+            },
+            "coverageCritical": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "coverageTarget": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "testBeforeCommit": {
+              "type": "boolean"
+            }
+          }
+        },
+        "performance": {
+          "type": "object",
+          "properties": {
+            "measureFirst": {
+              "type": "boolean"
+            },
+            "optimizeHotPaths": {
+              "type": "boolean"
+            },
+            "userPerceivedPriority": {
+              "type": "boolean"
+            }
+          }
+        },
+        "security": {
+          "type": "object",
+          "properties": {
+            "validateInput": {
+              "type": "boolean"
+            },
+            "noSecretsInCode": {
+              "type": "boolean"
+            },
+            "useEnvVars": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "notifications": {
+      "type": "object",
+      "properties": {
+        "sessionReminders": {
+          "type": "object",
+          "properties": {
+            "saveContext": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "intervalMinutes": {
+                  "type": "number",
+                  "minimum": 1
+                }
+              }
+            },
+            "reviewContext": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "onSessionStart": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "warnings": {
+          "type": "object",
+          "properties": {
+            "staleContext": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "thresholdDays": {
+                  "type": "number",
+                  "minimum": 1
+                }
+              }
+            },
+            "uncommittedChanges": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "missingTests": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "integrations": {
+      "type": "object",
+      "properties": {
+        "github": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "autoCreatePR": {
+              "type": "boolean"
+            },
+            "requireApproval": {
+              "type": "boolean"
+            }
+          }
+        },
+        "slack": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "webhookUrl": {
+              "type": ["string", "null"],
+              "format": "uri"
+            },
+            "notifications": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "customRules": {
+      "type": "object",
+      "properties": {
+        "projectSpecific": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "filePatterns": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "configVersion": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "audits": {
+      "type": "object",
+      "description": "Configuration for modular code review audits",
+      "properties": {
+        "custom": {
+          "type": "array",
+          "description": "Custom audit definitions. Create .claude/commands/code-review-{name}.md for each",
+          "items": {
+            "type": "object",
+            "required": ["name", "description"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]*$",
+                "description": "Audit name (matches code-review-{name}.md)"
+              },
+              "description": {
+                "type": "string",
+                "description": "Short description for menu display"
+              },
+              "weight": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2,
+                "default": 1.0,
+                "description": "Grade weighting (0-2, default 1.0)"
+              },
+              "presets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Presets this audit belongs to (e.g., 'backend', 'all')"
+              }
+            }
+          }
+        },
+        "presets": {
+          "type": "object",
+          "description": "Custom preset definitions (in addition to built-in presets)",
+          "patternProperties": {
+            "^[a-z][a-z0-9-]*$": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "audits": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "List of audit names to include"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

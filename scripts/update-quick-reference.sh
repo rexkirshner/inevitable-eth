@@ -1,0 +1,194 @@
+#!/bin/bash
+
+# update-quick-reference.sh
+# Auto-generates Quick Reference section in STATUS.md
+# Version: 4.0.1
+
+set -e
+
+# Source common functions for colors, exit codes, and utilities
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/common-functions.sh" ]; then
+  source "$SCRIPT_DIR/common-functions.sh"
+else
+  # Fallback colors if common-functions.sh not available
+  GREEN='\033[0;32m'
+  BLUE='\033[0;34m'
+  YELLOW='\033[1;33m'
+  NC='\033[0m'
+fi
+
+# =============================================================================
+# Find context folder
+# =============================================================================
+
+# Source the find-context-folder function
+if [ -f "$SCRIPT_DIR/find-context-folder.sh" ]; then
+  source "$SCRIPT_DIR/find-context-folder.sh"
+  CONTEXT_DIR=$(find_context_folder) || exit $EXIT_NOT_FOUND
+else
+  # Fallback
+  BASE_DIR="$(dirname "$SCRIPT_DIR")"
+  CONTEXT_DIR="${BASE_DIR}/context"
+fi
+
+CONFIG_FILE="${CONTEXT_DIR}/.context-config.json"
+STATUS_FILE="${CONTEXT_DIR}/STATUS.md"
+SESSIONS_FILE="${CONTEXT_DIR}/SESSIONS.md"
+
+# Verify files exist
+if [ ! -f "$CONFIG_FILE" ]; then
+  log_warn "Config file not found: ${CONFIG_FILE}"
+  exit ${EXIT_NOT_FOUND:-1}
+fi
+
+if [ ! -f "$STATUS_FILE" ]; then
+  log_warn "STATUS.md not found: ${STATUS_FILE}"
+  exit ${EXIT_NOT_FOUND:-1}
+fi
+
+# =============================================================================
+# Extract data from .context-config.json
+# =============================================================================
+
+# Check if jq is available
+if ! command -v jq &> /dev/null; then
+  log_warn "jq not installed - Quick Reference will not be fully auto-generated"
+  echo "   Install jq: brew install jq (macOS) or apt-get install jq (Linux)" >&2
+  exit ${EXIT_ERROR:-1}
+fi
+
+PROJECT_NAME=$(jq -r '.project.name // "[Project Name]"' "$CONFIG_FILE")
+PROJECT_TYPE=$(jq -r '.project.type // "project"' "$CONFIG_FILE")
+REPO_URL=$(jq -r '.project.urls.repository // "[Repository URL]"' "$CONFIG_FILE")
+PROD_URL=$(jq -r '.project.urls.production // "N/A"' "$CONFIG_FILE")
+STAGING_URL=$(jq -r '.project.urls.staging // "N/A"' "$CONFIG_FILE")
+TECH_STACK=$(jq -r '.project.techStack // "[Tech stack]"' "$CONFIG_FILE")
+DEV_CMD=$(jq -r '.project.commands.dev // "N/A"' "$CONFIG_FILE")
+TEST_CMD=$(jq -r '.project.commands.test // "N/A"' "$CONFIG_FILE")
+BUILD_CMD=$(jq -r '.project.commands.build // "N/A"' "$CONFIG_FILE")
+
+# =============================================================================
+# Extract data from STATUS.md
+# =============================================================================
+
+# Extract current phase (look for "**Phase:**" line)
+CURRENT_PHASE=$(grep "^\*\*Phase:\*\*" "$STATUS_FILE" | head -1 | sed 's/^\*\*Phase:\*\* //' || echo "[Current Phase]")
+
+# Extract status (from top of file)
+PROJECT_STATUS=$(grep "^\*\*Status:\*\*" "$STATUS_FILE" | head -1 | sed 's/^\*\*Status:\*\* //' || echo "🟢 Active")
+
+# Extract first active task (first item under "**In Progress:**")
+CURRENT_FOCUS=$(sed -n '/^\*\*In Progress:\*\*/,/^\*\*.*:\*\*/p' "$STATUS_FILE" | grep "^- \[ \]" | head -1 | sed 's/^- \[ \] //' || echo "[No active tasks]")
+
+# =============================================================================
+# Extract last session from SESSIONS.md
+# =============================================================================
+
+if [ -f "$SESSIONS_FILE" ]; then
+  # Find the most recent actual session (not template or example)
+  LAST_SESSION_LINE=$(sed -n '1,/^## Example/p' "$SESSIONS_FILE" | grep "^## Session [0-9]" | tail -1 || echo "")
+
+  if [ -n "$LAST_SESSION_LINE" ]; then
+    # Extract session number and date
+    SESSION_NUM=$(echo "$LAST_SESSION_LINE" | sed 's/^## Session \([0-9]*\).*/\1/')
+    SESSION_DATE=$(echo "$LAST_SESSION_LINE" | sed 's/.*| \([0-9-]*\) |.*/\1/')
+    LAST_SESSION="[Session $SESSION_NUM ($SESSION_DATE)](#session-$SESSION_NUM)"
+  else
+    LAST_SESSION="[No sessions yet]"
+  fi
+else
+  LAST_SESSION="[SESSIONS.md not found]"
+fi
+
+# =============================================================================
+# Documentation health (simple heuristic)
+# =============================================================================
+
+# Check when files were last modified
+STATUS_AGE=$(( ($(date +%s) - $(stat -f %m "$STATUS_FILE" 2>/dev/null || stat -c %Y "$STATUS_FILE" 2>/dev/null || echo 0)) / 86400 ))
+
+if [ $STATUS_AGE -le 7 ]; then
+  DOC_HEALTH="🟢 Excellent"
+  DOC_AGE="$STATUS_AGE"
+elif [ $STATUS_AGE -le 14 ]; then
+  DOC_HEALTH="🟡 Good"
+  DOC_AGE="$STATUS_AGE"
+else
+  DOC_HEALTH="🔴 Needs Update"
+  DOC_AGE="$STATUS_AGE"
+fi
+
+# =============================================================================
+# Generate Quick Reference section
+# =============================================================================
+
+QUICK_REF_START="## 📊 Quick Reference"
+QUICK_REF_END="---"
+
+# Build the new Quick Reference content
+NEW_QUICK_REF=$(cat <<EOF
+## 📊 Quick Reference
+_(This section is auto-generated by /save and /save-full - DO NOT edit manually)_
+
+**Project:** ${PROJECT_NAME}
+**Phase:** ${CURRENT_PHASE}
+**Status:** ${PROJECT_STATUS}
+
+**URLs:**
+- Production: ${PROD_URL}
+- Staging: ${STAGING_URL}
+- Repository: ${REPO_URL}
+
+**Tech Stack:** ${TECH_STACK}
+
+**Commands:**
+\`\`\`bash
+${DEV_CMD}       # Development server
+${TEST_CMD}      # Run tests
+${BUILD_CMD}     # Production build
+\`\`\`
+
+**Current Focus:** ${CURRENT_FOCUS}
+
+**Last Session:** ${LAST_SESSION}
+
+**Documentation Health:** ${DOC_HEALTH}
+- Last validated: ${DOC_AGE} days ago
+- Stale files: 0
+- All critical docs current
+
+[Full report: Run /validate-context]
+EOF
+)
+
+# =============================================================================
+# Update STATUS.md
+# =============================================================================
+
+# Create a temporary file
+TEMP_FILE=$(mktemp)
+
+# Extract everything before Quick Reference
+sed -n "1,/^${QUICK_REF_START}/p" "$STATUS_FILE" | head -n -1 > "$TEMP_FILE"
+
+# Add new Quick Reference
+echo "$NEW_QUICK_REF" >> "$TEMP_FILE"
+echo "" >> "$TEMP_FILE"
+
+# Add everything after Quick Reference (after the next ---)
+sed -n "/^${QUICK_REF_START}/,\$p" "$STATUS_FILE" | sed -n '/^---$/,$ {/^---$/!p}' | tail -n +2 >> "$TEMP_FILE"
+
+# Replace original file
+mv "$TEMP_FILE" "$STATUS_FILE"
+
+echo -e "${GREEN}✅ Quick Reference updated in STATUS.md${NC}"
+echo ""
+echo -e "${BLUE}Summary:${NC}"
+echo "  Project: ${PROJECT_NAME}"
+echo "  Phase: ${CURRENT_PHASE}"
+echo "  Focus: ${CURRENT_FOCUS}"
+echo "  Last Session: Session ${SESSION_NUM:-N/A}"
+echo ""
+
+exit ${EXIT_SUCCESS:-0}

@@ -238,3 +238,7 @@ Command succeeds when:
 - Easy to scan and find relevant sessions
 - Clear what was accomplished when
 - Links to full documentation for details
+
+---
+
+**Version:** 4.0.1

@@ -425,3 +425,7 @@ Export succeeds when:
 - Shareable and portable
 - Maintains all context
 - Self-contained reference
+
+---
+
+**Version:** 4.0.1

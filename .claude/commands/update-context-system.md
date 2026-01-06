@@ -291,157 +291,103 @@ log_info ""
 
 ---
 
-### Step 3: Show What's New (v3.3.0+)
+### Step 3: Show What's New
 
 **ACTION:** Display what's new in the upgraded version:
 
 ```bash
 log_info ""
-log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-log_info "  🎉 What's New in v3.3.0"
-log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_info "  🎉 What's New in v4.0.0"
+log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log_info ""
 
 CURRENT_VERSION=$(get_system_version)
 
-# Show what's new for v3.3.0 upgrades
-if [[ "$CURRENT_VERSION" == "3.3.0" ]]; then
-  echo "✨ You now have these new features:"
-  echo ""
-  echo "1️⃣  Template Markers (Template Protection)"
-  echo "   • HTML comment markers protect critical sections"
-  echo "   • <!-- TEMPLATE SECTION: KEEP ALL --> preserves structure"
-  echo "   • <!-- TEMPLATE: READ-ONLY --> prevents modifications"
-  echo "   • Prevents 80-90% of template deletion errors"
-  echo ""
-  echo "2️⃣  Documentation Staleness Detection"
-  echo "   • /save-full warns when CONTEXT.md is >7 days old"
-  echo "   • /save-full warns when README.md is >14 days old"
-  echo "   • /review-context shows color-coded staleness 🟢🟡🔴"
-  echo "   • Proactive reminders prevent documentation drift"
-  echo ""
-  echo "3️⃣  Decision Documentation Guidance"
-  echo "   • CLAUDE.md now has decision capture prompts"
-  echo "   • 5 categories of decisions with examples"
-  echo "   • DECISIONS.md format guidance with metrics"
-  echo "   • Better architectural decision preservation"
-  echo ""
-  echo "4️⃣  Deletion Protection"
-  echo "   • Interactive confirmation before file deletion"
-  echo "   • Shows file details and requires explicit 'yes'"
-  echo "   • Default: keep file (safe by default)"
-  echo "   • Zero data loss from accidental deletions"
-  echo ""
-  echo "📖 Detailed documentation: .claude/docs/update-guide.md"
-  echo ""
-  echo "🎯 To adopt template markers (recommended):"
-  echo "   Run /update-templates to add markers to your context files"
-  echo ""
-  echo "🎯 To use staleness detection:"
-  echo "   Already active! Next /save-full will check documentation currency"
-  echo ""
-fi
+echo "✨ Modular Code Review System"
+echo ""
+echo "The /code-review command is now a master orchestrator with"
+echo "8 specialized audit commands:"
+echo ""
+echo "   /code-review-security      OWASP Top 10 audit"
+echo "   /code-review-performance   Core Web Vitals audit"
+echo "   /code-review-accessibility WCAG 2.1 AA compliance"
+echo "   /code-review-seo           Technical SEO audit"
+echo "   /code-review-database      N+1, indexes, query optimization"
+echo "   /code-review-infrastructure Serverless costs, caching"
+echo "   /code-review-typescript    Type safety audit"
+echo "   /code-review-testing       Coverage and quality audit"
+echo "   /build-check               Pre-push quality gate"
+echo ""
+echo "📂 New Structure:"
+echo "   • Reports saved to docs/audits/{type}-audit-NN.md"
+echo "   • INDEX.md tracks all audits with grades"
+echo "   • Old reports migrated to docs/audits/archive/"
+echo ""
+echo "🎯 Quick Start:"
+echo "   /code-review               Interactive selection menu"
+echo "   /code-review --prelaunch   Security + Perf + A11y + SEO"
+echo "   /code-review --all         Run all 8 audits"
+echo "   /code-review-security      Run single audit directly"
+echo ""
+echo "⚠️  IMPORTANT: Restart Claude Code to use new commands"
+echo "   Claude Code caches slash commands at session start."
+echo "   Close and reopen Claude Code for changes to take effect."
+echo ""
 
 log_info "📦 Current version: $CURRENT_VERSION"
 log_info ""
 ```
 
-### Step 4: Check Version and Migration Path
+### Step 4: Check Version and Migration Notes
 
-**ACTION:** Check current version to determine if migration is needed:
+**ACTION:** Show migration notes based on previous version:
 
 ```bash
-if [[ "$CURRENT_VERSION" == "2.1.0" ]]; then
-  echo "🔄 Migration to v2.2.1 available!"
+# Extract major version number for comparison
+PREV_MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
+
+if [[ "$PREV_MAJOR" == "3" ]]; then
   echo ""
-  echo "✨ v2.2.1 includes organization features + bug fixes:"
-  echo "   - Bug fixes: Git push protection, large file handling, subdirectory support"
-  echo "   - ORGANIZATION.md guidelines (in reference/ folder)"
-  echo "   - /organize-docs command (interactive cleanup wizard)"
-  echo "   - Organization validation (0-100 scoring)"
-  echo "   - Cleanup reminders (gentle, skippable)"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "📋 v3.x → v4.0.0 Migration Notes"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo ""
-  echo "Migration time: 5 minutes (automatic) + 10-15 minutes (optional cleanup)"
-  echo "Difficulty: Easy (non-breaking, opt-in features)"
+  echo "Breaking Changes:"
+  echo "  • /code-review is now an orchestrator (not monolithic)"
+  echo "  • Reports save to docs/audits/ (was artifacts/code-reviews/)"
+  echo "  • Report naming: {type}-audit-NN.md (was session-N-review.md)"
+  echo "  • .claude/checklists/ deleted (integrated into commands)"
   echo ""
-  echo "📖 Full migration guide:"
-  echo "   reference/MIGRATION_GUIDE_v2.1_to_v2.2.md"
-  echo "   https://github.com/rexkirshner/ai-context-system/blob/main/MIGRATION_GUIDE_v2.1_to_v2.2.md"
+  echo "Your existing code review files will be migrated automatically"
+  echo "to docs/audits/archive/pre-v4.0.0-migration/"
   echo ""
-  echo "🎯 Quick adoption (optional):"
-  echo "   1. cp reference/ORGANIZATION.md ./ORGANIZATION.md"
-  echo "   2. Add /organize-docs to context/.context-config.json enabled commands"
-  echo "   3. Run /validate-context to check organization score"
-  echo "   4. Run /organize-docs if score < 90"
+  echo "No action required - migration is automatic!"
   echo ""
-elif [[ "$CURRENT_VERSION" == "2.0.0" ]]; then
-  echo "🔄 Migration to v2.1.0 available!"
+elif [[ "$PREV_MAJOR" -lt "3" ]]; then
   echo ""
-  echo "⚠️  v2.1.0 includes file consolidation:"
-  echo "   - QUICK_REF.md merged into STATUS.md (auto-generated section)"
-  echo "   - Creates CLAUDE.md at project root (auto-loaded)"
-  echo "   - Reduces file count: 6 → 5 files"
-  echo "   - Adds automated staleness detection"
+  echo "⚠️  Upgrading from v$CURRENT_VERSION (very old version)"
   echo ""
-  echo "Migration time: 10-15 minutes"
-  echo "Difficulty: Easy (mostly automatic)"
-  echo ""
-  echo "📖 Full migration guide:"
-  echo "  https://github.com/rexkirshner/ai-context-system/blob/main/MIGRATION_GUIDE_v2.0_to_v2.1.md"
-  echo ""
-  echo "Quick migration (copy-paste to terminal):"
-  echo "  curl -sL https://raw.githubusercontent.com/rexkirshner/ai-context-system/main/MIGRATION_GUIDE_v2.0_to_v2.1.md | grep -A 100 'Run in terminal:' | bash"
-  echo ""
-elif [[ "$CURRENT_VERSION" == "1.9.0" ]]; then
-  echo "🔄 Migration to v2.0.0 available!"
-  echo ""
-  echo "⚠️  v2.0.0 includes major file structure changes:"
-  echo "   - CLAUDE.md → CONTEXT.md"
-  echo "   - Creates STATUS.md (single source of truth)"
-  echo "   - Creates DECISIONS.md, SESSIONS.md (structured)"
-  echo "   - Auto-generates Quick Reference"
-  echo ""
-  echo "Migration options:"
-  echo "  1. MANUAL: Follow MIGRATION_GUIDE.md (recommended)"
-  echo "  2. AUTOMATED: Use migration script (backup first)"
-  echo ""
-  echo "For manual migration, see:"
-  echo "  https://github.com/rexkirshner/ai-context-system/blob/main/MIGRATION_GUIDE.md"
-  echo ""
-elif [[ "$CURRENT_VERSION" < "1.9.0" ]]; then
-  echo "🔄 Multi-step migration required..."
-  echo ""
-  echo "Your version: $CURRENT_VERSION"
-  echo "Latest version: 2.2.1"
-  echo ""
-  echo "Migration path:"
-  echo "  1. Upgrade to v1.9.0 first"
-  echo "  2. Then upgrade to v2.0.0"
-  echo "  3. Then upgrade to v2.1.0"
-  echo "  4. Finally upgrade to v2.2.1"
-  echo ""
-  echo "Start with:"
-  echo "  https://github.com/rexkirshner/ai-context-system/releases"
+  echo "Your version is quite old. The upgrade will work, but you may"
+  echo "want to review the CHANGELOG for all changes since your version:"
+  echo "  https://github.com/rexkirshner/ai-context-system/blob/main/CHANGELOG.md"
   echo ""
 else
-  echo "✅ Already on latest version structure"
+  echo "✅ Already on v4.x - no migration needed"
 fi
 ```
 
-**About v2.0.0 Migration:**
+**v4.0.0 Breaking Changes Summary:**
 
-Automated migration with dry-run, backup, and rollback is planned for v2.1. For now, v2.0.0 migration is manual:
+| Before (v3.x) | After (v4.0.0) |
+|---------------|----------------|
+| `/code-review` runs full monolithic review | `/code-review` shows interactive menu |
+| Single long report | Multiple focused reports + summary |
+| `artifacts/code-reviews/` | `docs/audits/` |
+| `session-N-review.md` | `{type}-audit-NN.md` |
+| `.claude/checklists/*.md` | Integrated into audit commands |
 
-1. Read [MIGRATION_GUIDE.md](https://github.com/rexkirshner/ai-context-system/blob/main/MIGRATION_GUIDE.md)
-2. Backup your `context/` folder
-3. Follow the step-by-step migration process
-4. Verify with `/validate-context`
-
-**Why manual for now?**
-- v2.0.0 focuses on getting the new structure right
-- Automated migration requires extensive testing (10+ real projects)
-- Manual migration ensures you understand changes
-- v2.1 will add full automation with safety features
+All existing files are preserved in `docs/audits/archive/`.
 
 ### Step 5: Review Template Updates (Optional)
 
@@ -477,80 +423,39 @@ echo "   useful additions. Your project-specific content remains untouched."
 
 Templates are reference files - you choose what to adopt.
 
-### Step 5.5: CLAUDE.md Migration Check (v3.6.0+)
+### Step 5.5: CLAUDE.md Migration (v3.6.1+)
 
-**CRITICAL:** Check if user needs to migrate CLAUDE.md from old location to project root.
+**CRITICAL:** Automatically migrate CLAUDE.md from old location to project root. This is non-interactive to ensure it actually happens.
 
-**ACTION:** Detect old location and offer migration:
+**ACTION:** Auto-migrate CLAUDE.md to project root:
 
 ```bash
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🔍 CLAUDE.md Location Check (v3.6.0)"
+echo "🔍 CLAUDE.md Location Check (v3.6.1)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
 OLD_CLAUDE="context/claude.md"
 NEW_CLAUDE="CLAUDE.md"
-MIGRATION_NEEDED=false
 
-# Case 1: Old location exists, new doesn't - offer migration
+# Case 1: Old location exists, new doesn't - AUTO-MIGRATE (no prompt)
 if [ -f "$OLD_CLAUDE" ] && [ ! -f "$NEW_CLAUDE" ]; then
-  MIGRATION_NEEDED=true
-  echo "⚠️  Found CLAUDE.md at old location: context/claude.md"
+  echo "📦 Migrating CLAUDE.md to project root..."
+  mv "$OLD_CLAUDE" "$NEW_CLAUDE"
+  echo "✅ Moved context/claude.md → ./CLAUDE.md"
   echo ""
-  echo "Starting v3.6.0, CLAUDE.md should be at project root for auto-loading by Claude Code."
-  echo ""
-  echo "Options:"
-  echo "  1. MOVE existing file (preserves your customizations)"
-  echo "  2. CREATE fresh file (uses new v3.6.0 template)"
-  echo "  3. SKIP (I'll handle it manually)"
-  echo ""
-  read -p "Choose option [1/2/3]: " -n 1 -r MIGRATE_CHOICE
-  echo ""
+  echo "💡 CLAUDE.md is now auto-loaded by Claude Code at conversation start."
+  echo "   Review ./CLAUDE.md - the v3.6.1 template has updated sections."
+  echo "   See: templates/CLAUDE.md.template for latest structure"
 
-  case "$MIGRATE_CHOICE" in
-    1)
-      echo ""
-      echo "Moving context/claude.md → ./CLAUDE.md..."
-      mv "$OLD_CLAUDE" "$NEW_CLAUDE"
-      echo "✅ Moved successfully!"
-      echo ""
-      echo "💡 Tip: Review ./CLAUDE.md - the v3.6.0 template has new sections"
-      echo "   you may want to add (Project Identity, Critical Rules, etc.)"
-      echo "   See: templates/CLAUDE.md.template"
-      ;;
-    2)
-      echo ""
-      echo "Creating fresh CLAUDE.md from v3.6.0 template..."
-      if [ -f "templates/CLAUDE.md.template" ]; then
-        cp "templates/CLAUDE.md.template" "$NEW_CLAUDE"
-        echo "✅ Created ./CLAUDE.md from template"
-        echo ""
-        echo "⚠️  Your old file remains at context/claude.md"
-        echo "   Review it for any customizations to merge, then delete it:"
-        echo "   rm context/claude.md"
-      else
-        echo "❌ Template not found. Run /update-context-system again."
-      fi
-      ;;
-    3|*)
-      echo ""
-      echo "Skipped. To migrate manually:"
-      echo "  mv context/claude.md ./CLAUDE.md"
-      echo ""
-      echo "Or create fresh from template:"
-      echo "  cp templates/CLAUDE.md.template ./CLAUDE.md"
-      ;;
-  esac
-
-# Case 2: Both exist - warn about duplicate
+# Case 2: Both exist - warn about duplicate (user must resolve manually)
 elif [ -f "$OLD_CLAUDE" ] && [ -f "$NEW_CLAUDE" ]; then
   echo "⚠️  Both locations exist:"
-  echo "   - ./CLAUDE.md (correct - auto-loaded)"
-  echo "   - context/claude.md (old - not auto-loaded)"
+  echo "   - ./CLAUDE.md (correct - auto-loaded by Claude Code)"
+  echo "   - context/claude.md (old - NOT auto-loaded)"
   echo ""
-  echo "Recommendation:"
+  echo "Action required:"
   echo "  1. Review context/claude.md for any unique customizations"
   echo "  2. Merge any customizations into ./CLAUDE.md"
   echo "  3. Delete the old file: rm context/claude.md"
@@ -559,15 +464,15 @@ elif [ -f "$OLD_CLAUDE" ] && [ -f "$NEW_CLAUDE" ]; then
 elif [ -f "$NEW_CLAUDE" ]; then
   echo "✅ CLAUDE.md is at correct location (project root)"
 
-# Case 4: Neither exists - create new
+# Case 4: Neither exists - AUTO-CREATE from template
 else
-  echo "ℹ️  No CLAUDE.md found. Creating from template..."
+  echo "📦 Creating CLAUDE.md at project root..."
   if [ -f "templates/CLAUDE.md.template" ]; then
     cp "templates/CLAUDE.md.template" "$NEW_CLAUDE"
     echo "✅ Created ./CLAUDE.md from template"
     echo "   📝 Customize with your project details"
   else
-    echo "⚠️  Template not found. CLAUDE.md will be created by /init-context"
+    echo "⚠️  Template not found. Run /init-context to create CLAUDE.md"
   fi
 fi
 
@@ -575,6 +480,84 @@ echo ""
 ```
 
 **Why this matters:** CLAUDE.md at project root is auto-loaded by Claude Code at every conversation start. The old location `context/claude.md` is NOT auto-loaded, meaning critical project context wasn't available by default.
+
+**v3.6.1 change:** Migration is now automatic (non-interactive) to ensure it actually happens. The v3.6.0 interactive prompts didn't work in Claude Code's execution environment.
+
+### Step 5.6: Audit System Migration (v4.0.0+)
+
+**v4.0.0:** Migrate existing code review artifacts to new docs/audits/ structure.
+
+**ACTION:** Migrate old code review files to new location:
+
+```bash
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "🔍 Audit System Migration (v4.0.0)"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+
+# Create new audit directory structure
+mkdir -p docs/audits/archive/pre-v4.0.0-migration
+
+# Check for old code review artifacts
+if [ -d "artifacts/code-reviews" ]; then
+  # Check if directory has files
+  FILE_COUNT=$(find artifacts/code-reviews -type f 2>/dev/null | wc -l | tr -d ' ')
+
+  if [ "$FILE_COUNT" -gt 0 ]; then
+    echo "📦 Found $FILE_COUNT existing code review file(s)"
+    echo "   Migrating to docs/audits/archive/pre-v4.0.0-migration/..."
+
+    # Move all files to archive
+    mv artifacts/code-reviews/* docs/audits/archive/pre-v4.0.0-migration/ 2>/dev/null || true
+
+    # Remove empty directory
+    rmdir artifacts/code-reviews 2>/dev/null || true
+
+    echo "✅ Migrated to docs/audits/archive/pre-v4.0.0-migration/"
+    echo ""
+    echo "💡 Old code reviews preserved in archive."
+    echo "   New audits will be created in docs/audits/"
+  else
+    echo "ℹ️  artifacts/code-reviews/ exists but is empty"
+    rmdir artifacts/code-reviews 2>/dev/null || true
+  fi
+else
+  echo "ℹ️  No existing code reviews to migrate"
+fi
+
+# Create INDEX.md from template if it doesn't exist
+if [ ! -f "docs/audits/INDEX.md" ]; then
+  if [ -f "templates/audits-index.template.md" ]; then
+    cp templates/audits-index.template.md docs/audits/INDEX.md
+    echo "✅ Created docs/audits/INDEX.md"
+  fi
+fi
+
+echo ""
+echo "📊 New audit system structure:"
+echo "   docs/audits/                    - New audit reports"
+echo "   docs/audits/INDEX.md            - Audit history index"
+echo "   docs/audits/archive/            - Archived audits"
+echo ""
+```
+
+**What this does:**
+- Creates new `docs/audits/` directory structure
+- Migrates existing `artifacts/code-reviews/*` to `docs/audits/archive/pre-v4.0.0-migration/`
+- Creates `INDEX.md` for tracking audit history
+- Preserves all existing code review files
+
+**New audit commands (v4.0.0):**
+- `/code-review` - Interactive selection of audit types
+- `/code-review-security` - OWASP-style security audit
+- `/code-review-performance` - Core Web Vitals, bundle analysis
+- `/code-review-database` - Query optimization, N+1 detection
+- `/code-review-infrastructure` - Serverless costs, caching
+- `/code-review-seo` - Technical SEO audit
+- Plus: accessibility, typescript, testing audits
+
+---
 
 ### Step 6: Generate Update Report
 
@@ -719,5 +702,4 @@ Understood?
 
 ---
 
-**Version:** 3.6.0
-**Updated:** v3.0.4 - Added git workflow reminder for session start
+**Version:** 4.0.1

@@ -225,7 +225,7 @@ Create the complete AI Context System structure:
 
 ```bash
 mkdir -p context
-mkdir -p artifacts/code-reviews
+mkdir -p docs/audits/archive  # v4.0.0 audit system
 mkdir -p artifacts/lighthouse
 mkdir -p artifacts/performance
 mkdir -p artifacts/security
@@ -274,11 +274,11 @@ fi
 **Move artifacts to artifacts/:**
 
 ```bash
-# Code reviews
-mv tasks/*code-review*.md artifacts/code-reviews/ 2>/dev/null || true
-mv tasks/*review*.md artifacts/code-reviews/ 2>/dev/null || true
-mv *code-review*.md artifacts/code-reviews/ 2>/dev/null || true
-mv CODE_REVIEW*.md artifacts/code-reviews/ 2>/dev/null || true
+# Code reviews → docs/audits/archive (v4.0.0 migration)
+mv tasks/*code-review*.md docs/audits/archive/ 2>/dev/null || true
+mv tasks/*review*.md docs/audits/archive/ 2>/dev/null || true
+mv *code-review*.md docs/audits/archive/ 2>/dev/null || true
+mv CODE_REVIEW*.md docs/audits/archive/ 2>/dev/null || true
 
 # Lighthouse reports
 mv lighthouse-*.json artifacts/lighthouse/ 2>/dev/null || true
@@ -496,7 +496,7 @@ Use SESSIONS.template.md and create first entry:
 **Files Modified:**
 - Moved: CLAUDE.md, PRD.md, DECISIONS.md, KNOWN_ISSUES.md → context/
 - Moved: lighthouse-*.json → artifacts/lighthouse/
-- Moved: code reviews → artifacts/code-reviews/
+- Moved: code reviews → docs/audits/archive/
 - Created: ARCHITECTURE.md, CODE_STYLE.md, SESSIONS.md
 - Created: .context-config.json
 
@@ -651,9 +651,9 @@ Create comprehensive report of what was done:
 - lighthouse-article.json → artifacts/lighthouse/
 - lighthouse-category.json → artifacts/lighthouse/
 - lighthouse-article-optimized.json → artifacts/lighthouse/
-- tasks/session-7-code-review.md → artifacts/code-reviews/
-- tasks/session-8-code-review.md → artifacts/code-reviews/
-- tasks/session-11-code-review.md → artifacts/code-reviews/
+- tasks/session-7-code-review.md → docs/audits/archive/
+- tasks/session-8-code-review.md → docs/audits/archive/
+- tasks/session-11-code-review.md → docs/audits/archive/
 
 ## Files Created
 
@@ -763,7 +763,7 @@ All existing content preserved, enhanced with new structure.
 
 **Artifacts (goes to artifacts/):**
 - lighthouse-*.json → artifacts/lighthouse/
-- *code-review*.md → artifacts/code-reviews/
+- *code-review*.md → docs/audits/archive/
 - bundle-analysis/ → artifacts/bundle-analysis/
 - coverage/ → artifacts/coverage/
 - performance reports → artifacts/performance/
@@ -865,3 +865,7 @@ fi
 - All project files
 
 **Result:** Clean project without installation artifacts.
+
+---
+
+**Version:** 4.0.1

@@ -382,3 +382,7 @@ Command succeeds when:
 > Update SESSIONS.md? [y/N]: n
 > ⏭️  Skipped SESSIONS.md
 ```
+
+---
+
+**Version:** 4.0.1

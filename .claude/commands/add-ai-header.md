@@ -329,5 +329,5 @@ Command succeeds when:
 
 ---
 
-**Version:** 3.6.0
+**Version:** 4.0.1
 **Updated:** v3.0.0 - Multi-AI support and real-world feedback improvements (git push protection, smart loading, context detection)

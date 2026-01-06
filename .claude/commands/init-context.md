@@ -251,7 +251,7 @@ Create only what we need right now:
 
 ```bash
 mkdir -p context
-mkdir -p artifacts/code-reviews
+mkdir -p docs/audits/archive  # v4.0.0 audit system
 mkdir -p artifacts/lighthouse
 mkdir -p artifacts/performance
 mkdir -p artifacts/security
@@ -269,31 +269,23 @@ Create the **4 core files + 1 AI header** from templates:
 log_info "Creating core documentation files in context/ directory..."
 
 # 1. CLAUDE.md at project root (auto-loaded by Claude Code)
-# Check for old location first (v3.5.0 and earlier)
+# v3.6.1: Auto-migrate from old location (non-interactive)
 if [ -f "context/claude.md" ] && [ ! -f "CLAUDE.md" ]; then
-  log_info "⚠️  Found old location: context/claude.md"
-  log_info "   Starting v3.6.0, CLAUDE.md should be at project root for auto-loading."
-  echo ""
-  read -p "   Move existing file to project root? [Y/n]: " -n 1 -r
-  echo ""
-  if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-    mv "context/claude.md" "CLAUDE.md"
-    log_success "✅ Moved context/claude.md → ./CLAUDE.md"
-    log_info "   💡 Review ./CLAUDE.md - v3.6.0 template has new sections you may want to add"
-  else
-    log_info "   Skipped. Creating new CLAUDE.md at root..."
-    cp templates/CLAUDE.md.template CLAUDE.md
-    log_success "✅ Created CLAUDE.md (project root)"
-    log_info "   ⚠️  Old file remains at context/claude.md - review and delete if not needed"
-  fi
+  # Auto-migrate - no prompt needed
+  log_info "📦 Migrating CLAUDE.md to project root..."
+  mv "context/claude.md" "CLAUDE.md"
+  log_success "✅ Moved context/claude.md → ./CLAUDE.md"
+  log_info "   💡 CLAUDE.md is now auto-loaded by Claude Code at conversation start"
+  log_info "   Review ./CLAUDE.md - v3.6.1 template has updated sections"
 elif [ ! -f "CLAUDE.md" ]; then
   cp templates/CLAUDE.md.template CLAUDE.md
   log_success "✅ Created CLAUDE.md (project root - auto-loaded by Claude Code)"
 else
   log_verbose "CLAUDE.md already exists, skipping"
-  # Warn if old location also exists
+  # Warn if old location also exists (user must resolve manually)
   if [ -f "context/claude.md" ]; then
-    log_info "⚠️  Note: Old context/claude.md still exists. Consider removing it."
+    log_info "⚠️  Both ./CLAUDE.md and context/claude.md exist"
+    log_info "   Review context/claude.md for unique content, then: rm context/claude.md"
   fi
 fi
 
@@ -410,13 +402,16 @@ echo "   System version: $SYSTEM_VERSION"
 # Download the latest config template from GitHub
 curl -sL https://raw.githubusercontent.com/rexkirshner/ai-context-system/main/config/.context-config.template.json -o context/.context-config.json
 
-# Update version fields to match system version (v3.5.0+)
+# Update version fields to match system version
 if [ "$SYSTEM_VERSION" != "unknown" ]; then
   # macOS uses different sed syntax than Linux
+  # Use regex to match any semver pattern (handles template version changes)
   if [[ "$OSTYPE" == "darwin"* ]]; then
-    sed -i '' "s/\"3.0.0\"/\"$SYSTEM_VERSION\"/g" context/.context-config.json
+    sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"$SYSTEM_VERSION\"/g" context/.context-config.json
+    sed -i '' "s/\"configVersion\": \"[^\"]*\"/\"configVersion\": \"$SYSTEM_VERSION\"/g" context/.context-config.json
   else
-    sed -i "s/\"3.0.0\"/\"$SYSTEM_VERSION\"/g" context/.context-config.json
+    sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"$SYSTEM_VERSION\"/g" context/.context-config.json
+    sed -i "s/\"configVersion\": \"[^\"]*\"/\"configVersion\": \"$SYSTEM_VERSION\"/g" context/.context-config.json
   fi
   echo "✅ Configuration created with version $SYSTEM_VERSION"
 else
@@ -603,7 +598,7 @@ fi
 After initialization, explain to the user:
 
 ```
-✅ Context System Initialized (v3.0.0)
+✅ Context System Initialized
 
 Created CLAUDE.md + 5 core files:
 - CLAUDE.md - AI entry point (auto-loaded by Claude Code)
@@ -820,5 +815,5 @@ Understood?
 
 ---
 
-**Version:** 3.6.0
-**Updated:** v2.3.2 - Fixed files created in root instead of context/ directory
+**Version:** 4.0.1
+**Updated:** v3.6.1 - Fixed CLAUDE.md migration (now automatic, non-interactive)

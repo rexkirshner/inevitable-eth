@@ -442,7 +442,10 @@ echo ""
 
 **NEW in v3.5.0:** Automated consistency verification across context files to catch drift.
 
-Check that key fields align across CONTEXT.md, STATUS.md, and SESSIONS.md:
+Checks for consistency where applicable:
+- **Last Updated:** CONTEXT.md and STATUS.md (SESSIONS.md uses session dates)
+- **Phase:** STATUS.md only (not tracked in CONTEXT.md)
+- **Session count:** SESSIONS.md
 
 ```bash
 echo ""
@@ -450,38 +453,27 @@ echo "🔍 Cross-Document Consistency Check"
 echo ""
 
 # 1. Last Updated Dates
+# Note: Only CONTEXT.md and STATUS.md have "Last Updated" fields
+# SESSIONS.md uses session dates instead
 echo "📅 Last Updated Dates:"
-# Extract just the YYYY-MM-DD portion for flexibility (handles dates with times, etc.)
 CONTEXT_DATE=$(grep "Last Updated:" "$CONTEXT_DIR/CONTEXT.md" 2>/dev/null | head -1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
 STATUS_DATE=$(grep "Last Updated:" "$CONTEXT_DIR/STATUS.md" 2>/dev/null | head -1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
-SESSIONS_DATE=$(grep "Last Updated:" "$CONTEXT_DIR/SESSIONS.md" 2>/dev/null | head -1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
 
 echo "  CONTEXT.md:  ${CONTEXT_DATE:-not found}"
 echo "  STATUS.md:   ${STATUS_DATE:-not found}"
-echo "  SESSIONS.md: ${SESSIONS_DATE:-not found}"
+
+if [ -n "$CONTEXT_DATE" ] && [ -n "$STATUS_DATE" ] && [ "$CONTEXT_DATE" != "$STATUS_DATE" ]; then
+  echo ""
+  echo "  ⚠️  Date mismatch: CONTEXT.md ($CONTEXT_DATE) vs STATUS.md ($STATUS_DATE)"
+  echo "     STATUS.md is typically more current. Run /save to sync."
+fi
 echo ""
 
-# 2. Phase Consistency
+# 2. Current Phase (STATUS.md only - Phase is not stored in CONTEXT.md)
 echo "🎯 Current Phase:"
-CONTEXT_PHASE=$(grep -E "^Phase:|^\*\*Phase:\*\*" "$CONTEXT_DIR/CONTEXT.md" 2>/dev/null | sed 's/.*Phase: *//' | sed 's/\*\*//g' | head -1)
 STATUS_PHASE=$(grep -E "^Phase:|^\*\*Phase:\*\*" "$CONTEXT_DIR/STATUS.md" 2>/dev/null | sed 's/.*Phase: *//' | sed 's/\*\*//g' | head -1)
 
-echo "  CONTEXT.md: ${CONTEXT_PHASE:-not found}"
 echo "  STATUS.md:  ${STATUS_PHASE:-not found}"
-
-if [ -n "$CONTEXT_PHASE" ] && [ -n "$STATUS_PHASE" ] && [ "$CONTEXT_PHASE" != "$STATUS_PHASE" ]; then
-  echo ""
-  echo "  ⚠️  Phase mismatch detected:"
-  echo "      CONTEXT.md: \"$CONTEXT_PHASE\""
-  echo "      STATUS.md:  \"$STATUS_PHASE\""
-  echo ""
-  echo "  📝 Action Required:"
-  echo "     1. Determine which phase is correct (usually STATUS.md is most current)"
-  echo "     2. Update the out-of-date file to match"
-  echo "     3. Typically: Edit CONTEXT.md to match STATUS.md"
-  echo "     4. Or if CONTEXT.md is correct: Update STATUS.md with /save command"
-  echo ""
-fi
 echo ""
 
 # 3. Session Count
@@ -913,5 +905,5 @@ Understood?
 
 ---
 
-**Version:** 3.6.0
+**Version:** 4.0.1
 **Updated:** v3.0.4 - Added git workflow reminder for session start

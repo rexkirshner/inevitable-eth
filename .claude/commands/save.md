@@ -114,7 +114,7 @@ Next steps? (or press enter to keep existing):
 **ACTION:** Run the update-quick-reference.sh script to auto-generate the Quick Reference section:
 
 ```bash
-echo "Step 4/5: Auto-generating Quick Reference section..."
+echo "Step 4/6: Auto-generating Quick Reference section..."
 echo ""
 
 # Run the auto-generation script
@@ -125,29 +125,31 @@ echo "✅ Quick Reference auto-generated"
 echo ""
 ```
 
-**What this does:**
-- Extracts project info from .context-config.json
-- Extracts current phase and focus from STATUS.md
-- Finds last session from SESSIONS.md
-- Calculates documentation health
-- Generates Quick Reference section automatically
+### Step 5: Auto-Update Timestamp (v3.7.0)
 
-**Auto-populates:**
-1. Project name, URLs, tech stack (from config)
-2. Current phase and status (from STATUS.md)
-3. Active tasks / current focus (from STATUS.md)
-4. Last session link (from SESSIONS.md)
-5. Documentation health (file age heuristic)
+**ACTION:** Automatically update the "Last Updated" date in STATUS.md:
 
-**No manual editing required!** The script handles all 15+ fields automatically.
-
-**Note:** Requires `jq` to be installed:
 ```bash
-# macOS: brew install jq
-# Linux: apt-get install jq
+echo "Step 5/6: Updating timestamp..."
+echo ""
+
+# Source common functions and update timestamp
+source scripts/common-functions.sh 2>/dev/null || true
+if type update_last_modified &>/dev/null; then
+  update_last_modified "$CONTEXT_DIR/STATUS.md"
+  echo "✅ Timestamp updated to $(date +%Y-%m-%d)"
+else
+  echo "ℹ️  Auto-timestamp not available (upgrade to v3.7.0+)"
+fi
+echo ""
 ```
 
-### Step 5: Report Updates
+**What this does:**
+- Automatically updates `**Last Updated:**` date in STATUS.md
+- No manual date entry needed
+- Cross-platform compatible (macOS + Linux)
+
+### Step 6: Report Updates
 
 **ACTION:** Output summary to user:
 
@@ -155,7 +157,7 @@ echo ""
 ✅ Quick Save Complete
 
 **Updated:**
-- STATUS.md - Work in progress, active tasks, and Quick Reference (auto-generated)
+- STATUS.md - Work in progress, active tasks, Quick Reference (auto-generated), timestamp
 
 **Time:** ~2-3 minutes
 
@@ -164,6 +166,8 @@ echo ""
 **Current Focus:** [Brief summary from STATUS.md]
 
 **Quick Reference:** Auto-updated in STATUS.md (project info, URLs, current phase)
+
+**Timestamp:** Auto-updated to today's date (v3.7.0+)
 
 **Next Session:**
 Run /save again for quick update, or /save-full before breaks/handoffs.
@@ -193,12 +197,13 @@ For **breaks/handoffs** (occasional):
 
 **Every /save:**
 - ✅ STATUS.md (current tasks, blockers, next steps, Quick Reference section auto-generated)
+- ✅ Last Updated timestamp (auto-updated to today's date, v3.7.0+)
 
 **Not updated:**
 - ❌ SESSIONS.md (use /save-full)
 - ❌ DECISIONS.md (update manually when important decision made)
 
-**Note:** In v2.1, QUICK_REF.md has been consolidated into STATUS.md as an auto-generated section at the top.
+**Note:** In v2.1, QUICK_REF.md has been consolidated into STATUS.md as an auto-generated section at the top. In v3.7.0, timestamps are auto-updated.
 
 ### Time Investment
 
@@ -253,3 +258,7 @@ Save succeeds when:
 - Current state captured
 - Ready to resume work
 - Comprehensive docs when actually needed (use /save-full)
+
+---
+
+**Version:** 4.0.1

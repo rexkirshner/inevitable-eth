@@ -1,6 +1,6 @@
 # Command Philosophy
 
-Core principles that guide all Claude Context System commands.
+Core principles that guide all AI Context System commands.
 
 ## The Prime Directive: Session Continuity
 
@@ -28,13 +28,133 @@ Everything exists to serve this goal.
 
 **NEVER push to GitHub without explicit approval.**
 
-Commands that modify code, delete files, or push to remote:
+**Critical Distinction: Commit ≠ Push**
+
+Git operations are DISTINCT and require SEPARATE approval:
+- `git add` → Staging (reversible)
+- `git commit` → Local history (reversible with reset)
+- `git push` → **PUBLICATION** (visible to others, permanent)
+
+**When user says "commit", do ONLY commit:**
+```
+User: "ok, let's commit to git"
+✅ CORRECT: Stage files, commit locally, STOP and report
+❌ WRONG: Stage files, commit locally, push to GitHub
+```
+
+**Push requires EXPLICIT approval phrases:**
+- "push to github"
+- "push to origin"
+- "push everything"
+- "publish changes"
+- "commit and push"
+
+**Push permission NEVER carries forward:**
+```
+Session start:
+User: "commit and push to github"
+→ OK to push THIS commit
+
+Later in same session:
+User: "ok let's commit these changes"
+→ NOT OK to push (only commit)
+→ Permission does NOT carry forward
+→ EACH push requires NEW approval
+```
+
+**Why this matters:**
+- Commit = safe, local, reversible
+- Push = public, permanent, affects team
+- User may want to review/amend before pushing
+- Violating this breaks user trust and control
+
+**Commands that modify code, delete files, or push to remote:**
 - Must ask user first
 - Clear about what will change
 - Provide preview when possible
-- Wait for explicit "ok" or "push"
+- Wait for explicit approval
+- NEVER assume permission carries forward
 
-### 3. No Broken Promises
+### 3. Context Folder Detection (v3.0.0+)
+
+**Commands must work from subdirectories.**
+
+**Real-world issue:** Users run commands from `backend/`, `frontend/`, `src/` directories
+**Solution:** Find context folder automatically (up to 2 parent directories)
+
+**Pattern for all commands:**
+
+```bash
+# Step 1: Find Context Folder (add to ALL commands)
+source "$(dirname "${BASH_SOURCE[0]}")/../scripts/find-context-folder.sh" || exit 1
+CONTEXT_DIR=$(find_context_folder) || exit 1
+
+# Then use $CONTEXT_DIR throughout the command instead of hardcoded "context/"
+cat "$CONTEXT_DIR/STATUS.md"
+echo "Content" >> "$CONTEXT_DIR/SESSIONS.md"
+```
+
+**Why this matters:**
+- Users work in subdirectories (`cd backend && /save`)
+- Old behavior: "context/ not found" error
+- New behavior: Searches `./context`, `../context`, `../../context`
+- Validates with `.context-config.json` check
+- Clear error if truly not found
+
+**Commands updated:** /save, /save-full, /review-context, /init-context (others in progress)
+
+### 4. Command Syntax Limitations (Claude Code Platform)
+
+**Commands with `$(...)` may fail when executed via SlashCommand tool.**
+
+**Real-world issue:** Commands containing command substitution syntax (`$(...)`) can fail with parse errors when executed through Claude Code's SlashCommand tool.
+
+**Examples that may fail:**
+```bash
+# Command substitution in variable assignment
+MV_CMD=$(which git)
+
+# Command substitution in conditionals
+if [ "$(git status)" ]; then
+
+# Command substitution in strings
+git commit -m "$(cat <<'EOF'
+Message here
+EOF
+)"
+```
+
+**Workaround options:**
+
+1. **Execute manually using Bash tool** (most reliable):
+   - AI assistant reads the command file
+   - Executes bash commands directly using Bash tool
+   - No SlashCommand parsing involved
+
+2. **Rewrite to avoid command substitution** (if possible):
+   ```bash
+   # Before (may fail)
+   DEST_DIR=$(dirname "$dest")
+
+   # After (works)
+   DEST_DIR="${dest%/*}"
+   ```
+
+3. **Use heredocs without command substitution**:
+   ```bash
+   # Avoid $(cat <<'EOF') pattern
+   # Instead use heredoc directly in git commit
+   ```
+
+**Why this matters:**
+- SlashCommand has parsing limitations we cannot control
+- Manual execution via Bash tool always works
+- Commands should document if they require manual execution
+- Not a bug in our system - it's a Claude Code platform limitation
+
+**Commands affected:** /organize-docs (Step 5 safe_move function)
+
+### 5. No Broken Promises
 
 **Only promise what we actually deliver.**
 
@@ -45,7 +165,7 @@ v1.4.0 removed JSON artifacts because:
 
 **Lesson:** Don't implement speculative features. Deliver what works.
 
-### 4. Honesty About Enforcement
+### 6. Honesty About Enforcement
 
 **Be clear about what's enforced vs. what's just reference.**
 
@@ -55,7 +175,7 @@ v1.4.0 removed JSON artifacts because:
 
 If a file isn't used by commands, say so clearly.
 
-### 5. Separation of Concerns
+### 7. Separation of Concerns
 
 **Commands DO, documentation EXPLAINS.**
 
@@ -65,7 +185,7 @@ If a file isn't used by commands, say so clearly.
 
 This separation keeps commands scannable.
 
-### 6. Capture Everything, Lose Nothing
+### 8. Capture Everything, Lose Nothing
 
 **When in doubt, save it.**
 
@@ -78,7 +198,7 @@ This separation keeps commands scannable.
 
 Better to over-save than lose context.
 
-### 7. Thoroughness When Time Permits
+### 9. Thoroughness When Time Permits
 
 **/code-review takes its time.**
 
@@ -89,7 +209,7 @@ Better to over-save than lose context.
 
 Quality commands need time to be thorough.
 
-### 8. Fast Paths for Common Cases
+### 10. Fast Paths for Common Cases
 
 **/quick-save-context for active work.**
 
