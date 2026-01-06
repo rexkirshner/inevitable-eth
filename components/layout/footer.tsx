@@ -102,17 +102,6 @@ export function Footer() {
                   <span className="text-[0.6rem]">↗</span>
                 </a>
               </li>
-              <li>
-                <a
-                  href="https://old.inevitableeth.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[var(--text-secondary)] hover:text-[var(--link)] transition-colors inline-flex items-center gap-1"
-                >
-                  Original site
-                  <span className="text-[0.6rem]">↗</span>
-                </a>
-              </li>
             </ul>
           </div>
         </div>
