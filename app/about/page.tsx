@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Github, ExternalLink, Mail, Linkedin, Twitter, Send } from 'lucide-react';
+import { Github, Mail, Linkedin, Twitter, Send } from 'lucide-react';
 import { getDefaultOgImage } from '@/lib/og-image';
 import { getAllContent, getContentBySlug } from '@/lib/content';
 import type { Metadata } from 'next';
@@ -239,15 +239,6 @@ export default function AboutPage() {
             >
               <Github className="h-5 w-5" />
               View on GitHub
-            </a>
-            <a
-              href="https://old.inevitableeth.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded hover:border-[var(--link)] transition-colors"
-            >
-              <ExternalLink className="h-5 w-5" />
-              Original Site
             </a>
           </div>
         </section>
