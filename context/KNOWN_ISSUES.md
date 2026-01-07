@@ -1,6 +1,6 @@
 # Known Issues, Limitations & Technical Debt
 
-**Last Updated:** 2025-12-19
+**Last Updated:** 2026-01-06
 **Status:** No blocking issues. Site is live on Cloudflare Pages.
 
 ---
@@ -260,6 +260,73 @@ npm run build:cloudflare
 3. Auto-deploy on merge to main
 
 **Priority:** Medium (important for multi-contributor project)
+
+---
+
+### 6. Console.error in Production Code (Session 18)
+
+**Issue:** `lib/content.ts` uses `console.error` for logging (lines 79, 109)
+
+**Impact:** Low - only fires on malformed content, but not ideal for production
+
+**Current behavior:**
+```typescript
+} catch (error) {
+  console.error(`Error loading ${cat}/${slug}:`, error);
+}
+```
+
+**Future improvement:**
+- Implement structured logging (Pino, Winston, or simple custom logger)
+- Log levels for dev vs production
+- Optional error reporting service integration
+
+**Priority:** Low (deferred from Session 18 code review)
+
+---
+
+### 7. Loading States for Dynamic Imports (Session 18)
+
+**Issue:** Dynamic imports lack explicit loading states
+
+**Files affected:**
+- `app/search/page.tsx` - SearchClient
+- `app/about/page.tsx` - VisualizeClient
+- `app/[category]/[slug]/page.tsx` - TableOfContents, ReadingProgress
+
+**Current behavior:**
+```typescript
+const SearchClient = dynamic(() => import('./search-client'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,  // Basic, could be improved
+});
+```
+
+**Future improvement:**
+- Skeleton loaders matching component layouts
+- Consistent loading UI across all dynamic imports
+- Consider Suspense boundaries
+
+**Priority:** Low (deferred from Session 18 code review)
+
+---
+
+### 8. Component Documentation (Session 18)
+
+**Issue:** Components lack JSDoc documentation for their APIs
+
+**Impact:** Makes it harder for new contributors to understand component props
+
+**Current state:**
+- TypeScript interfaces define props
+- No inline documentation explaining usage
+
+**Future improvement:**
+- Add JSDoc comments to public component exports
+- Document required vs optional props
+- Add usage examples in comments
+
+**Priority:** Low (deferred from Session 18 code review)
 
 ---
 
