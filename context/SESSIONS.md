@@ -2,7 +2,7 @@
 
 **Purpose:** Document all development sessions to enable perfect session continuity and track project evolution.
 
-**Last Session:** Session 17 - 2025-12-19
+**Last Session:** Session 18 - 2026-01-06
 
 ---
 
@@ -781,5 +781,84 @@ For each session, document:
 ### Next Session
 **Priority:** Content work (556 images need alt text) or new feature development
 **Blockers:** None
+
+---
+## Session 18 - 2026-01-06
+
+**Duration:** ~2h | **Focus:** Maintenance, Cleanup & Code Review | **Status:** ✅
+
+### TL;DR
+- Updated AI Context System v3.6.0 → v4.0.1 (50 files)
+- Removed all old.inevitableeth.com references (retiring Heroku Wiki.js)
+- Conducted comprehensive code review (Grade: A-)
+- Fixed build error (missing 'use client' directive)
+- 8 commits pushed to GitHub
+
+### Problem Solved
+**Issue:** Project needed maintenance - AI Context System outdated, duplicate files, old site references to defunct Heroku instance
+**Constraints:** Must not break production build, minimal code changes
+**Approach:** Sequential cleanup → version update → content removal → code review → documentation
+**Why this approach:** Address technical housekeeping before new feature work; old site retirement decision made
+
+### Decisions
+- **Retire old.inevitableeth.com:** User decided to stop paying for Heroku Wiki.js instance; all references removed
+- **Defer code review findings:** 3 low-priority items documented in KNOWN_ISSUES.md for future evaluation
+- **Keep search-index.json changes:** Regenerated in Session 17, committed now (more headings captured)
+
+### Files
+**DEL:** `context/CLAUDE.md` - Duplicate of root CLAUDE.md (not auto-loaded)
+**MOD:** `app/not-found.tsx:1-91` - Removed callout box, restored 'use client' after build fix
+**MOD:** `app/about/page.tsx:2` - Removed ExternalLink import and "Original Site" button
+**MOD:** `components/layout/footer.tsx:95-104` - Removed "Original site" link from Community section
+**MOD:** `context/KNOWN_ISSUES.md:1-330` - Added Session 18 deferred items (6, 7, 8)
+**MOD:** `context/.context-config.json:2` - Updated version to 4.0.1
+**NEW:** `artifacts/code-reviews/session-18-review.md` - Comprehensive code review report
+
+### Mental Models
+**Current understanding:**
+- AI Context System v4.0.1 adds modular code review commands (8 audit types)
+- 404 page needs 'use client' because "Go Back" button uses onClick handler
+- Static export (Cloudflare Pages) fails on Server Components with event handlers
+
+**Key insights:**
+- CLAUDE.md at root is auto-loaded by Claude Code; context/CLAUDE.md was redundant
+- Code quality remains high (A- grade) with no security vulnerabilities
+- Console.error in lib/content.ts is acceptable but not ideal for production
+
+**Gotchas discovered:**
+- Next.js 15 static export: event handlers (onClick) require 'use client' directive
+- "Retry deployment" in Cloudflare only re-serves existing build (learned in Session 16, re-encountered)
+
+### Work In Progress
+**Task:** None - session complete
+**Next priority:** Continue with feature development or address deferred items
+
+### TodoWrite State
+**Completed:**
+- ✅ Update AI Context System to v4.0.1
+- ✅ Delete duplicate context/CLAUDE.md
+- ✅ Commit search-index.json regeneration
+- ✅ Remove old.inevitableeth.com from 404 page
+- ✅ Remove old.inevitableeth.com from about page
+- ✅ Remove old.inevitableeth.com from footer
+- ✅ Fix build error (restore 'use client')
+- ✅ Run automated checks (ESLint, npm audit)
+- ✅ Review security patterns
+- ✅ Analyze code quality and architecture
+- ✅ Check accessibility and SEO patterns
+- ✅ Review performance patterns
+- ✅ Generate code review report
+- ✅ Document deferred items in KNOWN_ISSUES.md
+
+**In Progress:** None
+
+### Next Session
+**Priority:** Feature development or address deferred low-priority items
+**Blockers:** None
+
+**Deferred Items (Low Priority):**
+1. Console.error → structured logging (lib/content.ts)
+2. Loading states for dynamic imports
+3. Component JSDoc documentation
 
 ---
