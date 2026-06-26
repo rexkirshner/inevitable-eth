@@ -16,6 +16,9 @@ const envSchema = z.object({
   NEXT_PUBLIC_GISCUS_REPO_ID: z.string().optional(),
   NEXT_PUBLIC_GISCUS_CATEGORY: z.string().optional(),
   NEXT_PUBLIC_GISCUS_CATEGORY_ID: z.string().optional(),
+
+  // Google Analytics (optional - analytics is disabled when missing)
+  NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().regex(/^G-[A-Z0-9]+$/).optional(),
 });
 
 /**
@@ -28,6 +31,7 @@ export const env = envSchema.parse({
   NEXT_PUBLIC_GISCUS_REPO_ID: process.env.NEXT_PUBLIC_GISCUS_REPO_ID,
   NEXT_PUBLIC_GISCUS_CATEGORY: process.env.NEXT_PUBLIC_GISCUS_CATEGORY,
   NEXT_PUBLIC_GISCUS_CATEGORY_ID: process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID,
+  NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
 });
 
 /**

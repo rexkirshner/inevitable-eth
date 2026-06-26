@@ -1,9 +1,10 @@
 'use client';
 
 import Script from 'next/script';
+import { env } from '@/lib/env';
 
 export default function GoogleAnalytics() {
-  const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const measurementId = env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   if (!measurementId) {
     return null;
